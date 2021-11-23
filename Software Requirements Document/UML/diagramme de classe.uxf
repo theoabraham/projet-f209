@@ -4,26 +4,130 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>984</x>
-      <y>464</y>
-      <w>168</w>
-      <h>128</h>
+      <x>184</x>
+      <y>40</y>
+      <w>120</w>
+      <h>72</h>
     </coordinates>
-    <panel_attributes>Plateau
+    <panel_attributes>/Coord/
 --
--pions: vector&lt;vector&lt;pion&gt;
+-data:tuple&lt;int&gt;
 --
-+check_winner()
-+ setter/getter des attributs
-+getP1pions()
-+getP2pions()</panel_attributes>
++get_data():tuple&lt;int&gt;
++set_data():tuple&lt;int&gt;</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
+      <x>312</x>
+      <y>160</y>
+      <w>80</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>Position</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>24</x>
+      <y>160</y>
+      <w>192</w>
+      <h>96</h>
+    </coordinates>
+    <panel_attributes>Move
+--
++ UP: tuple&lt;int&gt;(+2*player_id,0)
++ DOWN: tuple&lt;int&gt;(-2*player_id,0)
++ LEFT: tuple&lt;int&gt;(0,+2*player_id)
++ RIGHT: tuple&lt;int&gt;(0, +2*player_id)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>928</x>
+      <y>336</y>
+      <w>216</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>Cell
+--
+-neighbour: vector&lt;Cell*&gt;
+-occupied: Pion*
+--
++setNeighbours(vector&lt;Cell*&gt;):void
++acceptPion(Pion*):void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>656</x>
+      <y>336</y>
+      <w>168</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>Board
+--
+-size: int=17
+-matrix: vector&lt;vector&lt;Cell&gt; &gt;
+--
++printBoard():string
++bindCase():void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>600</x>
+      <y>104</y>
+      <w>168</w>
+      <h>152</h>
+    </coordinates>
+    <panel_attributes>Game
+--
+-board:Board
+-players:vector&lt;Player&gt;
+-currentPlayer: int=-1
+--
++isEndOfBoard():bool
++placeWallMove(Move):void
++MovePion(Move):void
++ExecuteMove():void
++nextTurn():void
++endOfGame():void
++start():void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>816</x>
+      <y>368</y>
+      <w>128</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;140.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
       <x>688</x>
-      <y>472</y>
+      <y>248</y>
+      <w>24</w>
+      <h>104</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>928</x>
+      <y>800</y>
       <w>200</w>
       <h>152</h>
     </coordinates>
@@ -44,8 +148,8 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>424</x>
-      <y>472</y>
+      <x>440</x>
+      <y>336</y>
       <w>168</w>
       <h>152</h>
     </coordinates>
@@ -53,160 +157,70 @@
 --
 -id: int
 -position: Position
--owner: Joueur
+-owner: Player
 --
-+setPos(Position pos)
-+getPos()
-+getOwner()
-+move(Deplacement id)
++setPos(Position pos):void
++getPos():Position
++getOwner():Player
++move(Move):void
 </panel_attributes>
     <additional_attributes/>
   </element>
   <element>
-    <id>UMLClass</id>
+    <id>Relation</id>
     <coordinates>
-      <x>248</x>
-      <y>224</y>
-      <w>88</w>
+      <x>232</x>
+      <y>104</y>
+      <w>136</w>
       <h>72</h>
     </coordinates>
-    <panel_attributes>/Coord/
---
--data:tuple&lt;int&gt;
---
-+get_data
-+set_data</panel_attributes>
-    <additional_attributes/>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;40.0;150.0;40.0;150.0;70.0</additional_attributes>
   </element>
   <element>
-    <id>UMLClass</id>
+    <id>Relation</id>
     <coordinates>
-      <x>1040</x>
-      <y>248</y>
-      <w>80</w>
+      <x>112</x>
+      <y>104</y>
+      <w>144</w>
       <h>72</h>
     </coordinates>
-    <panel_attributes>/Matrice/
---
--size: int=17
--
-+getSize()
-+setSize()
-</panel_attributes>
-    <additional_attributes/>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>160.0;10.0;160.0;40.0;10.0;40.0;10.0;70.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>584</x>
-      <y>520</y>
-      <w>120</w>
-      <h>32</h>
-    </coordinates>
-    <panel_attributes>lt=-
-m1=1..n
-m2=1</panel_attributes>
-    <additional_attributes>10.0;10.0;130.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>360</x>
-      <y>496</y>
-      <w>80</w>
-      <h>40</h>
-    </coordinates>
-    <panel_attributes>lt=-
-m1=1
-m2=1
-</panel_attributes>
-    <additional_attributes>10.0;20.0;80.0;20.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>880</x>
-      <y>520</y>
-      <w>120</w>
-      <h>40</h>
-    </coordinates>
-    <panel_attributes>lt=-
-m1=2..4
-m2=1
-</panel_attributes>
-    <additional_attributes>10.0;20.0;130.0;20.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>288</x>
-      <y>496</y>
-      <w>80</w>
-      <h>24</h>
-    </coordinates>
-    <panel_attributes>Position</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>56</x>
-      <y>496</y>
-      <w>192</w>
-      <h>96</h>
-    </coordinates>
-    <panel_attributes>Deplacement
---
-+ UP: tuple&lt;int&gt;(+2*player_id,0)
-+ DOWN: tuple&lt;int&gt;(-2*player_id,0)
-+ LEFT: tuple&lt;int&gt;(0,+2*player_id)
-+ RIGHT: tuple&lt;int&gt;(0, +2*player_id)</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>240</x>
-      <y>560</y>
-      <w>200</w>
-      <h>40</h>
-    </coordinates>
-    <panel_attributes>lt=-
-
-</panel_attributes>
-    <additional_attributes>10.0;20.0;230.0;20.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>280</x>
-      <y>288</y>
-      <w>80</w>
-      <h>224</h>
+      <y>248</y>
+      <w>128</w>
+      <h>104</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;120.0;80.0;120.0;80.0;260.0</additional_attributes>
+    <additional_attributes>140.0;10.0;140.0;60.0;10.0;60.0;10.0;110.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>160</x>
-      <y>288</y>
-      <w>144</w>
-      <h>224</h>
+      <x>384</x>
+      <y>160</y>
+      <w>232</w>
+      <h>192</h>
     </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>160.0;10.0;160.0;120.0;10.0;120.0;10.0;260.0</additional_attributes>
+    <panel_attributes>lt=-
+</panel_attributes>
+    <additional_attributes>10.0;10.0;100.0;10.0;100.0;220.0;100.0;10.0;270.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1072</x>
-      <y>312</y>
-      <w>24</w>
-      <h>168</h>
+      <x>208</x>
+      <y>192</y>
+      <w>408</w>
+      <h>160</h>
     </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;190.0</additional_attributes>
+    <panel_attributes>lt=-
+</panel_attributes>
+    <additional_attributes>10.0;10.0;360.0;10.0;360.0;180.0;360.0;10.0;490.0;10.0</additional_attributes>
   </element>
 </diagram>
