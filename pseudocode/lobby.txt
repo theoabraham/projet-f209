@@ -1,0 +1,41 @@
+class Lobby()
+    int ID;
+    Player host;
+    vector <Player*> invited
+    //L'ID sera généré dans le constructeur, possessor est le joueur ayant créé la Room.
+
+    public:
+	Lobby(Player host):
+	    //host = host
+	    //Génère un ID et l'attribue au Lobby
+	    //Constructeur.
+	
+	string printMenu(vector options)
+	    //Cette fonction a pour but d'afficher un menu a l'écran, quelle que soit la taille ou les elements du menu.
+		/*
+		Exemple:
+		"Choisissez une action:
+		 *Inviter un ami (i)
+		 *Choisir un mode de jeu (c)" 
+		*/
+
+	void userChoice()
+	    //cin>>printMenu(options)>>endl;
+	    //Effectue une action en fonction de l'input de l'utilisateur.	
+
+	void inviteFriend():
+	    //Demande un pseudo au host et invite le joueur nommé si possible.
+	    //Si possible, ajoute le joueur dans le vecteur invited
+	
+	void kickPlayer():
+	    //Demande un pseudo au host et retire le joueur nommé de invited si il s'y trouve.
+	
+	string chooseGamemode()
+	    //Cette fonction permet de changer le mode de jeu voulu.
+	    //Le return type est str, mais il peut devenir ce que vous voulez en fonction de comment on transmet le mode de jeu.
+
+	void startGame(mode de jeu voulus, original de base)
+	    // Vérifie si la taille de invited est 2 ou 4.
+	    //Cette fonction commence la partie avec les paramètres (mode de jeu) voulus.
+
+Normalement la classe player a déjà été écrite par quelqu'un d'autre.

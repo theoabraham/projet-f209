@@ -1,7 +1,7 @@
-class Plateau:
+class Board:
     <vector <vector <Cell> > > matrice;
   public:
-    void Plateau() {
+    void Board() {
         double for: 
             remplissage de la matrice d'objets Cell;
     }
