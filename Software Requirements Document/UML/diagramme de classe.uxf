@@ -4,8 +4,8 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>135</x>
-      <y>279</y>
+      <x>207</x>
+      <y>252</y>
       <w>45</w>
       <h>27</h>
     </coordinates>
@@ -20,8 +20,8 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>183</x>
-      <y>324</y>
+      <x>255</x>
+      <y>297</y>
       <w>30</w>
       <h>9</h>
     </coordinates>
@@ -31,8 +31,8 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>75</x>
-      <y>324</y>
+      <x>147</x>
+      <y>297</y>
       <w>72</w>
       <h>36</h>
     </coordinates>
@@ -47,8 +47,8 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>414</x>
-      <y>390</y>
+      <x>486</x>
+      <y>363</y>
       <w>81</w>
       <h>33</h>
     </coordinates>
@@ -64,8 +64,8 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>312</x>
-      <y>390</y>
+      <x>384</x>
+      <y>363</y>
       <w>63</w>
       <h>30</h>
     </coordinates>
@@ -81,8 +81,8 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>291</x>
-      <y>303</y>
+      <x>363</x>
+      <y>276</y>
       <w>63</w>
       <h>57</h>
     </coordinates>
@@ -104,8 +104,8 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>372</x>
-      <y>402</y>
+      <x>444</x>
+      <y>375</y>
       <w>48</w>
       <h>9</h>
     </coordinates>
@@ -115,8 +115,8 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>324</x>
-      <y>357</y>
+      <x>396</x>
+      <y>330</y>
       <w>9</w>
       <h>39</h>
     </coordinates>
@@ -126,8 +126,8 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>228</x>
-      <y>390</y>
+      <x>300</x>
+      <y>363</y>
       <w>75</w>
       <h>57</h>
     </coordinates>
@@ -150,8 +150,8 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>240</x>
-      <y>474</y>
+      <x>312</x>
+      <y>447</y>
       <w>63</w>
       <h>57</h>
     </coordinates>
@@ -171,8 +171,8 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>153</x>
-      <y>303</y>
+      <x>225</x>
+      <y>276</y>
       <w>51</w>
       <h>27</h>
     </coordinates>
@@ -182,8 +182,8 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>108</x>
-      <y>303</y>
+      <x>180</x>
+      <y>276</y>
       <w>54</w>
       <h>27</h>
     </coordinates>
@@ -193,8 +193,8 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>285</x>
-      <y>357</y>
+      <x>357</x>
+      <y>330</y>
       <w>48</w>
       <h>39</h>
     </coordinates>
@@ -204,8 +204,8 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>210</x>
-      <y>324</y>
+      <x>282</x>
+      <y>297</y>
       <w>87</w>
       <h>72</h>
     </coordinates>
@@ -216,8 +216,8 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>144</x>
-      <y>336</y>
+      <x>216</x>
+      <y>309</y>
       <w>153</w>
       <h>60</h>
     </coordinates>
@@ -228,12 +228,109 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>267</x>
-      <y>444</y>
+      <x>339</x>
+      <y>417</y>
       <w>9</w>
       <h>36</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;100.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>186</x>
+      <y>393</y>
+      <w>63</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>FriendList
+--
+-database: Database*
+--
++addFriend(FriendAccount):void
++deleteFriend(FriendAccount):void
++isFriend(FriendAccount):bool
++getFriends(UserAccount):User
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>102</x>
+      <y>372</y>
+      <w>24</w>
+      <h>9</h>
+    </coordinates>
+    <panel_attributes>/Account/
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>129</x>
+      <y>402</y>
+      <w>30</w>
+      <h>9</h>
+    </coordinates>
+    <panel_attributes>UserAccount</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>69</x>
+      <y>411</y>
+      <w>30</w>
+      <h>9</h>
+    </coordinates>
+    <panel_attributes>FriendAccount</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>111</x>
+      <y>378</y>
+      <w>42</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;50.0;120.0;50.0;120.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>81</x>
+      <y>378</y>
+      <w>39</w>
+      <h>39</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>110.0;10.0;110.0;50.0;10.0;50.0;10.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>156</x>
+      <y>402</y>
+      <w>36</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;20.0;100.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>96</x>
+      <y>411</y>
+      <w>96</w>
+      <h>12</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;20.0;300.0;20.0</additional_attributes>
   </element>
 </diagram>
