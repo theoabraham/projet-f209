@@ -1,0 +1,15 @@
+class Pawn:
+	int id
+	Position position
+	Player owner
+
+	Position getPosition() {
+	    return position
+	}
+	void setPosition(newPosition) {
+	    position = newPosition
+	}
+	Player getOwner() {
+	    return owner
+	}
+	   

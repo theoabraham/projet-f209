@@ -10,17 +10,25 @@
 \usepackage{graphicx}
 \usepackage{float}
 \usepackage{fullpage}
-
+\usepackage{hyperref}
+\usepackage{fancyvrb}
+\usepackage[dvipsnames]{xcolor}
 %------------------------------------------------------------------------------
 
 \title{Software Requirements Document: \\ Quorridor}
-
-\author{}
+\author{MERIAN Emile, ABRAHAM Théo, VINOVRSKI Alexandre, DIMITROV Mark,\\ CHICA COBO Sofia,
+HORII Hisao, LEDUC Camille, BOLLENGIER Thomas}
 
 \date{23 Novembre 2021}
 
 \begin{document}
 \maketitle
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.4]{img/logo.png}
+\end{figure}
+
 \newpage
 \tableofcontents
 
@@ -34,6 +42,12 @@
 
 
 \section{Besoins utilisateur: Fonctionnels}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.6]{img/ClientUseCase.png}
+\end{figure}
+
   \subsection{Connexion/Création de compte}
     \subsubsection{Inviter un ami}
   \subsection{Chat}
@@ -59,8 +73,13 @@
         \subsubsection{Choisir les paramètres}
 
 
-
+\newpage
 \section{Besoin système: Fonctionnels}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.6]{img/DatabaseUseCase.png}
+\end{figure}
 
   \subsection{Gestion des comptes}
     \subsubsection{Création d'un compte}
@@ -91,9 +110,14 @@
   \subsection{Sécurité}
   \subsection{Robustesse}
 
-
+\newpage
 \section{Design et fonctionnement du Système}
   \subsection{Design du système}
+  (sans Player)
+  \begin{figure}[H]
+    \includegraphics[scale=0.41]{img/MainClassDiagram.png}
+  \end{figure}
+
     \subsubsection{Explications complémentaires}
   \subsection{Fonctionnement du système}
     \subsubsection{Inscription}
@@ -101,8 +125,6 @@
     \subsubsection{Chat}
   \subsection{Design des modes de jeux}
   \subsection{Design de l'IA}
-
-
 
 
 
