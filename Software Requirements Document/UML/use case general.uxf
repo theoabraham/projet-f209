@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="14.3.0">
-  <zoom_level>5</zoom_level>
+  <zoom_level>8</zoom_level>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>170</x>
-      <y>125</y>
-      <w>350</w>
-      <h>460</h>
+      <x>272</x>
+      <y>120</y>
+      <w>560</w>
+      <h>736</h>
     </coordinates>
     <panel_attributes>Jeu Corridor
 halign=left</panel_attributes>
@@ -16,10 +16,10 @@ halign=left</panel_attributes>
   <element>
     <id>UMLActor</id>
     <coordinates>
-      <x>50</x>
-      <y>240</y>
-      <w>50</w>
-      <h>55</h>
+      <x>80</x>
+      <y>304</y>
+      <w>80</w>
+      <h>88</h>
     </coordinates>
     <panel_attributes>Utilisateur</panel_attributes>
     <additional_attributes/>
@@ -27,10 +27,10 @@ halign=left</panel_attributes>
   <element>
     <id>UMLUseCase</id>
     <coordinates>
-      <x>270</x>
-      <y>180</y>
-      <w>60</w>
-      <h>15</h>
+      <x>432</x>
+      <y>208</y>
+      <w>96</w>
+      <h>24</h>
     </coordinates>
     <panel_attributes>Créer un compte</panel_attributes>
     <additional_attributes/>
@@ -38,10 +38,10 @@ halign=left</panel_attributes>
   <element>
     <id>UMLUseCase</id>
     <coordinates>
-      <x>260</x>
-      <y>350</y>
-      <w>65</w>
-      <h>20</h>
+      <x>416</x>
+      <y>480</y>
+      <w>104</w>
+      <h>32</h>
     </coordinates>
     <panel_attributes>Lancer une partie</panel_attributes>
     <additional_attributes/>
@@ -49,10 +49,10 @@ halign=left</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>230</x>
-      <y>160</y>
-      <w>55</w>
-      <h>35</h>
+      <x>368</x>
+      <y>176</y>
+      <w>88</w>
+      <h>56</h>
     </coordinates>
     <panel_attributes>lt=.&gt;
 &lt;&lt;includes&gt;&gt;</panel_attributes>
@@ -61,10 +61,10 @@ halign=left</panel_attributes>
   <element>
     <id>UMLUseCase</id>
     <coordinates>
-      <x>180</x>
-      <y>150</y>
-      <w>60</w>
-      <h>20</h>
+      <x>288</x>
+      <y>160</y>
+      <w>96</w>
+      <h>32</h>
     </coordinates>
     <panel_attributes>S'identifier</panel_attributes>
     <additional_attributes/>
@@ -72,10 +72,10 @@ halign=left</panel_attributes>
   <element>
     <id>UMLUseCase</id>
     <coordinates>
-      <x>380</x>
-      <y>160</y>
-      <w>60</w>
-      <h>20</h>
+      <x>608</x>
+      <y>176</y>
+      <w>96</w>
+      <h>32</h>
     </coordinates>
     <panel_attributes>Modifier compte</panel_attributes>
     <additional_attributes/>
@@ -83,10 +83,10 @@ halign=left</panel_attributes>
   <element>
     <id>UMLUseCase</id>
     <coordinates>
-      <x>380</x>
-      <y>180</y>
-      <w>70</w>
-      <h>20</h>
+      <x>608</x>
+      <y>208</y>
+      <w>112</w>
+      <h>32</h>
     </coordinates>
     <panel_attributes>Supprimer compte</panel_attributes>
     <additional_attributes/>
@@ -94,10 +94,10 @@ halign=left</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>320</x>
-      <y>160</y>
-      <w>70</w>
-      <h>35</h>
+      <x>512</x>
+      <y>176</y>
+      <w>112</w>
+      <h>56</h>
     </coordinates>
     <panel_attributes>lt=.&gt;
 &lt;&lt;extends&gt;&gt;</panel_attributes>
@@ -106,10 +106,10 @@ halign=left</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>320</x>
-      <y>180</y>
-      <w>70</w>
-      <h>25</h>
+      <x>512</x>
+      <y>208</y>
+      <w>112</w>
+      <h>40</h>
     </coordinates>
     <panel_attributes>lt=.&gt;
 &lt;&lt;extends&gt;&gt;</panel_attributes>
@@ -118,10 +118,10 @@ halign=left</panel_attributes>
   <element>
     <id>UMLUseCase</id>
     <coordinates>
-      <x>225</x>
-      <y>480</y>
-      <w>95</w>
-      <h>20</h>
+      <x>360</x>
+      <y>688</y>
+      <w>152</w>
+      <h>32</h>
     </coordinates>
     <panel_attributes>Sélectionner un adversaire</panel_attributes>
     <additional_attributes/>
@@ -129,10 +129,10 @@ halign=left</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>240</x>
-      <y>365</y>
-      <w>50</w>
-      <h>60</h>
+      <x>384</x>
+      <y>504</y>
+      <w>80</w>
+      <h>96</h>
     </coordinates>
     <panel_attributes>lt=.&gt;
 &lt;&lt;includes&gt;&gt;</panel_attributes>
@@ -141,10 +141,10 @@ halign=left</panel_attributes>
   <element>
     <id>UMLUseCase</id>
     <coordinates>
-      <x>415</x>
-      <y>460</y>
-      <w>75</w>
-      <h>20</h>
+      <x>664</x>
+      <y>656</y>
+      <w>120</w>
+      <h>32</h>
     </coordinates>
     <panel_attributes>Sélectionner un ami</panel_attributes>
     <additional_attributes/>
@@ -152,10 +152,10 @@ halign=left</panel_attributes>
   <element>
     <id>UMLUseCase</id>
     <coordinates>
-      <x>415</x>
-      <y>480</y>
-      <w>75</w>
-      <h>20</h>
+      <x>664</x>
+      <y>688</y>
+      <w>120</w>
+      <h>32</h>
     </coordinates>
     <panel_attributes>Sélectionner une IA</panel_attributes>
     <additional_attributes/>
@@ -163,10 +163,10 @@ halign=left</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>305</x>
-      <y>460</y>
-      <w>120</w>
-      <h>35</h>
+      <x>488</x>
+      <y>656</y>
+      <w>192</w>
+      <h>56</h>
     </coordinates>
     <panel_attributes>lt=.&gt;
 &lt;&lt;extends&gt;&gt;</panel_attributes>
@@ -175,10 +175,10 @@ halign=left</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>315</x>
-      <y>480</y>
-      <w>110</w>
-      <h>20</h>
+      <x>504</x>
+      <y>688</y>
+      <w>176</w>
+      <h>32</h>
     </coordinates>
     <panel_attributes>lt=.&gt;
 &lt;&lt;extends&gt;&gt;</panel_attributes>
@@ -187,10 +187,10 @@ halign=left</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>90</x>
-      <y>180</y>
-      <w>190</w>
-      <h>90</h>
+      <x>144</x>
+      <y>208</y>
+      <w>304</w>
+      <h>144</h>
     </coordinates>
     <panel_attributes>lt=-&gt;&gt;</panel_attributes>
     <additional_attributes>10.0;160.0;160.0;20.0;360.0;15.0</additional_attributes>
@@ -198,10 +198,10 @@ halign=left</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>90</x>
-      <y>255</y>
-      <w>180</w>
-      <h>115</h>
+      <x>144</x>
+      <y>328</y>
+      <w>288</w>
+      <h>184</h>
     </coordinates>
     <panel_attributes>lt=-&gt;&gt;</panel_attributes>
     <additional_attributes>10.0;10.0;150.0;210.0;340.0;210.0</additional_attributes>
@@ -209,10 +209,10 @@ halign=left</panel_attributes>
   <element>
     <id>UMLUseCase</id>
     <coordinates>
-      <x>385</x>
-      <y>350</y>
-      <w>85</w>
-      <h>20</h>
+      <x>616</x>
+      <y>480</y>
+      <w>136</w>
+      <h>32</h>
     </coordinates>
     <panel_attributes>Choisir un mode de jeu</panel_attributes>
     <additional_attributes/>
@@ -220,10 +220,10 @@ halign=left</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>320</x>
-      <y>350</y>
-      <w>75</w>
-      <h>20</h>
+      <x>512</x>
+      <y>480</y>
+      <w>120</w>
+      <h>32</h>
     </coordinates>
     <panel_attributes>lt=.&gt;
 &lt;&lt;extends&gt;&gt;</panel_attributes>
@@ -232,10 +232,10 @@ halign=left</panel_attributes>
   <element>
     <id>UMLUseCase</id>
     <coordinates>
-      <x>385</x>
-      <y>385</y>
-      <w>85</w>
-      <h>20</h>
+      <x>616</x>
+      <y>536</y>
+      <w>136</w>
+      <h>32</h>
     </coordinates>
     <panel_attributes>Envoyer des messages</panel_attributes>
     <additional_attributes/>
@@ -243,10 +243,10 @@ halign=left</panel_attributes>
   <element>
     <id>UMLUseCase</id>
     <coordinates>
-      <x>385</x>
-      <y>405</y>
-      <w>85</w>
-      <h>20</h>
+      <x>616</x>
+      <y>568</y>
+      <w>136</w>
+      <h>32</h>
     </coordinates>
     <panel_attributes>Déclarer forfait</panel_attributes>
     <additional_attributes/>
@@ -254,48 +254,21 @@ halign=left</panel_attributes>
   <element>
     <id>UMLUseCase</id>
     <coordinates>
-      <x>385</x>
-      <y>425</y>
-      <w>85</w>
-      <h>20</h>
+      <x>616</x>
+      <y>600</y>
+      <w>136</w>
+      <h>32</h>
     </coordinates>
     <panel_attributes>Relancer une partie</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
-    <id>UMLNote</id>
-    <coordinates>
-      <x>290</x>
-      <y>50</y>
-      <w>65</w>
-      <h>55</h>
-    </coordinates>
-    <panel_attributes>Note..
-Ici je concidère
-Compte et profil
-comme la même 
-chose.
-bg=cyan</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>305</x>
-      <y>100</y>
-      <w>30</w>
-      <h>90</h>
-    </coordinates>
-    <panel_attributes>lt=-&gt;&gt;</panel_attributes>
-    <additional_attributes>10.0;160.0;40.0;10.0</additional_attributes>
-  </element>
-  <element>
     <id>UMLUseCase</id>
     <coordinates>
-      <x>265</x>
-      <y>235</y>
-      <w>60</w>
-      <h>30</h>
+      <x>424</x>
+      <y>296</y>
+      <w>96</w>
+      <h>48</h>
     </coordinates>
     <panel_attributes>gerrer une liste
 d'amis</panel_attributes>
@@ -304,10 +277,10 @@ d'amis</panel_attributes>
   <element>
     <id>UMLUseCase</id>
     <coordinates>
-      <x>375</x>
-      <y>210</y>
-      <w>60</w>
-      <h>25</h>
+      <x>600</x>
+      <y>256</y>
+      <w>96</w>
+      <h>40</h>
     </coordinates>
     <panel_attributes>Ajouter un
 ami</panel_attributes>
@@ -316,10 +289,10 @@ ami</panel_attributes>
   <element>
     <id>UMLUseCase</id>
     <coordinates>
-      <x>375</x>
-      <y>235</y>
-      <w>60</w>
-      <h>25</h>
+      <x>600</x>
+      <y>296</y>
+      <w>96</w>
+      <h>40</h>
     </coordinates>
     <panel_attributes>Supprimer un
 ami</panel_attributes>
@@ -328,10 +301,10 @@ ami</panel_attributes>
   <element>
     <id>UMLUseCase</id>
     <coordinates>
-      <x>375</x>
-      <y>260</y>
-      <w>60</w>
-      <h>25</h>
+      <x>600</x>
+      <y>336</y>
+      <w>96</w>
+      <h>40</h>
     </coordinates>
     <panel_attributes>Discuter avec
 un ami</panel_attributes>
@@ -340,10 +313,10 @@ un ami</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>315</x>
-      <y>215</y>
-      <w>70</w>
-      <h>35</h>
+      <x>504</x>
+      <y>264</y>
+      <w>112</w>
+      <h>56</h>
     </coordinates>
     <panel_attributes>lt=.&gt;
 &lt;&lt;extends&gt;&gt;</panel_attributes>
@@ -352,10 +325,10 @@ un ami</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>315</x>
-      <y>250</y>
-      <w>70</w>
-      <h>30</h>
+      <x>504</x>
+      <y>320</y>
+      <w>112</w>
+      <h>48</h>
     </coordinates>
     <panel_attributes>lt=.&gt;
 &lt;&lt;extends&gt;&gt;</panel_attributes>
@@ -364,10 +337,10 @@ un ami</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>320</x>
-      <y>240</y>
-      <w>65</w>
-      <h>20</h>
+      <x>512</x>
+      <y>304</y>
+      <w>104</w>
+      <h>32</h>
     </coordinates>
     <panel_attributes>lt=.&gt;
 &lt;&lt;extends&gt;&gt;</panel_attributes>
@@ -376,10 +349,10 @@ un ami</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>90</x>
-      <y>245</y>
-      <w>185</w>
-      <h>25</h>
+      <x>144</x>
+      <y>312</y>
+      <w>296</w>
+      <h>40</h>
     </coordinates>
     <panel_attributes>lt=-&gt;&gt;</panel_attributes>
     <additional_attributes>10.0;30.0;150.0;10.0;350.0;10.0</additional_attributes>
@@ -387,10 +360,10 @@ un ami</panel_attributes>
   <element>
     <id>UMLUseCase</id>
     <coordinates>
-      <x>225</x>
-      <y>415</y>
-      <w>60</w>
-      <h>20</h>
+      <x>360</x>
+      <y>584</y>
+      <w>96</w>
+      <h>32</h>
     </coordinates>
     <panel_attributes>Jouer</panel_attributes>
     <additional_attributes/>
@@ -398,10 +371,10 @@ un ami</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>230</x>
-      <y>425</y>
-      <w>50</w>
-      <h>70</h>
+      <x>368</x>
+      <y>600</y>
+      <w>80</w>
+      <h>112</h>
     </coordinates>
     <panel_attributes>lt=.&gt;
 &lt;&lt;includes&gt;&gt;</panel_attributes>
@@ -410,10 +383,10 @@ un ami</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>280</x>
-      <y>405</y>
-      <w>115</w>
-      <h>30</h>
+      <x>448</x>
+      <y>568</y>
+      <w>184</w>
+      <h>48</h>
     </coordinates>
     <panel_attributes>lt=.&gt;
 &lt;&lt;extends&gt;&gt;</panel_attributes>
@@ -422,10 +395,10 @@ un ami</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>275</x>
-      <y>385</y>
-      <w>120</w>
-      <h>45</h>
+      <x>440</x>
+      <y>536</y>
+      <w>192</w>
+      <h>72</h>
     </coordinates>
     <panel_attributes>lt=.&gt;
 &lt;&lt;extends&gt;&gt;</panel_attributes>
@@ -434,10 +407,10 @@ un ami</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>275</x>
-      <y>425</y>
-      <w>120</w>
-      <h>20</h>
+      <x>440</x>
+      <y>600</y>
+      <w>192</w>
+      <h>32</h>
     </coordinates>
     <panel_attributes>lt=.&gt;
 &lt;&lt;extends&gt;&gt;</panel_attributes>
@@ -446,10 +419,10 @@ un ami</panel_attributes>
   <element>
     <id>UMLUseCase</id>
     <coordinates>
-      <x>260</x>
-      <y>295</y>
-      <w>60</w>
-      <h>25</h>
+      <x>416</x>
+      <y>392</y>
+      <w>96</w>
+      <h>40</h>
     </coordinates>
     <panel_attributes>utilliser le
 chat</panel_attributes>
@@ -458,10 +431,10 @@ chat</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>90</x>
-      <y>255</y>
-      <w>180</w>
-      <h>65</h>
+      <x>144</x>
+      <y>328</y>
+      <w>288</w>
+      <h>104</h>
     </coordinates>
     <panel_attributes>lt=-&gt;&gt;</panel_attributes>
     <additional_attributes>10.0;10.0;160.0;110.0;340.0;110.0</additional_attributes>
@@ -469,10 +442,10 @@ chat</panel_attributes>
   <element>
     <id>UMLUseCase</id>
     <coordinates>
-      <x>375</x>
-      <y>295</y>
-      <w>80</w>
-      <h>20</h>
+      <x>600</x>
+      <y>392</y>
+      <w>128</w>
+      <h>32</h>
     </coordinates>
     <panel_attributes>Envoyer un message</panel_attributes>
     <additional_attributes/>
@@ -480,10 +453,10 @@ chat</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>315</x>
-      <y>295</y>
-      <w>70</w>
-      <h>20</h>
+      <x>504</x>
+      <y>392</y>
+      <w>112</w>
+      <h>32</h>
     </coordinates>
     <panel_attributes>lt=.&gt;
 &lt;&lt;extends&gt;&gt;</panel_attributes>
