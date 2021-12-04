@@ -1,0 +1,53 @@
+<diagram program="umletino" version="14.4.0-SNAPSHOT"><zoom_level>10</zoom_level><element><id>UMLGeneric</id><coordinates><x>770</x><y>173</y><w>200</w><h>120</h></coordinates><panel_attributes>symbol=component
+Database
+(server.cpp)
+
+-
+&lt;&lt;Provided interfaces&gt;&gt;
+  Menu
+  Lobby
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>420</x><y>463</y><w>200</w><h>120</h></coordinates><panel_attributes>symbol=component
+Game
+(game.cpp)
+
+--
+&lt;&lt;Required interfaces&gt;&gt;
+  Board
+  Pawn</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>50</x><y>123</y><w>200</w><h>60</h></coordinates><panel_attributes>symbol=component
+User</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>770</x><y>443</y><w>200</w><h>100</h></coordinates><panel_attributes>symbol=component
+Board
+(board.cpp)
+
+-
+&lt;&lt;Provided interface&gt;&gt;
+  Game</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>770</x><y>593</y><w>200</w><h>100</h></coordinates><panel_attributes>symbol=component
+Pawn
+(pawn.cpp)
+
+-
+&lt;&lt;Provided interface&gt;&gt;
+  Game</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>420</x><y>123</y><w>200</w><h>100</h></coordinates><panel_attributes>symbol=component
+Menu
+(menu.cpp)
+
+-
+&lt;&lt;Required interface&gt;&gt;
+  Database</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>420</x><y>293</y><w>200</w><h>100</h></coordinates><panel_attributes>symbol=component
+Lobby
+(lobby.cpp)
+
+-
+&lt;&lt;Required interface&gt;&gt;
+  Database</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>510</x><y>213</y><w>30</w><h>100</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;80;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>240</x><y>143</y><w>200</w><h>200</h></coordinates><panel_attributes>lt=&lt;.
+&lt;&lt;uses&gt;&gt;</panel_attributes><additional_attributes>180;180;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>510</x><y>383</y><w>30</w><h>100</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;80;10;10</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>1050</x><y>203</y><w>180</w><h>60</h></coordinates><panel_attributes>symbol=component
+FriendList
+(friendList.cpp)</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>1050</x><y>473</y><w>180</w><h>60</h></coordinates><panel_attributes>symbol=component
+Cell
+(cell.cpp)</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>380</x><y>70</y><w>280</w><h>550</h></coordinates><panel_attributes>symbol=component
+User Program
+(client.exe)</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>710</x><y>173</y><w>80</w><h>30</h></coordinates><panel_attributes>lt=()-</panel_attributes><additional_attributes>10;10;60;10</additional_attributes></element><element><id>Relation</id><coordinates><x>610</x><y>143</y><w>120</w><h>70</h></coordinates><panel_attributes>lt=)-</panel_attributes><additional_attributes>90;40;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>710</x><y>273</y><w>80</w><h>30</h></coordinates><panel_attributes>lt=()-</panel_attributes><additional_attributes>10;10;60;10</additional_attributes></element><element><id>Relation</id><coordinates><x>610</x><y>263</y><w>120</w><h>80</h></coordinates><panel_attributes>lt=)-</panel_attributes><additional_attributes>90;20;10;60</additional_attributes></element><element><id>Relation</id><coordinates><x>240</x><y>133</y><w>200</w><h>40</h></coordinates><panel_attributes>lt=&lt;.
+&lt;&lt;uses&gt;&gt;</panel_attributes><additional_attributes>180;20;10;20</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>50</x><y>620</y><w>200</w><h>60</h></coordinates><panel_attributes>symbol=component
+Player
+(player.cpp)</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>140</x><y>173</y><w>90</w><h>470</h></coordinates><panel_attributes>lt=&lt;&lt;.
+&lt;&lt;becomes&gt;&gt;</panel_attributes><additional_attributes>10;450;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>240</x><y>633</y><w>550</w><h>40</h></coordinates><panel_attributes>lt=&lt;.
+&lt;&lt;owns&gt;&gt;</panel_attributes><additional_attributes>530;20;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>610</x><y>553</y><w>120</w><h>90</h></coordinates><panel_attributes>lt=)-</panel_attributes><additional_attributes>90;60;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>610</x><y>473</y><w>120</w><h>50</h></coordinates><panel_attributes>lt=)-</panel_attributes><additional_attributes>90;20;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>710</x><y>483</y><w>80</w><h>30</h></coordinates><panel_attributes>lt=()-</panel_attributes><additional_attributes>10;10;60;10</additional_attributes></element><element><id>Relation</id><coordinates><x>710</x><y>603</y><w>80</w><h>30</h></coordinates><panel_attributes>lt=()-</panel_attributes><additional_attributes>10;10;60;10</additional_attributes></element><element><id>Relation</id><coordinates><x>960</x><y>520</y><w>200</w><h>140</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>180;13;180;120;10;120</additional_attributes></element><element><id>Relation</id><coordinates><x>960</x><y>230</y><w>110</w><h>30</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>90;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>960</x><y>490</y><w>110</w><h>30</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>90;10;10;10</additional_attributes></element></diagram>
