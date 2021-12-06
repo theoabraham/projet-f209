@@ -1,22 +1,465 @@
-<diagram program="umletino" version="14.4.0-SNAPSHOT"><zoom_level>10</zoom_level><element><id>UMLGeneric</id><coordinates><x>340</x><y>0</y><w>700</w><h>920</h></coordinates><panel_attributes>Jeu Corridor
-halign=left</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLActor</id><coordinates><x>110</x><y>230</y><w>80</w><h>110</h></coordinates><panel_attributes>Utilisateur</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLUseCase</id><coordinates><x>540</x><y>110</y><w>120</w><h>30</h></coordinates><panel_attributes>Créer un compte</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLUseCase</id><coordinates><x>520</x><y>450</y><w>130</w><h>40</h></coordinates><panel_attributes>Lancer une partie</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>460</x><y>70</y><w>110</w><h>70</h></coordinates><panel_attributes>lt=.&gt;
-&lt;&lt;includes&gt;&gt;</panel_attributes><additional_attributes>90;45;10;40;10;10</additional_attributes></element><element><id>UMLUseCase</id><coordinates><x>360</x><y>50</y><w>120</w><h>40</h></coordinates><panel_attributes>S'identifier</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLUseCase</id><coordinates><x>760</x><y>70</y><w>120</w><h>40</h></coordinates><panel_attributes>Modifier compte</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLUseCase</id><coordinates><x>760</x><y>110</y><w>140</w><h>40</h></coordinates><panel_attributes>Supprimer compte</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>640</x><y>70</y><w>140</w><h>70</h></coordinates><panel_attributes>lt=.&gt;
-&lt;&lt;extends&gt;&gt;</panel_attributes><additional_attributes>120;20;30;20;10;45</additional_attributes></element><element><id>Relation</id><coordinates><x>640</x><y>110</y><w>140</w><h>50</h></coordinates><panel_attributes>lt=.&gt;
-&lt;&lt;extends&gt;&gt;</panel_attributes><additional_attributes>120;20;10;25</additional_attributes></element><element><id>UMLUseCase</id><coordinates><x>450</x><y>710</y><w>190</w><h>40</h></coordinates><panel_attributes>Sélectionner un adversaire</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>480</x><y>480</y><w>100</w><h>120</h></coordinates><panel_attributes>lt=.&gt;
-&lt;&lt;includes&gt;&gt;</panel_attributes><additional_attributes>80;10;80;50;10;50;10;100</additional_attributes></element><element><id>UMLUseCase</id><coordinates><x>830</x><y>670</y><w>150</w><h>40</h></coordinates><panel_attributes>Sélectionner un ami</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLUseCase</id><coordinates><x>830</x><y>710</y><w>150</w><h>40</h></coordinates><panel_attributes>Sélectionner une IA</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>610</x><y>670</y><w>240</w><h>70</h></coordinates><panel_attributes>lt=.&gt;
-&lt;&lt;extends&gt;&gt;</panel_attributes><additional_attributes>220;20;40;20;10;50</additional_attributes></element><element><id>Relation</id><coordinates><x>630</x><y>710</y><w>220</w><h>40</h></coordinates><panel_attributes>lt=.&gt;
-&lt;&lt;extends&gt;&gt;</panel_attributes><additional_attributes>200;20;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>180</x><y>110</y><w>380</w><h>180</h></coordinates><panel_attributes>lt=-&gt;&gt;</panel_attributes><additional_attributes>10;160;160;20;360;15</additional_attributes></element><element><id>Relation</id><coordinates><x>180</x><y>260</y><w>360</w><h>230</h></coordinates><panel_attributes>lt=-&gt;&gt;</panel_attributes><additional_attributes>10;10;150;210;340;210</additional_attributes></element><element><id>UMLUseCase</id><coordinates><x>770</x><y>450</y><w>170</w><h>40</h></coordinates><panel_attributes>Choisir un mode de jeu</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>640</x><y>450</y><w>150</w><h>40</h></coordinates><panel_attributes>lt=.&gt;
-&lt;&lt;extends&gt;&gt;</panel_attributes><additional_attributes>130;20;10;20</additional_attributes></element><element><id>UMLUseCase</id><coordinates><x>770</x><y>520</y><w>170</w><h>40</h></coordinates><panel_attributes>Envoyer des messages</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLUseCase</id><coordinates><x>770</x><y>560</y><w>170</w><h>40</h></coordinates><panel_attributes>Déclarer forfait</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLUseCase</id><coordinates><x>770</x><y>600</y><w>170</w><h>40</h></coordinates><panel_attributes>Relancer une partie</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLUseCase</id><coordinates><x>530</x><y>220</y><w>120</w><h>60</h></coordinates><panel_attributes>Gérer une liste
-d'amis</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLUseCase</id><coordinates><x>750</x><y>170</y><w>120</w><h>50</h></coordinates><panel_attributes>Ajouter un
-ami</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLUseCase</id><coordinates><x>750</x><y>220</y><w>120</w><h>50</h></coordinates><panel_attributes>Supprimer un
-ami</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLUseCase</id><coordinates><x>750</x><y>270</y><w>120</w><h>50</h></coordinates><panel_attributes>Discuter avec
-un ami</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>630</x><y>180</y><w>140</w><h>70</h></coordinates><panel_attributes>lt=.&gt;
-&lt;&lt;extends&gt;&gt;</panel_attributes><additional_attributes>120;20;40;20;10;50</additional_attributes></element><element><id>Relation</id><coordinates><x>630</x><y>250</y><w>140</w><h>60</h></coordinates><panel_attributes>lt=.&gt;
-&lt;&lt;extends&gt;&gt;</panel_attributes><additional_attributes>120;40;40;40;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>640</x><y>230</y><w>130</w><h>40</h></coordinates><panel_attributes>lt=.&gt;
-&lt;&lt;extends&gt;&gt;</panel_attributes><additional_attributes>110;20;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>180</x><y>240</y><w>370</w><h>50</h></coordinates><panel_attributes>lt=-&gt;&gt;</panel_attributes><additional_attributes>10;30;150;10;350;10</additional_attributes></element><element><id>UMLUseCase</id><coordinates><x>450</x><y>580</y><w>120</w><h>40</h></coordinates><panel_attributes>Jouer</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>460</x><y>600</y><w>100</w><h>140</h></coordinates><panel_attributes>lt=.&gt;
-&lt;&lt;includes&gt;&gt;</panel_attributes><additional_attributes>80;10;80;60;10;60;10;120</additional_attributes></element><element><id>Relation</id><coordinates><x>560</x><y>560</y><w>230</w><h>60</h></coordinates><panel_attributes>lt=.&gt;
-&lt;&lt;extends&gt;&gt;</panel_attributes><additional_attributes>210;20;60;20;10;40</additional_attributes></element><element><id>Relation</id><coordinates><x>550</x><y>520</y><w>240</w><h>90</h></coordinates><panel_attributes>lt=.&gt;
-&lt;&lt;extends&gt;&gt;</panel_attributes><additional_attributes>220;20;60;20;10;70</additional_attributes></element><element><id>Relation</id><coordinates><x>550</x><y>600</y><w>240</w><h>40</h></coordinates><panel_attributes>lt=.&gt;
-&lt;&lt;extends&gt;&gt;</panel_attributes><additional_attributes>220;20;50;20;10;10</additional_attributes></element><element><id>UMLUseCase</id><coordinates><x>520</x><y>340</y><w>120</w><h>50</h></coordinates><panel_attributes>Utiliser le
-chat</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>180</x><y>260</y><w>360</w><h>130</h></coordinates><panel_attributes>lt=-&gt;&gt;</panel_attributes><additional_attributes>10;10;160;110;340;110</additional_attributes></element><element><id>UMLUseCase</id><coordinates><x>750</x><y>340</y><w>160</w><h>40</h></coordinates><panel_attributes>Envoyer un message</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>630</x><y>340</y><w>140</w><h>40</h></coordinates><panel_attributes>lt=.&gt;
-&lt;&lt;extends&gt;&gt;</panel_attributes><additional_attributes>120;20;10;20</additional_attributes></element></diagram>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>340</x>
+      <y>0</y>
+      <w>700</w>
+      <h>920</h>
+    </coordinates>
+    <panel_attributes>Jeu Quoridor
+halign=left</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLActor</id>
+    <coordinates>
+      <x>100</x>
+      <y>230</y>
+      <w>100</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>Utilisateur</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>540</x>
+      <y>110</y>
+      <w>120</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>Se connecter</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>520</x>
+      <y>450</y>
+      <w>130</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>Lancer une partie</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>470</x>
+      <y>50</y>
+      <w>140</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+&lt;&lt;includes&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;25.0;110.0;20.0;117.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>360</x>
+      <y>50</y>
+      <w>130</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>S'identifier</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>760</x>
+      <y>70</y>
+      <w>120</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>Modifier compte</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>760</x>
+      <y>110</y>
+      <w>140</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>Supprimer compte</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>640</x>
+      <y>70</y>
+      <w>140</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+&lt;&lt;extends&gt;&gt;</panel_attributes>
+    <additional_attributes>120.0;20.0;30.0;20.0;10.0;45.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>640</x>
+      <y>110</y>
+      <w>140</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+&lt;&lt;extends&gt;&gt;</panel_attributes>
+    <additional_attributes>120.0;20.0;10.0;25.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>450</x>
+      <y>710</y>
+      <w>190</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>Sélectionner un adversaire</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>470</x>
+      <y>480</y>
+      <w>100</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+&lt;&lt;includes&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;100.0;10.0;70.0;80.0;70.0;80.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>830</x>
+      <y>670</y>
+      <w>150</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>Sélectionner un ami</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>830</x>
+      <y>710</y>
+      <w>150</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>Sélectionner une IA</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>610</x>
+      <y>670</y>
+      <w>240</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+&lt;&lt;extends&gt;&gt;</panel_attributes>
+    <additional_attributes>220.0;20.0;40.0;20.0;10.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>630</x>
+      <y>710</y>
+      <w>220</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+&lt;&lt;extends&gt;&gt;</panel_attributes>
+    <additional_attributes>200.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>180</x>
+      <y>110</y>
+      <w>380</w>
+      <h>180</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;160.0;160.0;20.0;360.0;15.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>180</x>
+      <y>260</y>
+      <w>360</w>
+      <h>230</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;150.0;210.0;340.0;210.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>770</x>
+      <y>450</y>
+      <w>170</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>Choisir un mode de jeu</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>640</x>
+      <y>450</y>
+      <w>150</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+&lt;&lt;extends&gt;&gt;</panel_attributes>
+    <additional_attributes>130.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>770</x>
+      <y>520</y>
+      <w>170</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>Envoyer des messages</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>770</x>
+      <y>560</y>
+      <w>170</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>Déclarer forfait</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>770</x>
+      <y>600</y>
+      <w>170</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>Relancer une partie</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>530</x>
+      <y>220</y>
+      <w>120</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>Gérer une liste
+d'amis</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>750</x>
+      <y>170</y>
+      <w>120</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>Ajouter un
+ami</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>750</x>
+      <y>220</y>
+      <w>120</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>Supprimer un
+ami</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>750</x>
+      <y>270</y>
+      <w>120</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>Discuter avec
+un ami</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>630</x>
+      <y>180</y>
+      <w>140</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+&lt;&lt;extends&gt;&gt;</panel_attributes>
+    <additional_attributes>120.0;20.0;40.0;20.0;10.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>630</x>
+      <y>250</y>
+      <w>140</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+&lt;&lt;extends&gt;&gt;</panel_attributes>
+    <additional_attributes>120.0;40.0;40.0;40.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>640</x>
+      <y>230</y>
+      <w>130</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+&lt;&lt;extends&gt;&gt;</panel_attributes>
+    <additional_attributes>110.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>180</x>
+      <y>240</y>
+      <w>370</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;30.0;150.0;10.0;350.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>450</x>
+      <y>580</y>
+      <w>120</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>Jouer</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>450</x>
+      <y>610</y>
+      <w>90</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+&lt;&lt;includes&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;110.0;10.0;70.0;70.0;70.0;70.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>560</x>
+      <y>560</y>
+      <w>230</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+&lt;&lt;extends&gt;&gt;</panel_attributes>
+    <additional_attributes>210.0;20.0;60.0;20.0;10.0;40.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>550</x>
+      <y>520</y>
+      <w>240</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+&lt;&lt;extends&gt;&gt;</panel_attributes>
+    <additional_attributes>220.0;20.0;60.0;20.0;10.0;70.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>550</x>
+      <y>600</y>
+      <w>240</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+&lt;&lt;extends&gt;&gt;</panel_attributes>
+    <additional_attributes>220.0;20.0;50.0;20.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>520</x>
+      <y>340</y>
+      <w>120</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>Utiliser le
+chat</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>180</x>
+      <y>260</y>
+      <w>360</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;160.0;110.0;340.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>750</x>
+      <y>340</y>
+      <w>160</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>Envoyer un message</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>630</x>
+      <y>340</y>
+      <w>140</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+&lt;&lt;extends&gt;&gt;</panel_attributes>
+    <additional_attributes>120.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+</diagram>
