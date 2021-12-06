@@ -1,20 +1,331 @@
-<diagram program="umletino" version="14.4.0-SNAPSHOT"><zoom_level>10</zoom_level><element><id>UMLGeneric</id><coordinates><x>390</x><y>240</y><w>480</w><h>570</h></coordinates><panel_attributes>Database
-halign=left</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLUseCase</id><coordinates><x>520</x><y>350</y><w>160</w><h>40</h></coordinates><panel_attributes>Gestion de compte</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLUseCase</id><coordinates><x>400</x><y>290</y><w>120</w><h>40</h></coordinates><panel_attributes>Création de compte</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLUseCase</id><coordinates><x>740</x><y>390</y><w>120</w><h>50</h></coordinates><panel_attributes>Supprimer le
-compte</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLUseCase</id><coordinates><x>740</x><y>350</y><w>120</w><h>40</h></coordinates><panel_attributes>Se déconnecter</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLUseCase</id><coordinates><x>740</x><y>310</y><w>120</w><h>40</h></coordinates><panel_attributes>Se connecter</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>450</x><y>320</y><w>140</w><h>50</h></coordinates><panel_attributes>lt=.&gt;
-&lt;&lt;includes&gt;&gt;</panel_attributes><additional_attributes>120;30;40;30;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>670</x><y>350</y><w>90</w><h>40</h></coordinates><panel_attributes>lt=.&gt;
-&lt;&lt;extends&gt;&gt;</panel_attributes><additional_attributes>10;20;70;20</additional_attributes></element><element><id>Relation</id><coordinates><x>650</x><y>370</y><w>120</w><h>60</h></coordinates><panel_attributes>lt=.&gt;
-&lt;&lt;extends&gt;&gt;</panel_attributes><additional_attributes>10;10;30;40;100;40</additional_attributes></element><element><id>Relation</id><coordinates><x>650</x><y>320</y><w>110</w><h>50</h></coordinates><panel_attributes>lt=.&gt;
-&lt;&lt;extends&gt;&gt;</panel_attributes><additional_attributes>10;30;30;10;90;10</additional_attributes></element><element><id>UMLUseCase</id><coordinates><x>520</x><y>510</y><w>170</w><h>50</h></coordinates><panel_attributes>Gestion de sauvegarde
-de partie</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLUseCase</id><coordinates><x>740</x><y>460</y><w>120</w><h>50</h></coordinates><panel_attributes>Sauver une
-partie</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLUseCase</id><coordinates><x>740</x><y>510</y><w>120</w><h>40</h></coordinates><panel_attributes>Charger une 
-partie</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLUseCase</id><coordinates><x>740</x><y>550</y><w>120</w><h>50</h></coordinates><panel_attributes>Supprimer une
-sauvegarde</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLUseCase</id><coordinates><x>510</x><y>670</y><w>160</w><h>40</h></coordinates><panel_attributes>Gestion d'amis</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>680</x><y>510</y><w>80</w><h>40</h></coordinates><panel_attributes>lt=.&gt;
-&lt;&lt;extends&gt;&gt;</panel_attributes><additional_attributes>10;20;60;20</additional_attributes></element><element><id>Relation</id><coordinates><x>630</x><y>470</y><w>130</w><h>60</h></coordinates><panel_attributes>lt=.&gt;
-&lt;&lt;extends&gt;&gt;</panel_attributes><additional_attributes>10;40;40;10;110;10</additional_attributes></element><element><id>Relation</id><coordinates><x>630</x><y>550</y><w>130</w><h>50</h></coordinates><panel_attributes>lt=.&gt;
-&lt;&lt;extends&gt;&gt;</panel_attributes><additional_attributes>10;10;30;30;110;30</additional_attributes></element><element><id>UMLUseCase</id><coordinates><x>730</x><y>630</y><w>120</w><h>40</h></coordinates><panel_attributes>Ajouter un ami</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLUseCase</id><coordinates><x>730</x><y>670</y><w>120</w><h>50</h></coordinates><panel_attributes>Accepter une 
-invitation</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLUseCase</id><coordinates><x>730</x><y>720</y><w>120</w><h>50</h></coordinates><panel_attributes>Refuser une
-invitation</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>660</x><y>670</y><w>90</w><h>40</h></coordinates><panel_attributes>lt=.&gt;
-&lt;&lt;extends&gt;&gt;</panel_attributes><additional_attributes>10;20;70;20</additional_attributes></element><element><id>Relation</id><coordinates><x>640</x><y>690</y><w>110</w><h>80</h></coordinates><panel_attributes>lt=.&gt;
-&lt;&lt;extends&gt;&gt;</panel_attributes><additional_attributes>10;10;20;60;90;60</additional_attributes></element><element><id>Relation</id><coordinates><x>640</x><y>640</y><w>110</w><h>60</h></coordinates><panel_attributes>lt=.&gt;
-&lt;&lt;extends&gt;&gt;</panel_attributes><additional_attributes>10;40;40;10;90;10</additional_attributes></element><element><id>Relation</id><coordinates><x>270</x><y>360</y><w>270</w><h>190</h></coordinates><panel_attributes>lt=-&gt;&gt;</panel_attributes><additional_attributes>10;170;120;10;250;10</additional_attributes></element><element><id>Relation</id><coordinates><x>270</x><y>520</y><w>270</w><h>30</h></coordinates><panel_attributes>lt=-&gt;&gt;</panel_attributes><additional_attributes>10;10;250;10</additional_attributes></element><element><id>Relation</id><coordinates><x>270</x><y>520</y><w>260</w><h>190</h></coordinates><panel_attributes>lt=-&gt;&gt;</panel_attributes><additional_attributes>10;10;120;170;240;170</additional_attributes></element><element><id>UMLGeneric</id><coordinates><x>200</x><y>500</y><w>80</w><h>70</h></coordinates><panel_attributes>Programme
-</panel_attributes><additional_attributes></additional_attributes></element></diagram>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>390</x>
+      <y>240</y>
+      <w>480</w>
+      <h>570</h>
+    </coordinates>
+    <panel_attributes>Database
+halign=left</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>520</x>
+      <y>350</y>
+      <w>160</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>Gestion de compte</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>400</x>
+      <y>290</y>
+      <w>150</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>Création de compte</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>740</x>
+      <y>390</y>
+      <w>120</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>Supprimer le
+compte</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>740</x>
+      <y>350</y>
+      <w>120</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>Se déconnecter</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>740</x>
+      <y>310</y>
+      <w>120</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>Se connecter</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>450</x>
+      <y>320</y>
+      <w>140</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+&lt;&lt;includes&gt;&gt;</panel_attributes>
+    <additional_attributes>120.0;30.0;40.0;30.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>670</x>
+      <y>350</y>
+      <w>90</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+&lt;&lt;extends&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;20.0;70.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>650</x>
+      <y>370</y>
+      <w>120</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+&lt;&lt;extends&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;30.0;40.0;100.0;40.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>650</x>
+      <y>320</y>
+      <w>110</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+&lt;&lt;extends&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;30.0;30.0;10.0;90.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>520</x>
+      <y>510</y>
+      <w>170</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>Gestion de sauvegarde
+de partie</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>740</x>
+      <y>460</y>
+      <w>120</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>Sauver une
+partie</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>740</x>
+      <y>510</y>
+      <w>120</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>Charger une 
+partie</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>740</x>
+      <y>550</y>
+      <w>120</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>Supprimer une
+sauvegarde</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>510</x>
+      <y>670</y>
+      <w>160</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>Gestion d'amis</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>670</x>
+      <y>510</y>
+      <w>100</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+&lt;&lt;extends&gt;&gt;</panel_attributes>
+    <additional_attributes>20.0;20.0;70.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>630</x>
+      <y>470</y>
+      <w>130</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+&lt;&lt;extends&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;40.0;40.0;10.0;110.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>630</x>
+      <y>550</y>
+      <w>130</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+&lt;&lt;extends&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;30.0;30.0;110.0;30.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>730</x>
+      <y>630</y>
+      <w>120</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>Ajouter un ami</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>730</x>
+      <y>670</y>
+      <w>120</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>Accepter une 
+invitation</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>730</x>
+      <y>720</y>
+      <w>120</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>Refuser une
+invitation</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>660</x>
+      <y>670</y>
+      <w>90</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+&lt;&lt;extends&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;20.0;70.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>640</x>
+      <y>690</y>
+      <w>110</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+&lt;&lt;extends&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;20.0;60.0;90.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>640</x>
+      <y>640</y>
+      <w>120</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+&lt;&lt;extends&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;40.0;40.0;10.0;90.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>270</x>
+      <y>360</y>
+      <w>270</w>
+      <h>190</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;170.0;120.0;10.0;250.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>270</x>
+      <y>520</y>
+      <w>270</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;250.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>270</x>
+      <y>520</y>
+      <w>260</w>
+      <h>190</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;120.0;170.0;240.0;170.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>200</x>
+      <y>500</y>
+      <w>80</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>Programme
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>
