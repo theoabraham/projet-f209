@@ -1,23 +1,18 @@
-class FriendList{
-private:
+class FriendList:
 	Database * database
-public:
-    FriendList(UserAccount)
-	
-    void addFriend(UserAccount, FriendAccount) {
-    	Demande la liste d'amis de UserAccount à database afin d'y ajouter FriendAccount
-    }
+	Account UserAccount
+    public:
+    	FriendList(Account UserAccount): UserAccount{UserAccount} {}
+	void addFriend(UserAccount, FriendAccount) {
+    	    //Demande la liste d'amis de UserAccount à database afin d'y ajouter FriendAccount
+    	}
+    	void deleteFriend(UserAccount, FriendAccount) {
+    	    //Demande la liste d'amis de UserAcount à database pour y supprimer un FriendAccount
+    	}
+	bool isFriend(FriendAccount){
+    	    //Check si FriendsAccount se trouve dans la liste d'amis donnée par database
+    	}
 
-
-    void deleteFriend(UserAccount, FriendAccount) {
-    	Demande la liste d'amis de UserAcount à database pour y supprimer un FriendAccount;
-    }
-
-    bool isFriend(FriendAccount){
-    	check si FriendsAccount se trouve dans la liste d'amis donné par database
-    }
-
-    User getFriends(UserAccount){
-    	retourne l'entièreté de la liste d'amis 
-    }
-}
+    	User getFriends(UserAccount){
+    	    //Retourne l'entièreté de la liste d'amis 
+    	}

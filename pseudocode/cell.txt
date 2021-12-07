@@ -1,14 +1,13 @@
 class Cell:
-    vector <Cell*> voisins;
-    Pion* occupied;
-  public:
-    void Cell: occupied{nullptr} ()
+    	vector <Cell*> neighbours
+    	Pawn* occupied
+    public:
+	Cell(): occupied{nullptr} {}
+    	void setNeighbours(vector <Cell*> newNeighbours) {
+    	    this->neighbours = newNeighbours
+    	}
 
-    void set_voisins(vector <Cell*> new_voisins) {
-        this->voisins = new_voisins;
-    }
-
-    void accept_pion(Pion* new_pion, Cell* old_cell) {
-        this->occupied = new_pion;
-        old_cell->occupied = nullptr;
-    }
+    	void acceptPawn(Pawn* newPawn, Cell* oldCell) {
+    	    this->occupied = newPawn
+    	    oldCell->occupied = nullptr
+    	}

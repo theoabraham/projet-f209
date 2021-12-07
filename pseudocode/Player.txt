@@ -1,13 +1,14 @@
 class Player:
 	int id
 	Pawn pawn
-	int wallsLeft
+	int wallsLeft=10
 	string name
 	bool IA
     public:
-	handleInput() {
+	Player(int id, Pawn pawn, string name, bool IA): id{id}, pawn{pawn}, name{name}, IA{IA} {}
+	playerMove() {
 	    std::cin >> move
-	    sendToServer(move)
+	    return move
 	}
 	Position pawnLocation() {
 	    Position currentPosition = pawn.getPosition()

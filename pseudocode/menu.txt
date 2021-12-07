@@ -1,8 +1,6 @@
-class Menu()
-    Player connectedPlayer;
-
-    public:
-	
+class Menu:
+    	Player connectedPlayer
+    public:	
 	Menu(Player player): connectedPlayer{player} {}
 	    //constructeur
 	
@@ -21,17 +19,17 @@ class Menu()
 
 	void logOut()
 	    //Déconnecte le joueur actuel
-	    //Renvoi sur l'ecran de connexion
+	    //Renvoi sur l'écran de connexion
 
 	void destroyAccount()
-	    //Appel a logOut
+	    //Appel à logOut()
 	    //Database::DeleteAccount()
 
 	void createRoom()
 	    //Cette fonction crée une instance de la classe Lobby(Player host).
 
 	void joinRoom()
-	    //Cette fonction ne prend pas de paramètre, mais demande a l'utilisateur une ID de Lobby, puis vérifie si le Lobby existe.
-	    //Si le Lobby existe, la rejoint. Autrement, redemande un ID 
+	    //Cette fonction ne prend pas de paramètre, mais demande à l'utilisateur une ID de Lobby, puis vérifie si le Lobby existe.
+	    //Si le Lobby existe, le rejoint. Autrement, redemande un ID.
 
 	 	
