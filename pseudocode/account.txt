@@ -6,7 +6,8 @@ class Account:
     public:
 	Account(string name): name{name} {}
     	void printProfile() {
-	    //Affiche les informations du compte(pseudo, nb de parties jouées (victoires, défaites), nombre d'amis, classement)
+	    //Affiche les informations du compte
+        (pseudo, nb de parties jouées (victoires, défaites), nombre d'amis, classement)
     	}
     	string getName() {
     	    return name
