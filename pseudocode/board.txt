@@ -1,22 +1,22 @@
 class Board:
-    	<vector <vector <Cell> > > matrix
-    public:
-	Board(): {}
-    	void Board() {
-            //Double boucles for: 
-                //Remplissage de la matrice d'objets Cell
-   	}
+  int size
+  <vector <vector <Cell> > > matrix
+public:
+	Board(int size): {
+    //Double boucles for: 
+      //Remplissage de la matrice d'objets Cell
+  }
 
-    	string boardDisplay() {
-    	    //Double boucles for: 
-    	        //Impression ligne par ligne du plateau;
-    	    return print_board
-    	}
+  string boardDisplay() {
+      //Double boucles for: 
+          //Impression ligne par ligne du plateau;
+      return print_board
+  }
 
-   	void boundCells() {
-    	    //Double boucles for: 
-    	        //Attribue à chaque Cell des pointeurs de ses voisins dans Cell->neighbours
-    	}
+  void boundCells() {
+        //Double boucles for: 
+            //Attribue à chaque Cell des pointeurs de ses voisins dans Cell->neighbours
+  }
 
 
 
