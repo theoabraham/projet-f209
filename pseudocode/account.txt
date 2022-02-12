@@ -1,0 +1,47 @@
+class Account:
+    	string name
+    	int gamesPlayed, wins, defeats
+    	int nbFriends
+    	int rank
+    public:
+	Account(string name): name{name} {}
+    	void printProfile() {
+	    //Affiche les informations du compte
+        (pseudo, nb de parties jouées (victoires, défaites), nombre d'amis, classement)
+    	}
+    	string getName() {
+    	    return name
+    	}
+    	int getGamesPlayed() {
+	    return gamesPlayed
+    	}
+    	int getWins() {
+	    return wins
+    	}
+    	int getDefeats() {
+	    return defeats
+    	}
+    	int getNbFriends() {
+	    return nbFriends
+    	}
+    	int getRank() {
+	    return rank
+    	}
+    	void setName() {
+
+    	}
+    	void setGamesPlayed() {
+
+    	}
+    	void setWins() {
+
+    	}
+    	void setDefeats() {
+
+    	}
+    	void setNbFriends() {
+
+    	}
+    	void setRank() {
+
+    	}
