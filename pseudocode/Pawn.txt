@@ -2,7 +2,8 @@ class Pawn:
 	int id
 	Position position
 	Player owner
-
+    public:
+	Pawn(Player owner, int id, Position position): owner{owner}, id{id}, position{podition} {}
 	Position getPosition() {
 	    return position
 	}
