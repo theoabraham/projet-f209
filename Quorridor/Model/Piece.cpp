@@ -2,7 +2,7 @@
 // Created by Mark Dimitrov on 15/02/2022.
 //
 
-#include "Wall.h"
+#include "Piece.hpp"
 
 Wall::Wall(std::vector<Position> occupiedCells):positions{occupiedCells} {
 }

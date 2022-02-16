@@ -2,10 +2,13 @@
 // Created by Mark Dimitrov on 15/02/2022.
 //
 
-#ifndef QUORRIDOR_POSITION_H
-#define QUORRIDOR_POSITION_H
+#pragma once 
 
+struct Position{
+    int x,y;  
+}; 
 
+/*
 class Position {
 private:
     int x,y;
@@ -23,7 +26,4 @@ public:
     int getY() const{
         return y;
     }
-};
-
-
-#endif //QUORRIDOR_POSITION_H
+*/ 
