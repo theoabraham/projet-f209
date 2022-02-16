@@ -2,8 +2,7 @@
 // Created by Mark Dimitrov on 15/02/2022.
 //
 
-#ifndef QUORRIDOR_POSITION_H
-#define QUORRIDOR_POSITION_H
+#pragma once 
 
 
 class Position {
@@ -24,6 +23,3 @@ public:
         return y;
     }
 };
-
-
-#endif //QUORRIDOR_POSITION_H

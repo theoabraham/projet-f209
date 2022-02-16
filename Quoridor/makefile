@@ -1,6 +1,6 @@
 FLAGS = -Wall -Wextra -std=c++17 -g 
 
-MODEL = Model/Board.cpp Model/Board.h Model/MotherCell.hpp Model/MotherCell.cpp Model/Item.cpp Model/Item.h Model/PawnCell.h Model/PawnCell.cpp Model/WallCell.h Model/WallCell.cpp
+MODEL = Model/Board.cpp Model/Board.hpp Model/MotherCell.hpp Model/MotherCell.cpp Model/Piece.cpp Model/Piece.hpp 
 
 VIEW = View/DisplayBoard.cpp View/DisplayBoard.hpp
 

@@ -1,4 +1,4 @@
-#include "Board.h"
+#include "Board.hpp"
 
 Board::Board(int size): size{size} {
     newGame(); 
@@ -16,7 +16,7 @@ void Board:: newGame(){
                 line.push_back(WallCell());
             } else{ //Cases
                 line.push_back(PawnCell());
-            }
+            } 
         }
         matrix.push_back(line);
     }

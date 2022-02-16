@@ -3,7 +3,7 @@
 #include <unistd.h>
 #include <fstream>
 #include <iostream>
-#include "../Model/Board.h"
+#include "../Model/Board.hpp"
 #include "../Model/MotherCell.hpp"
 
 #ifndef DISPLAYBOARD_HPP

@@ -4,8 +4,8 @@
 
 //Au lieu des ifndef,, utiliser "pragma once"
 
-#ifndef QUORRIDOR_PLAYER_H
-#define QUORRIDOR_PLAYER_H
+#pragma once
+
 
 
 class Player {
@@ -14,5 +14,3 @@ class Player {
     
 };
 
-
-#endif //QUORRIDOR_PLAYER_H

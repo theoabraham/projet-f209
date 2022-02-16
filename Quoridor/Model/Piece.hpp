@@ -1,15 +1,19 @@
 //
 // Created by Mark Dimitrov on 15/02/2022.
 //
-#include "Player.h"
-#include "Position.h"
-#include "Item.h"
+#pragma once 
+
+//#include "Player.h"
+#include "Position.hpp"
 #include <vector>
-#ifndef QUORRIDOR_WALL_H
-#define QUORRIDOR_WALL_H
 
 
-class Wall : public Item{
+
+class Piece {
+
+};
+
+class Wall : public Piece{
 private:
     std::vector<Position> positions;
 public:
@@ -17,5 +21,5 @@ public:
     std::vector<Position> getPos();
 };
 
-
-#endif //QUORRIDOR_WALL_H
+class Pawn: public Piece{
+}; 

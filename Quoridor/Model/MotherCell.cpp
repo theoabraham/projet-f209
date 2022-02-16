@@ -1,5 +1,8 @@
 #include "MotherCell.hpp"
 
+
+
+//MotherCell:
 MotherCell* MotherCell::getNeighbour(int neighbourPos){
     return neighbours[neighbourPos];
 }
@@ -16,17 +19,44 @@ bool MotherCell::occupied() {
     return false;
 }
 
-void MotherCell::set(Item *item) {
-    cellItem = item;
+void MotherCell::set(Piece *Piece) {
+    cellPiece = Piece;
 }
 
-Item *MotherCell::getItem() {
-    return cellItem;
+Piece *MotherCell::getPiece() {
+    return cellPiece;
 }
 
-void MotherCell::delItem() {
-    cellItem = nullptr;
+void MotherCell::delPiece() {
+    cellPiece = nullptr;
 }
 
 
+//PawnCell:
+bool PawnCell::occupied() {
+    return cellPiece;
+}
+
+void PawnCell::set(Piece *Piece) {
+    cellPiece = Piece;
+}
+
+Piece *PawnCell::getPiece() {
+    return MotherCell::getPiece();
+}
+
+
+//WallCell: 
+bool WallCell::occupied() {
+    return cellPiece;
+}
+
+
+void WallCell::set(Piece *Piece) {
+    cellPiece = Piece;
+}
+
+Piece *WallCell::getPiece() {
+    return cellPiece;
+}
 

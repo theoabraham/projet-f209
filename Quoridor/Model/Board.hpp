@@ -1,13 +1,10 @@
-#include "WallCell.h"
-#include "PawnCell.h"
 #include "MotherCell.hpp"
 #include <string>
 #include <array>
 
 #include "iostream"
 
-#ifndef BOARD_H
-#define BOARD_H
+#pragma once 
 
 class Board{
     private:
@@ -24,5 +21,3 @@ class Board{
 
         void newGame(); 
 };
-
-#endif

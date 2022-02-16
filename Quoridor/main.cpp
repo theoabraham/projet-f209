@@ -3,7 +3,7 @@
 //
 
 #include <iostream>
-#include "Model/Board.h"
+#include "Model/Board.hpp"
 #include "View/DisplayBoard.hpp"
 
 
