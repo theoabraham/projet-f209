@@ -1,0 +1,45 @@
+class Game:
+        Board board
+        vector <Player> players
+        int currentPlayer = -1 
+    public:
+	Game(vector <Player> players): players{players} {}
+        bool isEnd(){
+            //Return true si pion de current_player est arrivé au mur opposé
+        }
+
+        void placeWall(move){
+            //Modifie plateau en placant un mur 
+        }
+
+        void movePawn(move){
+            board[oldPosition] = empty
+            board[newPosition] = pawn
+            players[currentPlayer].pawn.setPosition(newPosition)
+        }
+
+        void executeMove(move){
+            //Choisit placeWall() ou movePawn()
+        }
+        
+        void nextTurn(){
+            currentPlayer = (currentPlayer + 1) % (numberOfPlayers) 
+            move = players[currentPlayer].playerMove()  
+            executeMove(move)              
+            print board.boardDisplay()
+        }
+        
+        void endOfGame(){
+            //Séquence de fin de jeu 
+        }
+
+        void start(){
+            while not isEnd() {
+                nextTurn()
+            }
+            endOfGame()
+        }
+
+
+
+

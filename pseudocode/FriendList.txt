@@ -1,0 +1,21 @@
+class FriendList:
+	Database * database
+	Account UserAccount
+    public:
+    	FriendList(Account UserAccount): UserAccount{UserAccount} {}
+	void addFriend(UserAccount, FriendAccount) {
+    	    //Demande la liste d'amis de UserAccount
+            à database afin d'y ajouter FriendAccount
+    	}
+    	void deleteFriend(UserAccount, FriendAccount) {
+    	    //Demande la liste d'amis de UserAcount 
+            à database pour y supprimer un FriendAccount
+    	}
+	bool isFriend(FriendAccount){
+    	    //Verifie si FriendsAccount se trouve dans 
+            la liste d'amis donnee par database
+    	}
+
+    	User getFriends(UserAccount){
+    	    //Retourne l'entierete de la liste d'amis 
+    	}

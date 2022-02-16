@@ -1,148 +1,29 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="14.3.0">
-  <zoom_level>8</zoom_level>
+  <zoom_level>6</zoom_level>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>984</x>
-      <y>464</y>
-      <w>168</w>
-      <h>128</h>
-    </coordinates>
-    <panel_attributes>Plateau
---
--pions: vector&lt;vector&lt;pion&gt;
---
-+check_winner()
-+ setter/getter des attributs
-+getP1pions()
-+getP2pions()</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>688</x>
-      <y>472</y>
-      <w>200</w>
-      <h>152</h>
-    </coordinates>
-    <panel_attributes>Joueur
---
--id: int=-1si joueur d'en face 1 sinon
--name: string
--AI: bool
--pions: vector&lt;Pion&gt;
---
-+getId()
-+getName()
-+setName()
-+getPions(id)
-</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>424</x>
-      <y>472</y>
-      <w>168</w>
-      <h>152</h>
-    </coordinates>
-    <panel_attributes>Pion
---
--id: int
--position: Position
--owner: Joueur
---
-+setPos(Position pos)
-+getPos()
-+getOwner()
-+move(Deplacement id)
-</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>248</x>
-      <y>224</y>
-      <w>88</w>
-      <h>72</h>
+      <x>882</x>
+      <y>210</y>
+      <w>90</w>
+      <h>54</h>
     </coordinates>
     <panel_attributes>/Coord/
 --
 -data:tuple&lt;int&gt;
 --
-+get_data
-+set_data</panel_attributes>
++get_data():tuple&lt;int&gt;
++set_data():tuple&lt;int&gt;</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1040</x>
-      <y>248</y>
-      <w>80</w>
-      <h>72</h>
-    </coordinates>
-    <panel_attributes>/Matrice/
---
--size: int=17
--
-+getSize()
-+setSize()
-</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>584</x>
-      <y>520</y>
-      <w>120</w>
-      <h>32</h>
-    </coordinates>
-    <panel_attributes>lt=-
-m1=1..n
-m2=1</panel_attributes>
-    <additional_attributes>10.0;10.0;130.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>360</x>
-      <y>496</y>
-      <w>80</w>
-      <h>40</h>
-    </coordinates>
-    <panel_attributes>lt=-
-m1=1
-m2=1
-</panel_attributes>
-    <additional_attributes>10.0;20.0;80.0;20.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>880</x>
-      <y>520</y>
-      <w>120</w>
-      <h>40</h>
-    </coordinates>
-    <panel_attributes>lt=-
-m1=2..4
-m2=1
-</panel_attributes>
-    <additional_attributes>10.0;20.0;130.0;20.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>288</x>
-      <y>496</y>
-      <w>80</w>
-      <h>24</h>
+      <x>978</x>
+      <y>300</y>
+      <w>60</w>
+      <h>18</h>
     </coordinates>
     <panel_attributes>Position</panel_attributes>
     <additional_attributes/>
@@ -150,63 +31,220 @@ m2=1
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>56</x>
-      <y>496</y>
-      <w>192</w>
-      <h>96</h>
+      <x>762</x>
+      <y>300</y>
+      <w>144</w>
+      <h>72</h>
     </coordinates>
-    <panel_attributes>Deplacement
+    <panel_attributes>Move
 --
-+ UP: tuple&lt;int&gt;(+2*player_id,0)
-+ DOWN: tuple&lt;int&gt;(-2*player_id,0)
-+ LEFT: tuple&lt;int&gt;(0,+2*player_id)
-+ RIGHT: tuple&lt;int&gt;(0, +2*player_id)</panel_attributes>
++ UP: tuple&lt;int&gt;(+1*player_id,0)
++ DOWN: tuple&lt;int&gt;(-1*player_id,0)
++ LEFT: tuple&lt;int&gt;(0,+1*player_id)
++ RIGHT: tuple&lt;int&gt;(0, +1*player_id)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1440</x>
+      <y>432</y>
+      <w>162</w>
+      <h>66</h>
+    </coordinates>
+    <panel_attributes>Cell
+--
+-neighbour: vector&lt;Cell*&gt;
+-occupied: Pawn*
+--
++setNeighbours(vector&lt;Cell*&gt;):void
++acceptPion(Pion*):void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1236</x>
+      <y>432</y>
+      <w>126</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>Board
+--
+-size: int=9
+-matrix: vector&lt;vector&lt;Cell&gt; &gt;
+--
++printBoard():string
++bindCase():void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1194</x>
+      <y>258</y>
+      <w>126</w>
+      <h>114</h>
+    </coordinates>
+    <panel_attributes>Game
+--
+-board:Board
+-players:vector&lt;Player&gt;
+-currentPlayer: int=-1
+--
++isEndOfBoard():bool
++placeWallMove(Move):void
++MovePion(Move):void
++ExecuteMove():void
++nextTurn():void
++endOfGame():void
++start():void</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>240</x>
-      <y>560</y>
-      <w>200</w>
-      <h>40</h>
+      <x>1356</x>
+      <y>456</y>
+      <w>96</w>
+      <h>18</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;140.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1260</x>
+      <y>366</y>
+      <w>18</w>
+      <h>78</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1068</x>
+      <y>432</y>
+      <w>150</w>
+      <h>114</h>
+    </coordinates>
+    <panel_attributes>Player
+--
+-id: int={-1,1}
+-pawn: Pawn
+-name: string
+-AI: bool
+-pions: vector&lt;Pion&gt;
+--
++handleInput():void
++getId():int
++getName():string
++setName(string):void
++getPawn(id):Pawn
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1092</x>
+      <y>600</y>
+      <w>126</w>
+      <h>114</h>
+    </coordinates>
+    <panel_attributes>Pawn
+--
+-id: int
+-position: Position
+-owner: Player
+--
++setPos(Position pos):void
++getPos():Position
++getOwner():Player
++move(Move):void
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>918</x>
+      <y>258</y>
+      <w>102</w>
+      <h>54</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;40.0;150.0;40.0;150.0;70.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>828</x>
+      <y>258</y>
+      <w>108</w>
+      <h>54</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>160.0;10.0;160.0;40.0;10.0;40.0;10.0;70.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1182</x>
+      <y>366</y>
+      <w>96</w>
+      <h>78</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>140.0;10.0;140.0;60.0;10.0;60.0;10.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1032</x>
+      <y>300</y>
+      <w>174</w>
+      <h>144</h>
     </coordinates>
     <panel_attributes>lt=-
-
 </panel_attributes>
-    <additional_attributes>10.0;20.0;230.0;20.0</additional_attributes>
+    <additional_attributes>10.0;10.0;100.0;10.0;100.0;220.0;100.0;10.0;270.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>280</x>
-      <y>288</y>
-      <w>80</w>
-      <h>224</h>
+      <x>900</x>
+      <y>324</y>
+      <w>306</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>lt=-
+</panel_attributes>
+    <additional_attributes>10.0;10.0;360.0;10.0;360.0;180.0;360.0;10.0;490.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1146</x>
+      <y>540</y>
+      <w>18</w>
+      <h>72</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;120.0;80.0;120.0;80.0;260.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;100.0</additional_attributes>
   </element>
   <element>
-    <id>Relation</id>
+    <id>UMLUseCase</id>
     <coordinates>
-      <x>160</x>
-      <y>288</y>
-      <w>144</w>
-      <h>224</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>160.0;10.0;160.0;120.0;10.0;120.0;10.0;260.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>1072</x>
+      <x>1698</x>
       <y>312</y>
-      <w>24</w>
-      <h>168</h>
+      <w>72</w>
+      <h>24</h>
     </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;190.0</additional_attributes>
+    <panel_attributes>*Use case 3*</panel_attributes>
+    <additional_attributes/>
   </element>
 </diagram>

@@ -1,0 +1,61 @@
+class Database:
+    	int publicKey
+    	int privateKey
+    public:
+	Database(): {}
+    	void signUp() {
+   	    //Créer un nouveau compte dans la base de données 
+        (fichier encrypté RSA)
+    	}
+    
+    	bool login() {
+   	    //Cherche si le compte existe dans la base de données,
+        renvoie True si le compte existe, False sinon
+    	}
+
+    	bool prompt() {
+    	    //Demande à l'utilisateur s'il souhaite
+            s'inscrire ou se connecter:
+    	    if signup {
+     	       signUp;
+     	       return True
+            }
+            else {
+               return login
+            }
+    	}
+
+    	void saveGame(UserAccount, saveName) {
+    	    //Sauvegarde une partie dans le fichier
+            du compte correspondant à l'hôte de la partie
+    	}
+
+    	void loadGame(UserAccount, saveName) {
+    	    //Vérifie s'il existe une sauvegarde 
+            du nom saveName dans le fichier lié au UserAccount
+    	}
+
+    	void deleteSave(UserAccount, saveName) {
+    	    //Détruit une sauvegarde du nom saveName
+            dans le fichier lié au UserAccount
+    	}
+
+    	void deleteAccount(UserAccount) {
+    	    //Efface le fichier lié au UserAccount et
+            tout les profils-amis des autres comptes qui 
+            correspondent au UserAccount
+    	    //renvoie vers la demande prompt()
+    	}
+
+    	void addFriend(UserAccount, FriendAccount) {
+    	    //UserAccount demande FriendAccount en ami
+    	}
+
+    	void acceptFriend(UserAccount, FriendAccount, bool isAccepted) {
+    	    //Accepte ou refuse la demande en ami
+            de FriendAccount envoyé à UserAccount
+    	}
+
+    	void deleteFriend(UserAccount, FriendAccount) {
+    	    //Efface FriendAccount de la liste d'amis de UserAccount
+    	}

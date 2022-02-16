@@ -1,0 +1,24 @@
+class Player:
+	int id
+	Pawn pawn
+	int wallsLeft=10
+	string name
+	bool IA
+    public:
+	Player(int id, Pawn pawn, string name, bool IA): id{id}, pawn{pawn}, name{name}, IA{IA} {}
+	playerMove() {
+	    std::cin >> move
+	    return move
+	}
+	Position pawnLocation() {
+	    Position currentPosition = pawn.getPosition()
+	}
+	int getId() {
+	    return id
+	}
+	string getName() {
+	    return name
+	}
+	void setName(newName) {
+	    name = newName
+	}

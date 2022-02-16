@@ -1,0 +1,51 @@
+class Board:
+  int size
+  <vector <vector <Cell> > > matrix
+public:
+	Board(int size): {
+    //Double boucles for: 
+      //Remplissage de la matrice d'objets Cell
+  }
+
+  string boardDisplay() {
+      //Double boucles for: 
+          //Impression ligne par ligne du plateau;
+      return print_board
+  }
+
+  void boundCells() {
+        //Double boucles for: 
+            //Attribue à chaque Cell des pointeurs de ses voisins dans Cell->neighbours
+  }
+
+
+
+
+exemple de print plateau: 
+
+    00 00 00 00 22 00 00 00 00
+      +  +  +  +  +  +  +  +  
+    00 00 00 00 00 00 00 00 00     mur horizontal: |
+      +  +  +  +  +~~+~~+  +  
+    00 00 00 00 00|00 00 00 00     mur vertical: ~
+      +  +  +  +  +  +  +  + 
+    00 00 00 00 00|00 00 00 00     Pions: 11 22 
+      +  +~~+~~+  +  +  +  +  
+    00 00 00|00 00 00 00 00 00 
+      +  +  +  +  +  +  +  + 
+    00 00 00|00 00 00 00 00 00 
+      +  +  +  +  +~~+~~+  + 
+    00 00 00 00 00 00 00 00 00 
+      +  +  +  +  +  +  +  + 
+    00 00 00 00 00 00 00 00 00 
+      +  +  +  +  +  +  +  + 
+    00 00 00 00 11 00 00 00 00
+
+
+Convention joueur:
+    [1, 2, 3, 4]
+    Position départ:
+        Joueur 1: Sud
+        Joueur 2: Nord
+        Joueur 3: Ouest
+        Joueur 4: Est
