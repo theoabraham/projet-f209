@@ -16,14 +16,15 @@ void MotherCell::setNeighbours(std::vector<MotherCell *> &neighboursList) {
 }
 
 bool MotherCell::occupied() {
-    return false;
+    if (cellPiece) return true;
+    else return false;
 }
 
-void MotherCell::set(Piece *Piece) {
-    cellPiece = Piece;
+void MotherCell::set(std::shared_ptr<Piece> piece) {
+    cellPiece = piece;
 }
 
-Piece *MotherCell::getPiece() {
+std::shared_ptr<Piece> MotherCell::getPiece() {
     return cellPiece;
 }
 
@@ -33,30 +34,39 @@ void MotherCell::delPiece() {
 
 
 //PawnCell:
+
+//Fonction occupied mieux dans mothercell
+
+/*
 bool PawnCell::occupied() {
-    return cellPiece;
+    if (cellPiece != 0) return true; 
+    else return false;
+}
+*/
+
+void PawnCell::set(std::shared_ptr<Piece> piece) {
+    cellPiece = piece;
 }
 
-void PawnCell::set(Piece *Piece) {
-    cellPiece = Piece;
-}
-
-Piece *PawnCell::getPiece() {
+std::shared_ptr<Piece> PawnCell::getPiece() {
     return MotherCell::getPiece();
 }
 
 
 //WallCell: 
+
+/*
 bool WallCell::occupied() {
-    return cellPiece;
+    if (cellPiece) return true; 
+    else return false; 
+}
+*/
+
+void WallCell::set(std::shared_ptr<Piece> piece) {
+    cellPiece = piece;
 }
 
-
-void WallCell::set(Piece *Piece) {
-    cellPiece = Piece;
-}
-
-Piece *WallCell::getPiece() {
+std::shared_ptr<Piece> WallCell::getPiece() {
     return cellPiece;
 }
 
