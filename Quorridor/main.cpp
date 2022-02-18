@@ -1,12 +1,17 @@
 //
 // Created by Mark Dimitrov on 15/02/2022.
 //
-#include "Board.hpp"
+
+#include <iostream>
+#include "Model/Board.hpp"
+#include "View/DisplayBoard.hpp"
+
 
 int main(){
-    Player player;
-    Pawn pawn(0, Position{0,0}, &player);
-    Board b(9);
-    b.printBoard();
+    std::shared_ptr<Board> board = std::shared_ptr<Board>(new Board());
+
+    DisplayBoard displayBoard(board);
+    displayBoard.printBoard(); 
+
     return 0;
 }
