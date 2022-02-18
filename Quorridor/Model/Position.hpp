@@ -2,7 +2,8 @@
 // Created by Mark Dimitrov on 15/02/2022.
 //
 
-#pragma once 
+#ifndef POSITION_HPP
+#define POSITION_HPP
 
 struct Position{
     int x,y;  
@@ -27,3 +28,5 @@ public:
         return y;
     }
 */ 
+
+#endif

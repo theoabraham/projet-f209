@@ -4,13 +4,19 @@
 
 //Au lieu des ifndef,, utiliser "pragma once"
 
-#pragma once
+#ifndef PLAYER_HPP
+#define PLAYER_HPP
 
-
+#include <memory>
+#include <vector>
+#include "Piece.hpp"
 
 class Player {
-    int id; 
-
-    
+    int id;
+    std::shared_ptr<Pawn> pawn; 
+    std::vector<Wall> walls; 
+public:    
+    Player(std::shared_ptr<Pawn> pawn): pawn{pawn} {}
 };
 
+#endif

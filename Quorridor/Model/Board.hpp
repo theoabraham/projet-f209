@@ -1,10 +1,14 @@
+#ifndef BOARD_HPP
+#define BOARD_HPP
+
 #include "MotherCell.hpp"
+#include "Player.hpp"
 #include <string>
 #include <array>
+#include <memory>
 
 #include "iostream"
 
-#pragma once 
 
 class Board{
     private:
@@ -12,6 +16,8 @@ class Board{
         int boardSize;
         
         std::vector<std::vector<MotherCell> > matrix;
+
+        std::vector<std::vector<Player> > pawns; 
     
     public:
         explicit Board(int size=9);
@@ -19,5 +25,7 @@ class Board{
         std::vector<std::vector<MotherCell> > getMatrix() {return matrix;}
         int getBoardSize() const {return boardSize;}
 
-        void newGame(); 
+        void newGame(int nPlayer=2); 
 };
+
+#endif

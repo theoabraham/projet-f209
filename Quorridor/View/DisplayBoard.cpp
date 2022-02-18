@@ -20,9 +20,9 @@ void DisplayBoard:: printBoard() const {
                   }
               } else{
                   if(matrix[i][j].occupied()) {
-                      currentLine += "P ";
+                      currentLine += "\u265F "; //Caractère du pion 
                   } else{
-                      currentLine += "0 ";
+                      currentLine += "\u2610 "; //Case 
                   }
               }
           }
