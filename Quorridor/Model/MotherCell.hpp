@@ -10,15 +10,16 @@
 class MotherCell{
 protected:
     std::shared_ptr<Piece> cellPiece;
-    std::vector<MotherCell*> neighbours{nullptr, nullptr, nullptr, nullptr};
+    std::vector<std::shared_ptr<MotherCell>> neighbours{nullptr, nullptr, nullptr, nullptr};
 public:
-        MotherCell* getNeighbour(int neighbourPos);
+        std::shared_ptr<MotherCell> getNeighbour(int neighbourPos);
         void blockNeighbour(int neighbourPos);
-        void setNeighbours(std::vector<MotherCell*> &neighbours);
+        void setNeighbours(std::vector<std::shared_ptr<MotherCell>> &neighbours);
         bool occupied();
         virtual void set(std::shared_ptr<Piece> piece);
         virtual std::shared_ptr<Piece> getPiece();
         virtual void delPiece();
+        bool isNeighbour(Position neighbourPos);
 };
 
 

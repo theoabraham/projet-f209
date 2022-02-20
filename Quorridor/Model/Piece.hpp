@@ -21,18 +21,18 @@ class Wall : public Piece{
 private:
     std::vector<Position> positions;
 public:
-    Wall();
     std::vector<Position> getPos();
 };
 
 class Pawn : public Piece{
-    //Position position;  
-    //std::shared_ptr<Player> player = std::shared_ptr<Player>(new Player());
+    Position position;
 
 public: 
     //Pawn(Position posistion = {4,0}): position{position}{}
     //Ecrire construction w\ Piece
-    Pawn(){}
+    Pawn(){};
+    Pawn(Position initialPos);
+    Position getPos(){return position;};
 }; 
 
 #endif 

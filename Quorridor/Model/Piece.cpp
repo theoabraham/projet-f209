@@ -10,3 +10,5 @@
 std::vector<Position> Wall::getPos() {
     return positions;
 }
+
+Pawn::Pawn(Position initialPos) : position{initialPos}{}
