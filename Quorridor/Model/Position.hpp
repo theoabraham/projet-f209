@@ -1,32 +1,33 @@
 //
 // Created by Mark Dimitrov on 15/02/2022.
 //
-
+#include "string"
 #ifndef POSITION_HPP
 #define POSITION_HPP
 
-struct Position{
-    int x,y;  
-}; 
-
-/*
 class Position {
 private:
-    int x,y;
+    int x, y;
 public:
+    Position(){};
     Position(int x, int y);
-    void setX(int nX){
+    Position(std::string pos);
+    void setX(int nX) {
         x = nX;
     }
-    void setY(int nY){
-        y=nY;
+
+    void setY(int nY) {
+        y = nY;
     }
-    int getX() const{
+
+    int getX() const {
         return x;
     }
-    int getY() const{
+
+    int getY() const {
         return y;
     }
-*/ 
+    bool operator==(const Position& other) const;
+};
 
 #endif

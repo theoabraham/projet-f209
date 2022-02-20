@@ -6,6 +6,7 @@
 #include "../Model/Board.hpp"
 #include "../Model/MotherCell.hpp"
 
+
 #ifndef DISPLAYBOARD_HPP
 #define DISPLAYBOARD_HPP
 
