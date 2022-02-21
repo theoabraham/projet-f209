@@ -15,16 +15,16 @@ class Board{
         int size=9;
         int boardSize;
         
-        std::vector<std::vector<MotherCell> > matrix;
+        std::vector<std::vector< std::shared_ptr<MotherCell> > > matrix;
 
         std::vector<std::shared_ptr<Player>> players;
         int currentPlayer=0;
     public:
         explicit Board(int size=9);
         void bindCells();
-        std::vector<std::vector<MotherCell> > getMatrix() {return matrix;}
+        std::vector<std::vector< std::shared_ptr<MotherCell> > > getMatrix() {return matrix;}
         int getBoardSize() const {return boardSize;}
-        void newGame(int nPlayer=2);
+        void newGame();
         void ExecuteMove(std::string& input);
         bool checkInput(std::string &input);
         bool checkPos(Position pos) const;

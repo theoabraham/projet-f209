@@ -1,9 +1,9 @@
 //
 // Created by Mark Dimitrov on 15/02/2022.
 //
-#include "Model/Board.hpp"
-#include "View/DisplayBoard.hpp"
-#include "string"
+#include "../Model/Board.hpp"
+#include "../View/DisplayBoard.hpp"
+#include <string>
 #include <memory>
 #ifndef QUORRIDOR_GAME_H
 #define QUORRIDOR_GAME_H
@@ -23,3 +23,5 @@ public:
 
 
 #endif //QUORRIDOR_GAME_H
+
+

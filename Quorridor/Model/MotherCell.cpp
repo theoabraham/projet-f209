@@ -50,8 +50,8 @@ bool MotherCell::isNeighbour(Position neighbourPos) {
     }
     return false;
 }
-
-void MotherCell::setNeighbours(std::vector<std::shared_ptr<MotherCell>> &neighbourVector) {
+//std::vector<std::shared_ptr<MotherCell>> neighbours;
+void MotherCell::setNeighbours(std::vector<std::shared_ptr<MotherCell>>  &neighbourVector) {
     neighbours = neighbourVector;
 }
 

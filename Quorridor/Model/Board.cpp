@@ -10,55 +10,55 @@ void Board::bindCells(){
         for(int j = 0;j<boardSize;j+=2){
             std::vector<std::shared_ptr<MotherCell>> neighbours;
             if(i>0){
-                neighbours.push_back(&matrix[i-2][j]);
+                neighbours.push_back(matrix[i-2][j]);
             } else{
                 neighbours.push_back(nullptr);
             }
             if(j<boardSize-2){
-                neighbours.push_back(&matrix[i][j+2]);
+                neighbours.push_back(matrix[i][j+2]);
             }else{
                 neighbours.push_back(nullptr);
             }
             if(i<boardSize-2){
-                neighbours.push_back(&matrix[i+2][j]);
+                neighbours.push_back(matrix[i+2][j]);
             } else{
                 neighbours.push_back(nullptr);
             }
             if (j>0){
-                neighbours.push_back(&matrix[i][j-2]);
+                neighbours.push_back(matrix[i][j-2]);
             } else{
                 neighbours.push_back(nullptr);
             }
-            matrix[i][j].setNeighbours(neighbours);
+            matrix[i][j]->setNeighbours(neighbours);
         }
 
     }
 }
 
-void Board:: newGame(int nPlayer){
+void Board:: newGame(){
 
     boardSize = size*2-1; 
     for (int i = 0; i < size*2-1; i++ ) {
-        std::vector<MotherCell> line;
+        std::vector<std::shared_ptr<MotherCell> > line;
         
         for (int j = 0; j<size*2-1; j++){
             if (( i%2 != 0 and i < boardSize ) or ( j%2 != 0 and j < boardSize)){ //si case impaire --> Murs 
-                line.push_back(WallCell());
+                line.push_back(std::shared_ptr<WallCell>(new WallCell()));
             } else{ //Cases
-                line.push_back(PawnCell());
+                line.push_back(std::shared_ptr<PawnCell>(new PawnCell()));
             } 
 
             if (i==0 and j==8){
                 std::shared_ptr<Pawn> pawn1 = std::shared_ptr<Pawn>(new Pawn(Position(8,0)));
-                line[j].set(std::shared_ptr<Pawn>(pawn1));
-                auto player1 = std::shared_ptr<Player>(new Player(pawn1, 0));
+                line[j]->set(std::shared_ptr<Pawn>(pawn1));
+                auto player1 = std::shared_ptr<Player>(new Player(0,pawn1));
                 players.push_back(player1);
             } 
 
             if (i==16 and j==8){
                 std::shared_ptr<Pawn> pawn2 = std::shared_ptr<Pawn>(new Pawn(Position(8,16)));
-                line[j].set(std::shared_ptr<Pawn>(pawn2));
-                auto player2 = std::shared_ptr<Player>(new Player(pawn2, 1));
+                line[j]->set(std::shared_ptr<Pawn>(pawn2));
+                auto player2 = std::shared_ptr<Player>(new Player(1,pawn2));
                 players.push_back(player2);
             } 
         }
@@ -88,7 +88,7 @@ bool Board::checkInput(std::string &input) {
     if(pos1 == players[currentPlayer]->getPawn()->getPos()){
         std::cout << "check 1"<<std::endl;
         std::cout<<-(pos1.getX()-pos2.getX()) << " " <<pos1.getY()-pos2.getY()<<std::endl;
-        if(matrix[pos2.getX()][pos2.getY()].isNeighbour(Position((-(pos1.getX()-pos2.getX()))%2,(pos1.getY()-pos2.getY())%2))){
+        if(matrix[pos2.getX()][pos2.getY()]->isNeighbour(Position((-(pos1.getX()-pos2.getX()))%2,(pos1.getY()-pos2.getY())%2))){
             std::cout << "check 2"<<std::endl;
             return true;
         }
@@ -100,10 +100,11 @@ bool Board::checkPos(Position pos) const {
     return (pos.getX()>=0 && pos.getY() >= 0 && pos.getX() < boardSize && pos.getY() < boardSize);
 }
 
+/*
 MotherCell Board::operator[](const Position &other) {
     return matrix[other.getX()][other.getY()];
 }
-
+*/
 
 
 

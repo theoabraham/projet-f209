@@ -2,7 +2,7 @@
 
 void DisplayBoard:: printBoard() const {
       int boardSize = board->getBoardSize(); 
-      std::vector<std::vector<MotherCell> > matrix = board->getMatrix(); 
+      std::vector<std::vector< std::shared_ptr<MotherCell> > > matrix = board->getMatrix(); 
 
       std::string stringBoard;
              
@@ -13,13 +13,13 @@ void DisplayBoard:: printBoard() const {
           for(int j=0; j<boardSize;j++){
                 
               if((i%2==1 and i<boardSize) or (j%2==1 and j<boardSize)){
-                  if(matrix[i][j].occupied()) {
+                  if(matrix[i][j]->occupied()) {
                       currentLine += "W ";
                   } else{
                       currentLine += "  ";
                   }
               } else{
-                  if(matrix[i][j].occupied()) {
+                  if(matrix[i][j]->occupied()) {
                       currentLine += "\u265F "; //Caractère du pion 
                   } else{
                       currentLine += "\u2610 "; //Case 
