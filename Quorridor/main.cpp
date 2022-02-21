@@ -9,8 +9,8 @@
 
 int main(){
     std::shared_ptr<Board> board = std::shared_ptr<Board>(new Board());
-
     DisplayBoard displayBoard(board);
+    
     Game game(board, displayBoard);
     game.start();
 

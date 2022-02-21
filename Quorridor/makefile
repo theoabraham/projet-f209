@@ -8,5 +8,5 @@ CONTROLLER = Controller/Game.cpp Controller/Game.hpp
 
 all: Quoridor
 
-Quoridor: $(MODEL) $(VIEW) main.cpp  
-	g++ $(MODEL) $(VIEW) main.cpp  -o main $(FLAGS)
+Quoridor: $(MODEL) $(VIEW) $(CONTROLLER) main.cpp  
+	g++ $(MODEL) $(VIEW) $(CONTROLLER) main.cpp  -o main $(FLAGS)

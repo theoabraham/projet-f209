@@ -12,7 +12,8 @@
 class Game {
 private:
     std::shared_ptr<Board> model;
-    std::unique_ptr<DisplayBoard> view;
+    std::unique_ptr<DisplayBoard> view; 
+    //pour plus tard: enlever view qui sera juste géré dans main
 public:
     Game(std::shared_ptr<Board> model, DisplayBoard &view);
     static std::string getInput();
