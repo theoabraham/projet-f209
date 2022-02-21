@@ -1,18 +1,16 @@
 #include "MotherCell.hpp"
 
+#include <utility>
+
 
 
 //MotherCell:
-MotherCell* MotherCell::getNeighbour(int neighbourPos){
+std::shared_ptr<MotherCell> MotherCell::getNeighbour(int neighbourPos){
     return neighbours[neighbourPos];
 }
 
 void MotherCell::blockNeighbour(int neighbourPos){
     neighbours[neighbourPos] = nullptr;
-}
-
-void MotherCell::setNeighbours(std::vector<MotherCell *> &neighboursList) {
-    neighbours = neighboursList;
 }
 
 bool MotherCell::occupied() {
@@ -30,6 +28,31 @@ std::shared_ptr<Piece> MotherCell::getPiece() {
 
 void MotherCell::delPiece() {
     cellPiece = nullptr;
+}
+
+bool MotherCell::isNeighbour(Position neighbourPos) {
+    switch (neighbourPos.getX()) {
+        case (0):
+            switch (neighbourPos.getY()) {
+                case (1):
+                    return (neighbours[0] != nullptr);
+                case (-1):
+                    return (neighbours[2] != nullptr);
+            }
+        case (1):
+            if(neighbourPos.getY() == 0){
+                return (neighbours[1] != nullptr);
+            }
+        case (-1):
+            if (neighbourPos.getY() == 0){
+                return (neighbours[3] != nullptr);
+            }
+    }
+    return false;
+}
+
+void MotherCell::setNeighbours(std::vector<std::shared_ptr<MotherCell>> &neighbourVector) {
+    neighbours = neighbourVector;
 }
 
 
