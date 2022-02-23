@@ -51,8 +51,8 @@ void Board:: newGame(){
             } 
 
             if (i==0 and j==8)
-            {
-                std::shared_ptr<Pawn> pawn1 = std::shared_ptr<Pawn>(new Pawn(Position(8,0)));
+            {   
+                std::shared_ptr<Pawn> pawn1 = std::shared_ptr<Pawn>(new Pawn(Position(4,0)));
                 line[j]->set(std::shared_ptr<Pawn>(pawn1));
                 auto player1 = std::shared_ptr<Player>(new Player(0,pawn1));
                 players.push_back(player1);
@@ -60,7 +60,7 @@ void Board:: newGame(){
 
             if (i==16 and j==8)
             {
-                std::shared_ptr<Pawn> pawn2 = std::shared_ptr<Pawn>(new Pawn(Position(8,16)));
+                std::shared_ptr<Pawn> pawn2 = std::shared_ptr<Pawn>(new Pawn(Position(4,8)));
                 line[j]->set(std::shared_ptr<Pawn>(pawn2));
                 auto player2 = std::shared_ptr<Player>(new Player(1,pawn2));
                 players.push_back(player2);
@@ -78,21 +78,28 @@ void Board::ExecuteMove(std::string& input) {
 }
 
 bool Board::checkInput(std::string &input) {
-    std::cout<<"Checking input " << input << std::endl;
     if(input.size()!=4){
-        std::cout << "input too long "<<std::endl;
+        std::cout << "size of input: 4 "<<std::endl; //input : d'abord la lettre puis le chiffre
         return false;
     }
     Position pos1{input.substr(0,2)};
-    std::cout<<input.substr(0,2)<<std::endl;
     Position pos2{input.substr(2,3)};
-    std::cout<<input.substr(2,3)<<std::endl;
+
     std::cout<<"Position 1 : "<< pos1.getX() << " " << pos1.getY()<<std::endl;
     std::cout<<"Position 2 : "<< pos2.getX() << " " << pos2.getY()<<std::endl;
-    if(pos1 == players[currentPlayer]->getPawn()->getPos()){
+    
+    Position pos = (players[currentPlayer]->getPawn()->getPos());
+    int x= pos.getX(); 
+    int y= pos.getY(); 
+
+    std::cout<<x<<" "<<y<<std::endl; 
+
+    if(pos1 == players[currentPlayer]->getPawn()->getPos()){ 
+        //Si la pos initiale de l'input corréspond à la pos du pion
         std::cout << "check 1"<<std::endl;
         std::cout<<-(pos1.getX()-pos2.getX()) << " " <<pos1.getY()-pos2.getY()<<std::endl;
         if(matrix[pos2.getX()][pos2.getY()]->isNeighbour(Position((-(pos1.getX()-pos2.getX()))%2,(pos1.getY()-pos2.getY())%2))){
+            //Si la pos suivante fait bien parti d'un des voisins de la case --> position valide
             std::cout << "check 2"<<std::endl;
             return true;
         }

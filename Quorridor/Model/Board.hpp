@@ -3,6 +3,7 @@
 
 #include "MotherCell.hpp"
 #include "Player.hpp"
+#include "Position.hpp"
 #include <string>
 #include <array>
 #include <memory>

@@ -14,3 +14,4 @@ bool Position::operator==(const Position& other) const {
     return (x == other.x and y == other.y);
 }
 
+
