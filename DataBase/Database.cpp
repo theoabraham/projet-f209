@@ -3,16 +3,13 @@
 //
 
 #include "Database.h"
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <array>
 
-int parse(const std::string& file_path, std::array<std::string, 4> * arr_addr){
+
+int DatabaseHandler::parse(const std::string& file_path, std::array<std::string, 4> * arr_addr){
     std::ifstream file;
     unsigned int num_of_line=0;
 
-    file.open("Database/"+file_path);
+    file.open("Data/"+file_path);
 
     if (!file.is_open()){
         return 0;
@@ -28,7 +25,7 @@ int parse(const std::string& file_path, std::array<std::string, 4> * arr_addr){
     return 1;
 }
 
-int check_pswd(const std::string& input_psw, const std::string& stocked_hash){
+int DatabaseHandler::check_pswd(const std::string& input_psw, const std::string& stocked_hash){
     std::hash<std::string> h;
     if (!(std::to_string(h(input_psw)) == stocked_hash)){ // si hash(psw) != hash_stocké
         return 0;
@@ -37,7 +34,7 @@ int check_pswd(const std::string& input_psw, const std::string& stocked_hash){
     return 1;
 }
 
-std::string create_psw(){
+std::string DatabaseHandler::create_psw(){
     std::string psw="a"; std::string pswv="b";
     std::hash<std::string> hashed;
     while (psw != pswv){
@@ -55,7 +52,7 @@ std::string create_psw(){
     return std::to_string(hashed(psw));
 }
 
-int is_file_ok(const std::string &filepath){
+int DatabaseHandler::is_file_ok(const std::string &filepath){
     for (auto &c: filepath){
         if (c=='/' or c=='.' or c==' '){
             return 0;
@@ -64,11 +61,11 @@ int is_file_ok(const std::string &filepath){
     return 1;
 }
 
-void create_file(const std::string& filename){
+void DatabaseHandler::create_file(const std::string& filename){
     std::fstream output_file;
     const std::string board="/////\n"; const std::string win="winned_game\n"; const std::string loosed="loosed_game\n";
     std::string psw = create_psw() + '\n';
-    FILE *o_file = fopen(("Database/"+filename).c_str(), "w");
+    FILE *o_file = fopen(("Data/"+filename).c_str(), "w");
     if (o_file){
         fwrite(psw.c_str(), 1, psw.size(), o_file);
         fwrite(board.c_str(), 1, board.size(), o_file);
@@ -77,38 +74,21 @@ void create_file(const std::string& filename){
     }
 }
 
-void build_mat_from_str(const std::string& str){
-    unsigned int i=0;unsigned int j=0;
-    for (unsigned char c:str) {
-        int int_c = (int) c;
-        if (49 <= int_c && int_c <= 57){// ord('0')=48 et ord('9')=59 -> on cherche juste les entier entre 1 et 9
-            j+= (int_c-48);             // par exemple '3' --> ord('3')=51 --> 51-48 = 3
-            std::cout << "Positionné à la case:" << i << ',' << j << std::endl;
-        }else if (c=='/'){
-            i+=1;                       //saute une ligne
-            j=0;                        //repart à la colone 0
-            std::cout << "Départ à la case:" << i << ',' << j << std::endl;
-        }else{
-            // appelle le constructeur piece{char} -> implique avoir un constructeur qui prend un char en paramètre
-            std::cout << "Construction de la piece "<< c << " en:" << i << ',' << j << std::endl;
-            j+=1;                       //passe a la case suivante une fois la piece ajoutée
-        }
-    }
-}
-
-void some_db_method_but_its_a_function(){
-    std::array<std::string, 4> string_arr;
+DatabaseHandler::DatabaseHandler() {
     std::string input_file;
     std::string psw;
 
+    //entre le fichier
     std::cout << "Entrez un nom de fichier : " << std::endl;
     std::getline(std::cin, input_file);
 
+    //vérifie la syntaxe
     if (!is_file_ok(input_file)){
         std::cout << "Le fichier entré comporte un caractère interdit..." << std::endl;
         return;
     }
 
+    // parse le fichier donné
     if (!parse(input_file, &string_arr)){  // si fichier existe pas
         std::string ans;
         std::cout << "Fichier non existant..." << std::endl;
@@ -121,7 +101,6 @@ void some_db_method_but_its_a_function(){
         create_file(input_file);
         return;
     }
-
     std::cout << "______________________________" << std::endl;
     std::cout << "Fichier " << input_file << " trouvé \nEntez votre mot de passe: " << std::endl;
     std::cin >> psw;
@@ -132,11 +111,10 @@ void some_db_method_but_its_a_function(){
     }
     std::cout << "______________________________" << std::endl;
     std::cout << "Construction de la matrice" << std::endl;
-    build_mat_from_str(string_arr[1]);
+    std::cout << "..." << std::endl;
 }
 
 int main() {
-    some_db_method_but_its_a_function();
+    DatabaseHandler dbh;
     return 0;
 }
-*/
