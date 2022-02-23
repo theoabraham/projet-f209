@@ -28,8 +28,8 @@ class Board{
         void ExecuteMove(std::string& input);
         bool checkInput(std::string &input);
         bool checkPos(Position pos) const;
-        MotherCell operator[](const Position& other);
         std::vector<std::shared_ptr<Player>> getPlayers(){return players;};
+        
 };
 
 #endif
