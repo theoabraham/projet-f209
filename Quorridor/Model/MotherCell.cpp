@@ -31,6 +31,13 @@ void MotherCell::delPiece() {
 }
 
 bool MotherCell::isNeighbour(Position neighbourPos) {
+
+    /*
+    for (auto n: neighbours){
+        std::cout<<n<<std::endl; 
+    }
+    */
+
     switch (neighbourPos.getX()) {
         case (0):
             switch (neighbourPos.getY()) {
