@@ -35,28 +35,19 @@ int DatabaseHandler::check_pswd(const std::string& input_psw, const std::string&
 }
 
 std::string DatabaseHandler::create_psw(){
-    std::string psw="a"; std::string pswv="b";
     std::hash<std::string> hashed;
-    while (psw != pswv){
-        std::cout << "Entrez votre mot de passe (/!\\ mot de passe visible): ";
-        std::getline(std::cin, psw);
-        std::cin.ignore();
-        std::cout << "Confirmez le mot de passe: ";
-        std::getline(std::cin, pswv);
-        std::cin.ignore();
-
-        if (psw != pswv){
-            std::cout << "Mots de passe non valide / différents, veuillez réessayer." << std::endl;
-        }
-    }
+    std::string psw;std::string pswv;
+    do{
+        std::cout<< "Entrez votre mot de passe: ";
+        std::cin >> psw;
+        std::cout<< "Confirmez votre mot de passe: ";
+    }while (psw != pswv);
     return std::to_string(hashed(psw));
 }
 
-int DatabaseHandler::is_file_ok(const std::string &filepath){
+int DatabaseHandler::is_string_valid(const std::string &filepath){
     for (auto &c: filepath){
-        if (c=='/' or c=='.' or c==' '){
-            return 0;
-        }
+        if (c=='/' or c=='.' or c==' ')return 0;
     }
     return 1;
 }
@@ -83,7 +74,7 @@ DatabaseHandler::DatabaseHandler() {
     std::getline(std::cin, input_file);
 
     //vérifie la syntaxe
-    if (!is_file_ok(input_file)){
+    if (!is_string_valid(input_file)){
         std::cout << "Le fichier entré comporte un caractère interdit..." << std::endl;
         return;
     }
