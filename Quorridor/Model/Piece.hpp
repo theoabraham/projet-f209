@@ -30,7 +30,7 @@ class Pawn : public Piece{
 public: 
     //Pawn(Position posistion = {4,0}): position{position}{}
     //Ecrire construction w\ Piece
-    Pawn(){};
+    //Pawn(){};
     Pawn(Position initialPos);
     Position getPos(){return position;};
 }; 

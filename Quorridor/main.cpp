@@ -5,12 +5,12 @@
 #include <iostream>
 #include "Model/Board.hpp"
 #include "View/DisplayBoard.hpp"
-#include "Controller/Game.h"
+#include "Controller/Game.hpp"
 
 int main(){
     std::shared_ptr<Board> board = std::shared_ptr<Board>(new Board());
-
     DisplayBoard displayBoard(board);
+    
     Game game(board, displayBoard);
     game.start();
 
