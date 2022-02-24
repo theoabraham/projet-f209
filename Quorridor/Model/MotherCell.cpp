@@ -31,6 +31,13 @@ void MotherCell::delPiece() {
 }
 
 bool MotherCell::isNeighbour(Position neighbourPos) {
+
+    /*
+    for (auto n: neighbours){
+        std::cout<<n<<std::endl; 
+    }
+    */
+
     switch (neighbourPos.getX()) {
         case (0):
             switch (neighbourPos.getY()) {
@@ -57,16 +64,6 @@ void MotherCell::setNeighbours(std::vector<std::shared_ptr<MotherCell>>  &neighb
 
 
 //PawnCell:
-
-//Fonction occupied mieux dans mothercell
-
-/*
-bool PawnCell::occupied() {
-    if (cellPiece != 0) return true; 
-    else return false;
-}
-*/
-
 void PawnCell::set(std::shared_ptr<Piece> piece) {
     cellPiece = piece;
 }
@@ -77,14 +74,6 @@ std::shared_ptr<Piece> PawnCell::getPiece() {
 
 
 //WallCell: 
-
-/*
-bool WallCell::occupied() {
-    if (cellPiece) return true; 
-    else return false; 
-}
-*/
-
 void WallCell::set(std::shared_ptr<Piece> piece) {
     cellPiece = piece;
 }

@@ -25,7 +25,6 @@ public:
 
 class PawnCell : public MotherCell{
 public:
-    //bool occupied() override;
     std::shared_ptr<Piece> getPiece() override;
     void set(std::shared_ptr<Piece> piece) override;
 };
@@ -34,7 +33,6 @@ public:
 
 class WallCell: public MotherCell{
 public:
-    //bool occupied() override;
     std::shared_ptr<Piece> getPiece() override;
     void set(std::shared_ptr<Piece> piece) override;
 };

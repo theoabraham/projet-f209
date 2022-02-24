@@ -21,9 +21,8 @@ void Game::start() {
     view->printBoard();
     while(true){
         std::cout<<" Player " + std::to_string(player+1) + "'s move: (ex: i0i1 (i0 = initial position/ i1 = next position)"<<std::endl;
-
         std::string input = model->getPlayers()[player]->getInput();
-        model->ExecuteMove(input);
+        model->checkInput(input, player);
         player=(player+1)%2;
         view->printBoard();
     }

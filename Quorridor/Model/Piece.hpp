@@ -32,7 +32,8 @@ public:
     //Ecrire construction w\ Piece
     //Pawn(){};
     Pawn(Position initialPos);
-    Position getPos(){return position;};
+    Position getPos(){return position;}
+    void setPos(Position pos) {position = pos;}
 }; 
 
 #endif 
