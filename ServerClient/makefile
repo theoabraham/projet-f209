@@ -1,7 +1,17 @@
-all: client server
+FLAGS=-Wall -Werror
 
-client: client.c
-	gcc -pthread -o client client.c -Wall
+all: client server 
 
-server: server.c
-	gcc -o server server.c -Wall
+client: client.cpp socketlib.o client.h
+	g++ -o client client.cpp socketlib.o socketlib.h client.h ${FLAGS} -pthread
+
+server: server.cpp socketlib.o server.h
+	g++ -g -o server server.cpp socketlib.o socketlib.h ${FLAGS}
+
+socketlib.o: socketlib.c socketlib.h
+	g++ -c socketlib.c ${FLAGS}
+
+clean:
+	rm -f client server *.o
+
+clear: clean

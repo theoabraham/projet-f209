@@ -1,123 +1,133 @@
-/*
-Code par
-Emile Merian 000518697
-Théo Abraham 000515744
-*/
-#include <netinet/in.h>
-#include <stdbool.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>  //strlen
-#include <sys/socket.h>
-#include <sys/time.h>  //FD_SET, FD_ISSET, FD_ZERO macros
-#include <unistd.h>    //close
-#include <time.h>
-#include <signal.h>
+#include "server.h"
 
-#include "common.h"
+#include <string.h>
+#include <sys/select.h>
+#include <unistd.h>
 
-int nclients = 0; //nombre de clients
-int clients[1024]; //liste des clients
+#include <ctime>
+#include <iostream>
+#include <string>
 
-static void sigintHandler(int sig) { //tiré de Delftstack
-    for (int i = 0; i < nclients; i++) {
-      ssend(clients[i], NULL, 0);
-      close(clients[i]);
-    }
-    errExit("Fermeture"); //voir errExit dans common.h
+#include "socketlib.h"
+
+Server::Server() {}
+
+void Server::run(int port) {
+  this->master_socket = checked(create_socket());
+  bind_socket(this->master_socket, port);
+  listen_socket(this->master_socket);
+  printf("Server is waiting for new connections on port %d...\n", port);
+  this->max_fd = master_socket;
+
+  fd_set read_set;
+  while (true) {
+    this->prepateFDSet(&read_set);
+    int nactivities = checked(select(this->max_fd + 1, &read_set, nullptr, nullptr, nullptr));
+    this->handleSocketReadActivity(&read_set, nactivities);
   }
+}
 
-int main(int argc, char *argv[]) {
-
-  if (argc != 2){
-    printf("Fonctionnement : ./server <port>");
-    return 1;
-  }
-
-  int port = atoi(argv[1]);
-
-  struct timeval tv = {1, 0};
-  int opt = 1;
-  int master_socket = checked(socket(AF_INET, SOCK_STREAM, 0));
-  checked(setsockopt(master_socket, SOL_SOCKET, SO_REUSEADDR, (char *)&opt, sizeof(opt)));
-
-  // type of socket created
-  struct sockaddr_in address;
-  address.sin_family = AF_INET;
-  address.sin_addr.s_addr = INADDR_ANY;
-  address.sin_port = htons(port); //8080
-  checked(bind(master_socket, (struct sockaddr *)&address, sizeof(address)));
-  checked(listen(master_socket, 3));
-
-  size_t addrlen = sizeof(address);
-  fd_set readfds;
-  int clients[1024];
-  char *pseudo[1024];
-
-  signal(SIGINT, sigintHandler); //Gestion du CTRL+C
-
-  while (1) {
-
-    FD_ZERO(&readfds);
-    FD_SET(master_socket, &readfds);
-    int max_fd = master_socket;
-    for (int i = 0; i < nclients; i++) {
-      FD_SET(clients[i], &readfds);
-      if (clients[i] > max_fd) {
-        max_fd = clients[i];
-      }
-    }
-    tv = (struct timeval){1,0};
-    
-    // wait for an activity on one of the sockets, timeout is 0.5
-    select(max_fd + 1, &readfds, NULL, NULL, &tv);
-    
-    time_t timestamp = time(NULL);
-    char *dt = ctime(&timestamp);
-
-    if (FD_ISSET(master_socket, &readfds)) {
-      // Si c'est le master socket qui a des donnees, c'est une nouvele connexion.
-      clients[nclients] = accept(master_socket, (struct sockaddr *)&address, (socklen_t *)&addrlen);
-      receive(clients[nclients], (void*) &pseudo[nclients]);
-      strcat(pseudo[nclients], "\0");
-      char welcomeMessage[1024] = ""; //conception du message de bienvenue
-      strcat(welcomeMessage, dt);
-      strcat(welcomeMessage, "Bienvenue : "); 
-      strcat(welcomeMessage, pseudo[nclients]);
-      strcat(welcomeMessage, "\0");
-      nclients++;
-      for (int i = 0; i < nclients; i++) {
-        ssend(clients[i], welcomeMessage , sizeof(welcomeMessage));
-      }
-      bzero(welcomeMessage, strlen(welcomeMessage));
-    } else {
-      // Sinon, c'est un message d'un client
-      for (int i = 0; i < nclients; i++) {
-        if (FD_ISSET(clients[i], &readfds)) {
-          char *buffer;
-          size_t nbytes = receive(clients[i], (void *)&buffer);
-          strcat(buffer, "\0");
-          char message[1024]; //conception du message
-          strcat(message, "Received from : ");
-          strcat(message, pseudo[i]);
-          strcat(message, "\n");
-          strcat(message, buffer);
-          if (nbytes > 0) {  // closed
-            for (int j = 0; j < nclients; j++) {
-              ssend(clients[j], message, sizeof(message));
-            }
-          bzero(message, strlen(message));
-          bzero(buffer, strlen(buffer));
-          } else {
-            close(clients[i]);
-            // On deplace le dernier socket a la place de libre pour ne pas faire de trou.
-            clients[i] = clients[nclients - 1];
-            pseudo[i] = pseudo[nclients - 1];
-            nclients--;
-          }
-        }
-      }
+void Server::forward(message_t* msg) {
+  for (unsigned i = 0; i < this->users.size(); i++) {
+    user_t* u = this->users[i];
+    if (ssend(u->socket, msg) <= 0) {
+      this->disconnectUser(i);
     }
   }
+}
+
+void Server::prepateFDSet(fd_set* read_set) {
+  FD_ZERO(read_set);
+  FD_SET(this->master_socket, read_set);
+  for (unsigned i = 0; i < this->users.size(); i++) {
+    user_t* user = this->users[i];
+    FD_SET(user->socket, read_set);
+  }
+}
+
+void Server::handleSocketReadActivity(fd_set* in_set, int& nactivities) {
+  if (nactivities <= 0) return;
+  if (FD_ISSET(this->master_socket, in_set)) {
+    this->handleNewConnection();
+    nactivities--;
+  }
+  unsigned i = this->users.size() - 1;
+  while (nactivities > 0 and i >= 0) {
+    int socket = this->users[i]->socket;
+    message_t msg;
+    if (FD_ISSET(socket, in_set)) {
+      nactivities--;
+      size_t nbytes = receive(socket, &msg);
+      if (nbytes < 0) {
+        exit(1);
+      } else if (nbytes == 0) {
+        this->disconnectUser(i);
+      } else {
+        // message_buffer[nbytes] = '\0';
+        char date_buffer[32];
+        struct tm* local_time = localtime(&msg.timestamp);
+        strftime(date_buffer, sizeof(date_buffer), "%H:%M:%S", local_time);
+        msg.message = "[" + string(date_buffer) + "] " + this->users[i]->name + ": " + msg.message;
+        this->forward(&msg);
+      }
+    }
+    i--;
+  }
+}
+
+void Server::disconnectUser(unsigned user_num) {
+  user_t* user = this->users[user_num];
+  printf("User %s has disconnected\n", user->name.c_str());
+  this->users.erase(this->users.begin() + user_num);
+  this->max_fd = this->master_socket;
+  for (auto user : this->users) {
+    if (user->socket > this->max_fd) {
+      this->max_fd = user->socket;
+    }
+  }
+}
+
+void Server::handleNewConnection() {
+  struct sockaddr remote_host;
+  char username[64];
+
+  int socket = accept_socket(this->master_socket, &remote_host);
+  int nbytes = safe_read(socket, username, 64);
+  if (nbytes <= 0) {
+    return;
+  }
+  username[nbytes] = '\0';
+  const int ack = 0;
+  nbytes = safe_write(socket, &ack, sizeof(int));
+  if (nbytes <= 0) {
+    return;
+  }
+
+  user_t* new_user = new user_t;
+  new_user->socket = socket;
+  new_user->version = 0;
+  new_user->name = username;
+  this->users.push_back(new_user);
+  char* ip;
+  uint16_t port;
+  to_ip_host(&remote_host, &ip, &port);
+  printf("New user %s connected (%s:%d)\n", username, ip, port);
+  if (socket > this->max_fd) {
+    this->max_fd = socket;
+  }
+}
+
+int main(int argc, char const* argv[]) {
+  if (argc < 2) {
+    fprintf(stderr, "Utilisation: ./server <port>\n");
+    exit(0);
+  }
+  const int port = atoi(argv[1]);
+  if (port < 1024) {
+    fprintf(stderr, "Le port doit être supérieur à 1023.\n");
+    exit(0);
+  }
+  Server server = Server();
+  server.run(port);
   return 0;
 }
