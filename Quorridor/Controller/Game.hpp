@@ -1,6 +1,3 @@
-//
-// Created by Mark Dimitrov on 15/02/2022.
-//
 #include "../Model/Board.hpp"
 #include "../View/DisplayBoard.hpp"
 #include <string>

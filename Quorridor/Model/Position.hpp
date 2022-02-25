@@ -1,6 +1,3 @@
-//
-// Created by Mark Dimitrov on 15/02/2022.
-//
 #include <string>
 #ifndef POSITION_HPP
 #define POSITION_HPP
@@ -9,25 +6,17 @@ class Position {
 private:
     int x, y;
 public:
-    //Position(){};
     Position(int x, int y);
     Position(std::string pos);
-    void setX(int nX) {
-        x = nX;
-    }
 
-    void setY(int nY) {
-        y = nY;
-    }
+    void setX(int nX) {x = nX;}
+    void setY(int nY) {y = nY;}
 
-    int getX() const {
-        return x;
-    }
+    int getX() const {return x;}
+    int getY() const {return y;}
 
-    int getY() const {
-        return y;
-    }
     bool operator==(const Position& other) const;
+    Position operator*(int i); 
 };
 
 #endif

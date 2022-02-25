@@ -4,39 +4,41 @@ Board::Board(int size): size{size} {
     newGame(); 
 }
 
-void Board::executeMove(Position pos1, Position pos2, int currentP ) {
-    std::shared_ptr<Player> player = players[currentP]; 
-    player->getPawn()->setPos(pos2); 
-    matrix[pos1.getY()*2][pos1.getX()*2]->set(nullptr); 
-    matrix[pos2.getY()*2][pos2.getX()*2]->set(player->getPawn()); 
+void Board::executeMove(Position &pos, int currentP ) { 
+    Position playerPos = players[currentP]->getPawnPos();
+    players[currentP]->setPawnPos(pos);
 
+    matrix[playerPos.getY()][playerPos.getX()]->setPiece(nullptr); 
+    matrix[pos.getY()][pos.getX()]->setPiece(players[currentP]->getPawn()); 
+}
+
+bool Board::isValid(Position &next_pos, Position &playerPos){
+    
+    Position next_cell = Position((-(playerPos.getX()-next_pos.getX())),(playerPos.getY())-next_pos.getY());//Différence |e| pos initiale et pos suivante
+
+    if (matrix[playerPos.getX()][playerPos.getY()]->isNeighbour(next_cell)) return true;  
+    return false; 
 }
 
 bool Board::checkInput(std::string &input, int currentP) {
-    if(input.size()!=4){
-        std::cout << "size of input: 4 "<<std::endl; //input : d'abord la lettre puis le chiffre
+    if(input.size()!=2){
+        std::cout << "size of input: 2 "<<std::endl;
         return false;
     }
-    Position pos1{input.substr(0,2)};
-    Position pos2{input.substr(2,3)};
 
-    if(pos1 == players[currentP]->getPawn()->getPos()){ 
-        //Si la pos initiale de l'input corréspond à la pos du pion
+    Position next_pos{input.substr(0,2)}; 
+    next_pos = next_pos*2; //*2 pour avoir la vrai position sur la matrice  
 
-        Position next_cell = Position((-(pos1.getX()-pos2.getX()))%2,(pos1.getY()-pos2.getY())%2); 
-        if(matrix[pos2.getX()*2][pos2.getY()*2]->isNeighbour(next_cell)){ //rem: utiliser plutôt .at() pour mat pour éviter les erreures 
-            //Si la pos suivante fait bien parti d'un des voisins de la case --> coup valide
-            executeMove(pos1, pos2, currentP); 
-            return true;
-        }
+    Position playerPos = players[currentP]->getPawnPos(); 
+
+    if(isValid(next_pos, playerPos)){ 
+        executeMove(next_pos, currentP); 
+        return true;
     }
-    std::cout<<"move: (ex: i0i1 (i0 = initial position/ i1 = next position)"<<std::endl; 
+    std::cout<<"move: (ex: e1 (e1 = next position)"<<std::endl; 
     return false;
 }
 
-bool Board::checkPos(Position pos) const {
-    return (pos.getX()>=0 && pos.getY() >= 0 && pos.getX() < boardSize && pos.getY() < boardSize);
-}
 
 void Board::bindCells(){
     for(int i=0;i<boardSize;i+=2){
@@ -68,6 +70,7 @@ void Board::bindCells(){
     }
 }
 
+
 void Board:: newGame(){
     boardSize = size*2-1; 
     for (int i = 0; i < size*2-1; i++ ) {
@@ -87,15 +90,15 @@ void Board:: newGame(){
             //Initialisation des pions et joueurs: 
             if (i==0 and j==8)
             {   
-                std::shared_ptr<Pawn> pawn1 = std::shared_ptr<Pawn>(new Pawn(Position(4,0)));
-                line[j]->set(std::shared_ptr<Pawn>(pawn1));
+                std::shared_ptr<Pawn> pawn1 = std::shared_ptr<Pawn>(new Pawn(Position(8,0)));  //changer en Position(8,0) 
+                line[j]->setPiece(std::shared_ptr<Pawn>(pawn1));
                 auto player1 = std::shared_ptr<Player>(new Player(0,pawn1));
                 players.push_back(player1);
             } 
             if (i==16 and j==8)
             {
-                std::shared_ptr<Pawn> pawn2 = std::shared_ptr<Pawn>(new Pawn(Position(4,8)));
-                line[j]->set(std::shared_ptr<Pawn>(pawn2));
+                std::shared_ptr<Pawn> pawn2 = std::shared_ptr<Pawn>(new Pawn(Position(8,16))); //changer en Position(8,16) 
+                line[j]->setPiece(std::shared_ptr<Pawn>(pawn2));
                 auto player2 = std::shared_ptr<Player>(new Player(1,pawn2));
                 players.push_back(player2);
             } 
@@ -104,6 +107,39 @@ void Board:: newGame(){
     }
     bindCells();
 }
+
+/*
+//CasesMurs voisin 
+void Board::bindCells(){
+    for(int i=0;i<boardSize;i+=2){
+
+        for(int j = 0;j<boardSize;j+=2){
+            std::vector<std::shared_ptr<MotherCell>> neighbours;
+            if(i>0){
+                neighbours.push_back(matrix[i-1][j]);
+            } else{
+                neighbours.push_back(nullptr);
+            }
+            if(j<boardSize-2){
+                neighbours.push_back(matrix[i][j+1]);
+            }else{
+                neighbours.push_back(nullptr);
+            }
+            if(i<boardSize-2){
+                neighbours.push_back(matrix[i+1][j]);
+            } else{
+                neighbours.push_back(nullptr);
+            }
+            if (j>0){
+                neighbours.push_back(matrix[i][j-1]);
+            } else{
+                neighbours.push_back(nullptr);
+            }
+            matrix[i][j]->setNeighbours(neighbours);
+        }
+    }
+}
+*/
 
 
 

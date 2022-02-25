@@ -5,12 +5,26 @@
 
 
 //MotherCell:
-std::shared_ptr<MotherCell> MotherCell::getNeighbour(int neighbourPos){
-    return neighbours[neighbourPos];
-}
+bool MotherCell::isNeighbour(Position neighbourPos) {
 
-void MotherCell::blockNeighbour(int neighbourPos){
-    neighbours[neighbourPos] = nullptr;
+    switch (neighbourPos.getX()) {
+        case (0):
+            switch (neighbourPos.getY()) {
+                case (2):
+                    return (neighbours[0] != nullptr);
+                case (-2):
+                    return (neighbours[2] != nullptr);
+            }
+        case (2):
+            if(neighbourPos.getY() == 0){
+                return (neighbours[1] != nullptr);
+            }
+        case (-2):
+            if (neighbourPos.getY() == 0){
+                return (neighbours[3] != nullptr);
+            }
+    }
+    return false;
 }
 
 bool MotherCell::occupied() {
@@ -18,53 +32,9 @@ bool MotherCell::occupied() {
     else return false;
 }
 
-void MotherCell::set(std::shared_ptr<Piece> piece) {
-    cellPiece = piece;
-}
-
-std::shared_ptr<Piece> MotherCell::getPiece() {
-    return cellPiece;
-}
-
-void MotherCell::delPiece() {
-    cellPiece = nullptr;
-}
-
-bool MotherCell::isNeighbour(Position neighbourPos) {
-
-    /*
-    for (auto n: neighbours){
-        std::cout<<n<<std::endl; 
-    }
-    */
-
-    switch (neighbourPos.getX()) {
-        case (0):
-            switch (neighbourPos.getY()) {
-                case (1):
-                    return (neighbours[0] != nullptr);
-                case (-1):
-                    return (neighbours[2] != nullptr);
-            }
-        case (1):
-            if(neighbourPos.getY() == 0){
-                return (neighbours[1] != nullptr);
-            }
-        case (-1):
-            if (neighbourPos.getY() == 0){
-                return (neighbours[3] != nullptr);
-            }
-    }
-    return false;
-}
-//std::vector<std::shared_ptr<MotherCell>> neighbours;
-void MotherCell::setNeighbours(std::vector<std::shared_ptr<MotherCell>>  &neighbourVector) {
-    neighbours = neighbourVector;
-}
-
 
 //PawnCell:
-void PawnCell::set(std::shared_ptr<Piece> piece) {
+void PawnCell::setPiece(std::shared_ptr<Piece> piece) {
     cellPiece = piece;
 }
 
@@ -74,7 +44,7 @@ std::shared_ptr<Piece> PawnCell::getPiece() {
 
 
 //WallCell: 
-void WallCell::set(std::shared_ptr<Piece> piece) {
+void WallCell::setPiece(std::shared_ptr<Piece> piece) {
     cellPiece = piece;
 }
 
