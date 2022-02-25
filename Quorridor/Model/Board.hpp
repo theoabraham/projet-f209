@@ -26,7 +26,9 @@ class Board{
         int getBoardSize() const {return boardSize;}
         std::vector<std::shared_ptr<Player>> getPlayers() const {return players;};
         std::vector<std::vector< std::shared_ptr<MotherCell> > > getMatrix() const {return matrix;}
-                
+
+        void placeWall(std::string &direction, Position &pos); 
+              
         /**
          * @brief Execute le coup  
          * @param pos: le la case où doit aller le pion
@@ -53,7 +55,14 @@ class Board{
         /**
          * @brief Lie les cases avec les cases de type PawnCell voisines
         */
-        void bindCells();
+        void bindPawnsCells();
+
+        /**
+         * @brief Lie les cases avec les cases de type PawnCell voisines
+        */
+        void bindWallsCells();
+        
+        //TODO : Simplifier fonctions type "bindCells"
 
         /** 
          * @brief Initialise le plateau, ses pions et ses joueurs

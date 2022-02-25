@@ -9,8 +9,10 @@
 #include <string>
 
 class Piece {
+public:
     virtual Position getPos()=0; 
     virtual void setPos(Position pos)=0; 
+    virtual ~Piece(){} 
 };
 
 
@@ -20,14 +22,14 @@ private:
     std::string direction; 
 public:
     Wall(Position position, std::string direction): position(position), direction(direction) {}; 
-    Position getPos() override;
-    void setPos(Position pos) override; 
-};
+    Position getPos() override {return position;}
+    void setPos(Position pos) override {position = pos;}
+}; 
 
 class Pawn : public Piece{
     Position position;
 public: 
-    Pawn(Position position): position{position}{}; 
+    Pawn(Position position): position{position}{}
     Position getPos() override {return position;}
     void setPos(Position pos) override {position = pos;}
 }; 

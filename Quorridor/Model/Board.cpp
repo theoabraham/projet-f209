@@ -4,19 +4,53 @@ Board::Board(int size): size{size} {
     newGame(); 
 }
 
-void Board::executeMove(std::string &typeOfMove, Position &pos, int currentP ) { 
-    Position playerPos = players[currentP]->getPawnPos();
-    players[currentP]->setPawnPos(pos);
 
-    matrix[playerPos.getY()][playerPos.getX()]->setPiece(nullptr); 
-    matrix[pos.getY()][pos.getX()]->setPiece(players[currentP]->getPawn()); 
+void Board::placeWall(std::string &direction, Position &pos){
+    if (direction=="H"){
+        for (int i=0; i<3; i++){
+            matrix[pos.getX()+1][pos.getY()-i]->setPiece(std::shared_ptr<Wall>(new Wall(pos, direction)));
+            //TODO: décrementer le nombre de murs que peut encore placer le joueur 
+        }
+    }
+    else if (direction == "V"){
+        for (int i=0; i<3; i++){
+            matrix[pos.getX()+i][pos.getY()+1]->setPiece(std::shared_ptr<Wall>(new Wall(pos, direction)));
+            //TODO: décrementer le nombre de murs que peut encore placer le joueur 
+        }
+    }
+    //!!!je pense que les coodonées de la matrice ne correspondent pas à celles qu'on imprime 
+}
+
+void Board::executeMove(std::string &typeOfMove, Position &pos, int currentP ) { 
+    if (typeOfMove=="P"){
+        Position playerPos = players[currentP]->getPawnPos();
+        players[currentP]->setPawnPos(pos);
+
+        matrix[playerPos.getY()][playerPos.getX()]->setPiece(nullptr); 
+        matrix[pos.getY()][pos.getX()]->setPiece(players[currentP]->getPawn()); 
+    }
+    else{
+        placeWall(typeOfMove,pos); 
+    }
+    //TODO : peut-être problème car parfois matrix[getX][getY] et parfois matrix[getY][getX] --> vérifier !!!
 }
 
 bool Board::isValid(std::string &typeOfMove, Position &next_pos, Position &playerPos){
-    if (typeOfMove=="P" || typeOfMove=="H" || typeOfMove=="V"){
-        Position next_cell = Position((-(playerPos.getX()-next_pos.getX())),(playerPos.getY())-next_pos.getY());
-        if (matrix[playerPos.getX()][playerPos.getY()]->isNeighbour(next_cell)) return true; 
-    }  
+    if (typeOfMove=="P"){
+       Position next_cell = Position((-(playerPos.getX()-next_pos.getX())),(playerPos.getY())-next_pos.getY());
+        if (matrix[playerPos.getX()][playerPos.getY()]->isPawnsNeighbour(next_cell)) { 
+            //Si la prochaine case est bien une case voisine
+
+            //TODO : Si la prochaine case est libre 
+            if (!matrix[playerPos.getX()][playerPos.getY()]->getWallsNeighbour(next_cell)->occupied())
+                //Si il n'y a pas de mur entre
+                return true;  
+        }
+    }
+    else if (typeOfMove =="H" || typeOfMove =="V"){
+        //TODO :  conditions pour que le coup soit valide
+        return true; 
+    }
     return false; 
 }
 
@@ -29,7 +63,7 @@ bool Board::checkInput(std::string &input, int currentP) {
 
     Position next_pos{input.substr(2,3)}; 
     next_pos = next_pos*2; //*2 pour avoir la vrai position sur la matrice  
-
+    std::cout<<next_pos.getX()<<" "<<next_pos.getY()<<std::endl; 
     Position playerPos = players[currentP]->getPawnPos(); 
 
     if(isValid(typeOfMove, next_pos, playerPos)){ 
@@ -40,7 +74,7 @@ bool Board::checkInput(std::string &input, int currentP) {
     return false;
 }
 
-void Board::bindCells(){
+void Board::bindPawnsCells(){
     for(int i=0;i<boardSize;i+=2){
 
         for(int j = 0;j<boardSize;j+=2){
@@ -65,7 +99,37 @@ void Board::bindCells(){
             } else{
                 neighbours.push_back(nullptr);
             }
-            matrix[i][j]->setNeighbours(neighbours);
+            matrix[i][j]->setPawnsNeighbours(neighbours);
+        }
+    }
+}
+
+void Board::bindWallsCells(){
+    for(int i=0;i<boardSize;i+=2){
+
+        for(int j = 0;j<boardSize;j+=2){
+            std::vector<std::shared_ptr<MotherCell>> neighbours;
+            if(i>0){
+                neighbours.push_back(matrix[i-1][j]);
+            } else{
+                neighbours.push_back(nullptr);
+            }
+            if(j<boardSize-2){
+                neighbours.push_back(matrix[i][j+1]);
+            }else{
+                neighbours.push_back(nullptr);
+            }
+            if(i<boardSize-2){
+                neighbours.push_back(matrix[i+1][j]);
+            } else{
+                neighbours.push_back(nullptr);
+            }
+            if (j>0){
+                neighbours.push_back(matrix[i][j-1]);
+            } else{
+                neighbours.push_back(nullptr);
+            }
+            matrix[i][j]->setWallsNeighbours(neighbours);
         }
     }
 }
@@ -105,7 +169,8 @@ void Board:: newGame(){
         }
         matrix.push_back(line);
     }
-    bindCells();
+    bindPawnsCells();
+    bindWallsCells(); 
 }
 
 

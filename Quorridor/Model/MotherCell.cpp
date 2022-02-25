@@ -5,6 +5,7 @@
 
 
 //MotherCell:
+/*
 bool MotherCell::isNeighbour(Position neighbourPos) {
 
     switch (neighbourPos.getX()) {
@@ -26,7 +27,52 @@ bool MotherCell::isNeighbour(Position neighbourPos) {
     }
     return false;
 }
+*/
 
+bool MotherCell::isPawnsNeighbour(Position neighbourPos) {
+
+    switch (neighbourPos.getX()) {
+        case (0):
+            switch (neighbourPos.getY()) {
+                case (2):
+                    return (pawnsNeighbours[0] != nullptr);
+                case (-2):
+                    return (pawnsNeighbours[2] != nullptr);
+            }
+        case (2):
+            if(neighbourPos.getY() == 0){
+                return (pawnsNeighbours[1] != nullptr);
+            }
+        case (-2):
+            if (neighbourPos.getY() == 0){
+                return (pawnsNeighbours[3] != nullptr);
+            }
+    }
+    return false;
+}
+
+std::shared_ptr<MotherCell> MotherCell::getWallsNeighbour(Position neighbourPos) {
+
+    std::shared_ptr<MotherCell> res; 
+    switch (neighbourPos.getX()) {
+        case (0):
+            switch (neighbourPos.getY()) {
+                case (2):
+                    res = (wallsNeighbours[0]);
+                case (-2):
+                    res = (wallsNeighbours[2]);
+            }
+        case (2):
+            if(neighbourPos.getY() == 0){
+                res = (wallsNeighbours[1]);
+            }
+        case (-2):
+            if (neighbourPos.getY() == 0){
+                res = (wallsNeighbours[3]);
+            }
+    }
+    return res; 
+}
 
 
 
