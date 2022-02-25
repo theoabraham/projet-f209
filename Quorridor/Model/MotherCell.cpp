@@ -27,6 +27,9 @@ bool MotherCell::isNeighbour(Position neighbourPos) {
     return false;
 }
 
+
+
+
 bool MotherCell::occupied() {
     if (cellPiece) return true;
     else return false;

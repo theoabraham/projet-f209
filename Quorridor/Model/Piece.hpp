@@ -6,6 +6,7 @@
 #include <memory>
 #include <vector>
 #include <iostream>
+#include <string>
 
 class Piece {
     virtual Position getPos()=0; 
@@ -15,8 +16,10 @@ class Piece {
 
 class Wall : public Piece{
 private:
-    Position position; //Position et non vecteur de position --> sa position sera les cases jms utilisées dans la matrice (celles qui ont une valeur paire et une impaire)
+    Position position; //sont les cases de la matrices qui ne sont pas 100% paires ou 100% impaires (Pour éviter d'avoir un vecteur)
+    std::string direction; 
 public:
+    Wall(Position position, std::string direction): position(position), direction(direction) {}; 
     Position getPos() override;
     void setPos(Position pos) override; 
 };
@@ -24,7 +27,7 @@ public:
 class Pawn : public Piece{
     Position position;
 public: 
-    Pawn(Position initialPos);
+    Pawn(Position position): position{position}{}; 
     Position getPos() override {return position;}
     void setPos(Position pos) override {position = pos;}
 }; 

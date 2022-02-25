@@ -32,12 +32,14 @@ class Board{
          * @param pos: le la case où doit aller le pion
          * 
         */
-        void executeMove(Position &pos, int currentP);
+        void executeMove(std::string &typeOfMove, Position &pos, int currentP);
+
+        bool checkWall(Position &playerPos, Position next_cell);
 
         /**
          * @brief vérifie si le coup est jouable
         */
-        bool isValid(Position &move, Position &playePos);
+        bool isValid(std::string &typeOfMove, Position &move, Position &playerPos);
 
 
         /**
@@ -52,7 +54,7 @@ class Board{
          * @brief Lie les cases avec les cases de type PawnCell voisines
         */
         void bindCells();
-        
+
         /** 
          * @brief Initialise le plateau, ses pions et ses joueurs
         */

@@ -6,7 +6,6 @@
 #include "Piece.hpp"
 
 
-
 class MotherCell{
 protected:
     std::shared_ptr<Piece> cellPiece;
@@ -16,10 +15,9 @@ public:
         virtual void setPiece(std::shared_ptr<Piece> piece) {cellPiece = piece;}
         
         std::shared_ptr<MotherCell> getNeighbour(int neighbourPos) {return neighbours[neighbourPos];}
-        void setNeighbours(std::vector<std::shared_ptr<MotherCell>> &neighboursVector) {neighbours = neighboursVector;}        
-            
-        bool isNeighbour(Position neighbourPos);    
-        
+
+        void setNeighbours(std::vector<std::shared_ptr<MotherCell>> &neighboursVector) {neighbours = neighboursVector;}          
+        bool isNeighbour(Position neighbourPos);             
         bool occupied();
 };
 
@@ -30,12 +28,10 @@ public:
     void setPiece(std::shared_ptr<Piece> piece) override;
 };
 
-
 class WallCell: public MotherCell{
 public:
     std::shared_ptr<Piece> getPiece() override;
     void setPiece(std::shared_ptr<Piece> piece) override;
 };
-
 
 #endif

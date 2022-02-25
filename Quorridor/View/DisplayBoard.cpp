@@ -21,7 +21,7 @@ void DisplayBoard:: printBoard() const {
                 
               if((i%2==1 and i<boardSize) or (j%2==1 and j<boardSize)){
                   if(matrix[i][j]->occupied()) {
-                      currentLine += "W ";
+                      currentLine += "\u25AC "; //Mur horizontal 
                   } else{
                       currentLine += "  ";
                   }

@@ -4,7 +4,7 @@ Board::Board(int size): size{size} {
     newGame(); 
 }
 
-void Board::executeMove(Position &pos, int currentP ) { 
+void Board::executeMove(std::string &typeOfMove, Position &pos, int currentP ) { 
     Position playerPos = players[currentP]->getPawnPos();
     players[currentP]->setPawnPos(pos);
 
@@ -12,33 +12,33 @@ void Board::executeMove(Position &pos, int currentP ) {
     matrix[pos.getY()][pos.getX()]->setPiece(players[currentP]->getPawn()); 
 }
 
-bool Board::isValid(Position &next_pos, Position &playerPos){
-    
-    Position next_cell = Position((-(playerPos.getX()-next_pos.getX())),(playerPos.getY())-next_pos.getY());//Différence |e| pos initiale et pos suivante
-
-    if (matrix[playerPos.getX()][playerPos.getY()]->isNeighbour(next_cell)) return true;  
+bool Board::isValid(std::string &typeOfMove, Position &next_pos, Position &playerPos){
+    if (typeOfMove=="P" || typeOfMove=="H" || typeOfMove=="V"){
+        Position next_cell = Position((-(playerPos.getX()-next_pos.getX())),(playerPos.getY())-next_pos.getY());
+        if (matrix[playerPos.getX()][playerPos.getY()]->isNeighbour(next_cell)) return true; 
+    }  
     return false; 
 }
 
 bool Board::checkInput(std::string &input, int currentP) {
-    if(input.size()!=2){
-        std::cout << "size of input: 2 "<<std::endl;
+    if(input.size()!=4){
+        std::cout<<"Format: (ex: P e1) " <<std::endl<< "1.Type of move: P (pawn), H (horizontal Wall), V (vertical wall)" <<std::endl<< "2.move: cell number" <<std::endl;
         return false;
     }
+    std::string typeOfMove{input.substr(0,1)};
 
-    Position next_pos{input.substr(0,2)}; 
+    Position next_pos{input.substr(2,3)}; 
     next_pos = next_pos*2; //*2 pour avoir la vrai position sur la matrice  
 
     Position playerPos = players[currentP]->getPawnPos(); 
 
-    if(isValid(next_pos, playerPos)){ 
-        executeMove(next_pos, currentP); 
+    if(isValid(typeOfMove, next_pos, playerPos)){ 
+        executeMove(typeOfMove, next_pos, currentP); 
         return true;
     }
-    std::cout<<"move: (ex: e1 (e1 = next position)"<<std::endl; 
+    std::cout<<"Format: (ex: P e1) " <<std::endl<< "1.Type of move: P (pawn), H (horizontal Wall), V (vertical wall)" <<std::endl<< "2.move: cell number" <<std::endl;
     return false;
 }
-
 
 void Board::bindCells(){
     for(int i=0;i<boardSize;i+=2){
@@ -108,38 +108,6 @@ void Board:: newGame(){
     bindCells();
 }
 
-/*
-//CasesMurs voisin 
-void Board::bindCells(){
-    for(int i=0;i<boardSize;i+=2){
-
-        for(int j = 0;j<boardSize;j+=2){
-            std::vector<std::shared_ptr<MotherCell>> neighbours;
-            if(i>0){
-                neighbours.push_back(matrix[i-1][j]);
-            } else{
-                neighbours.push_back(nullptr);
-            }
-            if(j<boardSize-2){
-                neighbours.push_back(matrix[i][j+1]);
-            }else{
-                neighbours.push_back(nullptr);
-            }
-            if(i<boardSize-2){
-                neighbours.push_back(matrix[i+1][j]);
-            } else{
-                neighbours.push_back(nullptr);
-            }
-            if (j>0){
-                neighbours.push_back(matrix[i][j-1]);
-            } else{
-                neighbours.push_back(nullptr);
-            }
-            matrix[i][j]->setNeighbours(neighbours);
-        }
-    }
-}
-*/
 
 
 
