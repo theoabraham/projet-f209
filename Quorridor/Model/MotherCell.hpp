@@ -12,29 +12,29 @@ protected:
     std::shared_ptr<Piece> cellPiece;
     std::vector<std::shared_ptr<MotherCell>> neighbours{nullptr, nullptr, nullptr, nullptr};
 public:
-        std::shared_ptr<MotherCell> getNeighbour(int neighbourPos);
-        void blockNeighbour(int neighbourPos);
-        void setNeighbours(std::vector<std::shared_ptr<MotherCell>> &neighbours);
+        virtual std::shared_ptr<Piece> getPiece() {return cellPiece;}
+        virtual void setPiece(std::shared_ptr<Piece> piece) {cellPiece = piece;}
+        
+        std::shared_ptr<MotherCell> getNeighbour(int neighbourPos) {return neighbours[neighbourPos];}
+        void setNeighbours(std::vector<std::shared_ptr<MotherCell>> &neighboursVector) {neighbours = neighboursVector;}        
+            
+        bool isNeighbour(Position neighbourPos);    
+        
         bool occupied();
-        virtual void set(std::shared_ptr<Piece> piece);
-        virtual std::shared_ptr<Piece> getPiece();
-        virtual void delPiece();
-        bool isNeighbour(Position neighbourPos);
 };
 
 
 class PawnCell : public MotherCell{
 public:
     std::shared_ptr<Piece> getPiece() override;
-    void set(std::shared_ptr<Piece> piece) override;
+    void setPiece(std::shared_ptr<Piece> piece) override;
 };
-
 
 
 class WallCell: public MotherCell{
 public:
     std::shared_ptr<Piece> getPiece() override;
-    void set(std::shared_ptr<Piece> piece) override;
+    void setPiece(std::shared_ptr<Piece> piece) override;
 };
 
 

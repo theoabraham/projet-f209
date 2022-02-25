@@ -24,23 +24,32 @@ class Board{
 
         explicit Board(int size=9);
         int getBoardSize() const {return boardSize;}
-        std::vector<std::shared_ptr<Player>> getPlayers(){return players;};
-        std::vector<std::vector< std::shared_ptr<MotherCell> > > getMatrix() {return matrix;}
+        std::vector<std::shared_ptr<Player>> getPlayers() const {return players;};
+        std::vector<std::vector< std::shared_ptr<MotherCell> > > getMatrix() const {return matrix;}
                 
-        bool checkPos(Position pos) const;
+        /**
+         * @brief Execute le coup  
+         * @param pos: le la case où doit aller le pion
+         * 
+        */
+        void executeMove(Position &pos, int currentP);
+
+        /**
+         * @brief vérifie si le coup est jouable
+        */
+        bool isValid(Position &move, Position &playePos);
+
 
         /**
          * @brief vérifie si le coup du joueur est valide 
+         * @param input: coup entré par le joueur
+         *        currentP: le joueur en question 
+         * @return bool: true si coup valide false sinon 
         */ 
         bool checkInput(std::string &input, int currentP);
-
-        /**
-         * @brief Modifie le coup selon l'input du joueur
-        */
-        void executeMove(Position pos1, Position pos2, int currentP);
         
         /**
-         * @brief Lie les cases avec leurs cases voisines
+         * @brief Lie les cases avec les cases de type PawnCell voisines
         */
         void bindCells();
         
