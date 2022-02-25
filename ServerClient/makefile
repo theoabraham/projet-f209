@@ -8,8 +8,8 @@ client: client.cpp socketlib.o client.h
 server: server.cpp socketlib.o server.h
 	g++ -g -o server server.cpp socketlib.o socketlib.h ${FLAGS}
 
-socketlib.o: socketlib.c socketlib.h
-	g++ -c socketlib.c ${FLAGS}
+socketlib.o: socketlib.cpp socketlib.h
+	g++ -c socketlib.cpp ${FLAGS}
 
 clean:
 	rm -f client server *.o
