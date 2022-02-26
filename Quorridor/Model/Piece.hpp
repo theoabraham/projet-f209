@@ -18,12 +18,14 @@ public:
 
 class Wall : public Piece{
 private:
-    Position position; //sont les cases de la matrices qui ne sont pas 100% paires ou 100% impaires (Pour éviter d'avoir un vecteur)
-    std::string direction; 
+    Position position; 
+    std::string direction;
 public:
     Wall(Position position, std::string direction): position(position), direction(direction) {}; 
     Position getPos() override {return position;}
     void setPos(Position pos) override {position = pos;}
+    
+    bool isHwall() {return direction=="H";}
 }; 
 
 class Pawn : public Piece{

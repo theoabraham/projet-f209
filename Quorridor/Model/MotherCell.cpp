@@ -5,7 +5,6 @@
 
 
 //MotherCell:
-
 std::shared_ptr<MotherCell> MotherCell::getNeighbour(Position &neighbourPos){
     switch (neighbourPos.getX()) {
         case (0):

@@ -20,6 +20,7 @@ void Game::start() {
     view->printBoard();
     inputFormat();
     while(true){
+        //TODO : Arrêter le jeu lorsqu'un des joueur a gagné
         std::cout<<"Player " + std::to_string(player+1) + "'s moves : "<<std::endl;
         std::string input = getInput();
         

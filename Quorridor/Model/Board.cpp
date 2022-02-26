@@ -16,7 +16,7 @@ void Board::placeWall(std::string &direction, Position &pos){
     }
     else if (direction == "V"){
         for (int i=0; i<3; i++){
-            posY = pos.getY()+i; posX = pos.getX()+1; 
+            posY = pos.getY()-i; posX = pos.getX()+1; 
             matrix[posY][posX]->setPiece(std::shared_ptr<Wall>(new Wall(Position{posX, posY}, direction)));  
             //TODO: décrementer le nombre de murs que peut encore placer le joueur 
         }
@@ -50,6 +50,7 @@ bool Board::isValid(std::string &typeOfMove, Position &next_pos, Position &playe
                     //Si il n'y a pas de mur entre
                     return true;  
         }
+        //TODO: condition saute mouton ("Face à face" dans règles énoncé)
     }
     else if (typeOfMove =="H" || typeOfMove =="V"){
         //TODO :  conditions pour que le coup soit valide
@@ -66,10 +67,10 @@ bool Board::checkInput(std::string &input, int currentP) {
 
     Position next_pos{input.substr(2,3)}; 
     next_pos = next_pos*2; //*2 pour avoir la vrai position sur la matrice  
-    std::cout<<next_pos.getX()<<" "<<next_pos.getY()<<std::endl; 
     Position playerPos = players[currentP]->getPawnPos(); 
 
-    if(isValid(typeOfMove, next_pos, playerPos)){ 
+    if(isValid(typeOfMove, next_pos, playerPos)){ \
+        //Si coup valide
         executeMove(typeOfMove, next_pos, currentP); 
         return true;
     }
