@@ -1,25 +1,39 @@
-//
-// Created by Mark Dimitrov on 15/02/2022.
-//
-#pragma once 
+#ifndef PIECE_HPP
+#define PIECE_HPP
 
-//#include "Player.h"
 #include "Position.hpp"
+//#include "Player.hpp"
+#include <memory>
 #include <vector>
-
-
+#include <iostream>
+#include <string>
 
 class Piece {
-
+public:
+    virtual Position getPos()=0; 
+    virtual void setPos(Position pos)=0; 
+    virtual ~Piece(){} 
 };
+
 
 class Wall : public Piece{
 private:
-    std::vector<Position> positions;
+    Position position; 
+    std::string direction;
 public:
-    Wall(std::vector<Position> occupiedCells);
-    std::vector<Position> getPos();
-};
-
-class Pawn: public Piece{
+    Wall(Position position, std::string direction): position(position), direction(direction) {}; 
+    Position getPos() override {return position;}
+    void setPos(Position pos) override {position = pos;}
+    
+    bool isHwall() {return direction=="H";}
 }; 
+
+class Pawn : public Piece{
+    Position position;
+public: 
+    Pawn(Position position): position{position}{}
+    Position getPos() override {return position;}
+    void setPos(Position pos) override {position = pos;}
+}; 
+
+#endif 

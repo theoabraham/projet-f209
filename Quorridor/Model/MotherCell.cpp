@@ -1,62 +1,54 @@
 #include "MotherCell.hpp"
 
+#include <utility>
+
 
 
 //MotherCell:
-MotherCell* MotherCell::getNeighbour(int neighbourPos){
-    return neighbours[neighbourPos];
+std::shared_ptr<MotherCell> MotherCell::getNeighbour(Position &neighbourPos){
+    switch (neighbourPos.getX()) {
+        case (0):
+            switch (neighbourPos.getY()) {
+                case (1):
+                    return neighbours[0];
+                case (-1):
+                    return neighbours[2];
+            }
+        case (1):
+            if(neighbourPos.getY() == 0){
+                return neighbours[1];
+            }
+        case (-1):
+            if (neighbourPos.getY() == 0){
+                return neighbours[3];
+            }
+    }
+    return nullptr;
 }
 
-void MotherCell::blockNeighbour(int neighbourPos){
-    neighbours[neighbourPos] = nullptr;
-}
-
-void MotherCell::setNeighbours(std::vector<MotherCell *> &neighboursList) {
-    neighbours = neighboursList;
-}
 
 bool MotherCell::occupied() {
-    return false;
-}
-
-void MotherCell::set(Piece *Piece) {
-    cellPiece = Piece;
-}
-
-Piece *MotherCell::getPiece() {
-    return cellPiece;
-}
-
-void MotherCell::delPiece() {
-    cellPiece = nullptr;
+    if (cellPiece ) return true;
+    else return false;
 }
 
 
 //PawnCell:
-bool PawnCell::occupied() {
-    return cellPiece;
+void PawnCell::setPiece(std::shared_ptr<Piece> piece) {
+    cellPiece = piece;
 }
 
-void PawnCell::set(Piece *Piece) {
-    cellPiece = Piece;
-}
-
-Piece *PawnCell::getPiece() {
+std::shared_ptr<Piece> PawnCell::getPiece() {
     return MotherCell::getPiece();
 }
 
 
 //WallCell: 
-bool WallCell::occupied() {
-    return cellPiece;
+void WallCell::setPiece(std::shared_ptr<Piece> piece) {
+    cellPiece = piece;
 }
 
-
-void WallCell::set(Piece *Piece) {
-    cellPiece = Piece;
-}
-
-Piece *WallCell::getPiece() {
+std::shared_ptr<Piece> WallCell::getPiece() {
     return cellPiece;
 }
 

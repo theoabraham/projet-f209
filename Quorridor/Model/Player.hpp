@@ -1,16 +1,21 @@
-//
-// Created by Mark Dimitrov on 15/02/2022.
-//
+#ifndef PLAYER_HPP
+#define PLAYER_HPP
 
-//Au lieu des ifndef,, utiliser "pragma once"
-
-#pragma once
-
-
+#include <memory>
+#include <utility>
+#include <vector>
+#include "Piece.hpp"
 
 class Player {
-    int id; 
-
+    int id;
+    std::shared_ptr<Pawn> pawn; 
+    int walls = 6;  //idée:  décrémenter chaque fois que le joueur place un mur 
+public:    
+    Player(int id, std::shared_ptr<Pawn> pawn):id{id}, pawn{std::move(pawn)} {}
     
+    std::shared_ptr<Pawn> getPawn(){return pawn;}
+    Position getPawnPos() {return pawn->getPos();}
+    void setPawnPos(Position pos) {pawn->setPos(pos);}
 };
 
+#endif
