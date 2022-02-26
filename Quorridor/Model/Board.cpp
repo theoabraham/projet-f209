@@ -27,9 +27,10 @@ void Board::executeMove(std::string &typeOfMove, Position &pos, int currentP ) {
     if (typeOfMove=="P"){
         Position playerPos = players[currentP]->getPawnPos();
         players[currentP]->setPawnPos(pos);
-
-        matrix[playerPos.getY()][playerPos.getX()]->setPiece(nullptr); 
+        
         matrix[pos.getY()][pos.getX()]->setPiece(players[currentP]->getPawn()); 
+        matrix[playerPos.getY()][playerPos.getX()]->setPiece(nullptr); 
+        
     }
     else{
         placeWall(typeOfMove,pos); 
@@ -38,15 +39,16 @@ void Board::executeMove(std::string &typeOfMove, Position &pos, int currentP ) {
 
 bool Board::isValid(std::string &typeOfMove, Position &next_pos, Position &playerPos){
     if (typeOfMove=="P"){
-       Position next_cell = Position((-(playerPos.getX()-next_pos.getX())),(playerPos.getY())-next_pos.getY());
+       Position next_cell = Position((-(playerPos.getX()-next_pos.getX()))/2,((playerPos.getY())-next_pos.getY())/2); 
 
-        std::cout<<"PlayerPos :"<<playerPos.getX()<<" "<<playerPos.getY()<<std::endl; 
-        if (matrix[playerPos.getY()][playerPos.getX()]->isNeighbour(next_cell)) { 
-            //Si la prochaine case est bien une case voisine
-
-            //TODO : Si la prochaine case est libre 
-            //TODO : Si il n'y a pas de mur entre
-                return true;  
+        std::cout<<"Next cell: "<<next_cell.getX()<<" "<<next_cell.getY()<<std::endl; 
+        if (matrix[playerPos.getY()][playerPos.getX()]->getNeighbour(next_cell)) {
+            //Si la prochaine case est une case voisine 
+            if (not matrix[playerPos.getY()- next_cell.getY()*2][playerPos.getX()+ next_cell.getX()*2]->occupied()) //if (matrix[playerPos.getY()][playerPos.getX()]->getNeighbour(next_cell)->occupied()) ne fonctionne pas, pouquoi ??? 
+                //Si la prochaine case est libre 
+                if (not matrix[playerPos.getY()- next_cell.getY()][playerPos.getX()+ next_cell.getX()]->occupied())
+                    //Si il n'y a pas de mur entre
+                    return true;  
         }
     }
     else if (typeOfMove =="H" || typeOfMove =="V"){
@@ -120,9 +122,9 @@ void Board:: newGame(){
             } 
 
             //Initialisation des pions et joueurs: 
-            if (i==0 and j==8)
+            if (i==10 and j==8)
             {   
-                std::shared_ptr<Pawn> pawn1 = std::shared_ptr<Pawn>(new Pawn(Position(8,0)));  
+                std::shared_ptr<Pawn> pawn1 = std::shared_ptr<Pawn>(new Pawn(Position(8,10)));  
                 line[j]->setPiece(std::shared_ptr<Pawn>(pawn1));
                 auto player1 = std::shared_ptr<Player>(new Player(0,pawn1));
                 players.push_back(player1);

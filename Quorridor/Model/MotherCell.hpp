@@ -14,11 +14,8 @@ public:
         virtual std::shared_ptr<Piece> getPiece() {return cellPiece;}
         virtual void setPiece(std::shared_ptr<Piece> piece) {cellPiece = piece;}
         
-        std::shared_ptr<MotherCell> getneighbour(int neighbourPos) {return neighbours[neighbourPos];}
+        std::shared_ptr<MotherCell> getNeighbour(Position &neighbourPos); 
         void setNeighbours(std::vector<std::shared_ptr<MotherCell>> &neighboursVector) {neighbours = neighboursVector;}          
-        bool isNeighbour(Position neighbourPos);   
-                 
-
         bool occupied();
 };
 

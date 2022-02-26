@@ -5,31 +5,31 @@
 
 
 //MotherCell:
-bool MotherCell::isNeighbour(Position neighbourPos) {
 
+std::shared_ptr<MotherCell> MotherCell::getNeighbour(Position &neighbourPos){
     switch (neighbourPos.getX()) {
         case (0):
             switch (neighbourPos.getY()) {
-                case (2):
-                    return (neighbours[0] != nullptr);
-                case (-2):
-                    return (neighbours[2] != nullptr);
+                case (1):
+                    return neighbours[0];
+                case (-1):
+                    return neighbours[2];
             }
-        case (2):
+        case (1):
             if(neighbourPos.getY() == 0){
-                return (neighbours[1] != nullptr);
+                return neighbours[1];
             }
-        case (-2):
+        case (-1):
             if (neighbourPos.getY() == 0){
-                return (neighbours[3] != nullptr);
+                return neighbours[3];
             }
     }
-    return false;
+    return nullptr;
 }
 
 
 bool MotherCell::occupied() {
-    if (cellPiece) return true;
+    if (cellPiece ) return true;
     else return false;
 }
 
