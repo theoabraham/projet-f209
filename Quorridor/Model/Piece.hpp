@@ -6,25 +6,32 @@
 #include <memory>
 #include <vector>
 #include <iostream>
+#include <string>
 
 class Piece {
+public:
     virtual Position getPos()=0; 
     virtual void setPos(Position pos)=0; 
+    virtual ~Piece(){} 
 };
 
 
 class Wall : public Piece{
 private:
-    Position position; //Position et non vecteur de position --> sa position sera les cases jms utilisées dans la matrice (celles qui ont une valeur paire et une impaire)
+    Position position; 
+    std::string direction;
 public:
-    Position getPos() override;
-    void setPos(Position pos) override; 
-};
+    Wall(Position position, std::string direction): position(position), direction(direction) {}; 
+    Position getPos() override {return position;}
+    void setPos(Position pos) override {position = pos;}
+    
+    bool isHwall() {return direction=="H";}
+}; 
 
 class Pawn : public Piece{
     Position position;
 public: 
-    Pawn(Position initialPos);
+    Pawn(Position position): position{position}{}
     Position getPos() override {return position;}
     void setPos(Position pos) override {position = pos;}
 }; 

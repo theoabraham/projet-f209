@@ -1,9 +1,6 @@
 #include "DisplayBoard.hpp"
 
 void DisplayBoard:: printBoard() const {
-    /*
-    Imprime le plateau de jeux avec ces pions et murs sur le terminal 
-    */
       int boardSize = board->getBoardSize(); 
       std::vector<std::vector< std::shared_ptr<MotherCell> > > matrix = board->getMatrix(); 
 
@@ -16,12 +13,14 @@ void DisplayBoard:: printBoard() const {
           if (i%2==0){
            currentLine+=std::to_string(l)+"  "; //Numéro de ligne 
            l++; 
-          }
+          } else currentLine+="   "; 
           for(int j=0; j<boardSize;j++){
                 
-              if((i%2==1 and i<boardSize) or (j%2==1 and j<boardSize)){
+              if((i%2==1 and i<boardSize) || (j%2==1 and j<boardSize)){
+                  //TODO: Différencier les murs verticaux et horizontaux pour print
                   if(matrix[i][j]->occupied()) {
-                      currentLine += "W ";
+                      currentLine += "\u25AC "; //Mur horizontal 
+                      //currentLine+="\u25AE " ; //Mur vertical 
                   } else{
                       currentLine += "  ";
                   }
