@@ -16,12 +16,13 @@ void DisplayBoard:: printBoard() const {
           if (i%2==0){
            currentLine+=std::to_string(l)+"  "; //Numéro de ligne 
            l++; 
-          }
+          } else currentLine+="   "; 
           for(int j=0; j<boardSize;j++){
                 
-              if((i%2==1 and i<boardSize) or (j%2==1 and j<boardSize)){
+              if((i%2==1 and i<boardSize) || (j%2==1 and j<boardSize)){
                   if(matrix[i][j]->occupied()) {
                       currentLine += "\u25AC "; //Mur horizontal 
+                      //currentLine+="\u25AE " ; //Mur vertical 
                   } else{
                       currentLine += "  ";
                   }

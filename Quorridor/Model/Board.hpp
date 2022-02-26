@@ -51,18 +51,12 @@ class Board{
          * @return bool: true si coup valide false sinon 
         */ 
         bool checkInput(std::string &input, int currentP);
-        
-        /**
-         * @brief Lie les cases avec les cases de type PawnCell voisines
-        */
-        void bindPawnsCells();
 
         /**
          * @brief Lie les cases avec les cases de type PawnCell voisines
         */
-        void bindWallsCells();
-        
-        //TODO : Simplifier fonctions type "bindCells"
+        void bindCells();
+
 
         /** 
          * @brief Initialise le plateau, ses pions et ses joueurs

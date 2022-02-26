@@ -9,24 +9,18 @@
 class MotherCell{
 protected:
     std::shared_ptr<Piece> cellPiece;
-    std::vector<std::shared_ptr<MotherCell>> pawnsNeighbours{nullptr, nullptr, nullptr, nullptr};
-    std::vector<std::shared_ptr<MotherCell>> wallsNeighbours{nullptr, nullptr, nullptr, nullptr};
+    std::vector<std::shared_ptr<MotherCell>> neighbours{nullptr, nullptr, nullptr, nullptr};
 public:
         virtual std::shared_ptr<Piece> getPiece() {return cellPiece;}
         virtual void setPiece(std::shared_ptr<Piece> piece) {cellPiece = piece;}
         
-        std::shared_ptr<MotherCell> getPawnsNeighbour(int neighbourPos) {return pawnsNeighbours[neighbourPos];}
-        void setPawnsNeighbours(std::vector<std::shared_ptr<MotherCell>> &neighboursVector) {pawnsNeighbours = neighboursVector;}          
-        bool isPawnsNeighbour(Position neighbourPos);   
-        
-        
-        std::shared_ptr<MotherCell> getWallsNeighbour(Position neighbourPos); 
-        void setWallsNeighbours(std::vector<std::shared_ptr<MotherCell>> &neighboursVector) {wallsNeighbours = neighboursVector;}          
+        std::shared_ptr<MotherCell> getneighbour(int neighbourPos) {return neighbours[neighbourPos];}
+        void setNeighbours(std::vector<std::shared_ptr<MotherCell>> &neighboursVector) {neighbours = neighboursVector;}          
+        bool isNeighbour(Position neighbourPos);   
+                 
 
         bool occupied();
 };
-//TODO : Simplifier tout ce qui est fonction type "neighbour" +  restructurer 
-
 
 class PawnCell : public MotherCell{
 public:
