@@ -1,9 +1,3 @@
-//
-// Created by Mark Dimitrov on 15/02/2022.
-//
-
-//Au lieu des ifndef,, utiliser "pragma once"
-
 #ifndef PLAYER_HPP
 #define PLAYER_HPP
 
@@ -15,11 +9,14 @@
 class Player {
     int id;
     std::shared_ptr<Pawn> pawn; 
-    std::vector<Wall> walls; 
+    int walls = 6;  //idée:  décrémenter chaque fois que le joueur place un mur 
 public:    
-    Player(std::shared_ptr<Pawn> pawn, int id): pawn{std::move(pawn)}, id{id} {}
+    Player(int id, std::shared_ptr<Pawn> pawn):id{id}, pawn{std::move(pawn)} {}
     static std::string getInput();
-    std::shared_ptr<Pawn> getPawn(){return pawn;};
+    
+    std::shared_ptr<Pawn> getPawn(){return pawn;}
+    Position getPawnPos() {return pawn->getPos();}
+    void setPawnPos(Position pos) {pawn->setPos(pos);}
 };
 
 #endif

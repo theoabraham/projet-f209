@@ -3,6 +3,7 @@
 
 #include "MotherCell.hpp"
 #include "Player.hpp"
+#include "Position.hpp"
 #include <string>
 #include <array>
 #include <memory>
@@ -15,21 +16,47 @@ class Board{
         int size=9;
         int boardSize;
         
-        std::vector<std::vector<MotherCell> > matrix;
+        std::vector<std::vector< std::shared_ptr<MotherCell> > > matrix;
 
         std::vector<std::shared_ptr<Player>> players;
         int currentPlayer=0;
     public:
+
         explicit Board(int size=9);
-        void bindCells();
-        std::vector<std::vector<MotherCell> > getMatrix() {return matrix;}
         int getBoardSize() const {return boardSize;}
-        void newGame(int nPlayer=2);
-        void ExecuteMove(std::string& input);
-        bool checkInput(std::string &input);
-        bool checkPos(Position pos) const;
-        MotherCell operator[](const Position& other);
-        std::vector<std::shared_ptr<Player>> getPlayers(){return players;};
+        std::vector<std::shared_ptr<Player>> getPlayers() const {return players;};
+        std::vector<std::vector< std::shared_ptr<MotherCell> > > getMatrix() const {return matrix;}
+                
+        /**
+         * @brief Execute le coup  
+         * @param pos: le la case où doit aller le pion
+         * 
+        */
+        void executeMove(Position &pos, int currentP);
+
+        /**
+         * @brief vérifie si le coup est jouable
+        */
+        bool isValid(Position &move, Position &playePos);
+
+
+        /**
+         * @brief vérifie si le coup du joueur est valide 
+         * @param input: coup entré par le joueur
+         *        currentP: le joueur en question 
+         * @return bool: true si coup valide false sinon 
+        */ 
+        bool checkInput(std::string &input, int currentP);
+        
+        /**
+         * @brief Lie les cases avec les cases de type PawnCell voisines
+        */
+        void bindCells();
+        
+        /** 
+         * @brief Initialise le plateau, ses pions et ses joueurs
+        */
+        void newGame();        
 };
 
 #endif
