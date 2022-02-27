@@ -16,6 +16,8 @@ public:
     std::shared_ptr<Pawn> getPawn(){return pawn;}
     Position getPawnPos() {return pawn->getPos();}
     void setPawnPos(Position pos) {pawn->setPos(pos);}
+    void useWall(){walls--;};
+    bool hasWalls() const{return walls;};
 };
 
 #endif

@@ -20,6 +20,8 @@ class Board{
 
         std::vector<std::shared_ptr<Player>> players;
         int currentPlayer=0;
+
+        bool end = false;
     public:
 
         explicit Board(int size=9);
@@ -49,10 +51,10 @@ class Board{
          * @brief vérifie si le coup est jouable
          * @param typeOfMove : type de coup (si on veut bouger le pion ou placer un mur)
          *        move : la case qui est jouée 
-         *        playerPos: la position du pion du joueur
+         *        currentP: le joueur actuel
          * @returns bool: true si coup jouable selon les règles du jeu, false sinon
         */
-        bool isValid(std::string &typeOfMove, Position &move, Position &playerPos);
+        bool isValid(std::string &typeOfMove, Position &move, int currentP);
 
 
         /**
@@ -72,7 +74,11 @@ class Board{
         /** 
          * @brief Initialise le plateau, ses pions et ses joueurs
         */
-        void newGame();        
+        void newGame();
+
+        bool isEnd() const{return end;};
+
+        bool Face2Face(Position& next_pos, int currentP);
 };
 
 #endif
