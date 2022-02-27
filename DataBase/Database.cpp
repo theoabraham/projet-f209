@@ -5,7 +5,7 @@
 #include "Database.h"
 
 
-int DatabaseHandler::parse(const std::string& file_path, std::array<std::string, 4> * arr_addr){
+int DatabaseHandler::parse(const std::string& file_path, std::array<std::string, 5> * arr_addr){
     std::ifstream file;
     unsigned int num_of_line=0;
 
@@ -41,6 +41,7 @@ std::string DatabaseHandler::create_psw(){
         std::cout<< "Entrez votre mot de passe: ";
         std::cin >> psw;
         std::cout<< "Confirmez votre mot de passe: ";
+        std::cin >> pswv;
     }while (psw != pswv);
     return std::to_string(hashed(psw));
 }
@@ -52,9 +53,9 @@ int DatabaseHandler::is_string_valid(const std::string &filepath){
     return 1;
 }
 
-void DatabaseHandler::create_file(const std::string& filename){
+std::string DatabaseHandler::create_file(const std::string& filename){
     std::fstream output_file;
-    const std::string board="/////\n"; const std::string win="winned_game\n"; const std::string loosed="loosed_game\n";
+    const std::string board="/////\n"; const std::string win="0\n"; const std::string loosed="0\n";
     std::string psw = create_psw() + '\n';
     FILE *o_file = fopen(("Data/"+filename).c_str(), "w");
     if (o_file){
@@ -63,6 +64,8 @@ void DatabaseHandler::create_file(const std::string& filename){
         fwrite(win.c_str(), 1, win.size(), o_file);
         fwrite(loosed.c_str(), 1, loosed.size(), o_file);
     }
+    fclose(o_file);
+    return filename;
 }
 
 DatabaseHandler::DatabaseHandler() {
@@ -89,7 +92,8 @@ DatabaseHandler::DatabaseHandler() {
         if (ans =="n"){
             return;
         }
-        create_file(input_file);
+        std::string new_file = create_file(input_file);
+        parse(new_file, &string_arr);
         return;
     }
     std::cout << "______________________________" << std::endl;
