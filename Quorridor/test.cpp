@@ -8,5 +8,7 @@ int main(){
     //std::cout<< str[5] <<std::endl; 
     std::cout << "\u25AE" << std::endl; //mur vertical 
     std::cout << "\u25AC" << std::endl; //mur horizontal 
+
+    std::cout<<3%2<<std::endl; 
     return 0;
 }

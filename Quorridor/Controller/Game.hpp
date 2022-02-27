@@ -1,6 +1,3 @@
-//
-// Created by Mark Dimitrov on 15/02/2022.
-//
 #include "../Model/Board.hpp"
 #include "../View/DisplayBoard.hpp"
 #include <string>
@@ -17,8 +14,15 @@ private:
 public:
     Game(std::shared_ptr<Board> model, DisplayBoard &view);
     static std::string getInput();
-    void updateModel(std::string input);
-    void updateView();
+    
+    /**
+     * @brief cout avec les explication de comment un coup doit être entré 
+    */
+    void inputFormat(); 
+
+    /**
+     * @brief Fonction qui permet aux joueur de jouer grâce à une boucle while
+    */
     void start();
 };
 
