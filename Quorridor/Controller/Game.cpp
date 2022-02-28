@@ -24,7 +24,6 @@ void Game::start() {
         std::string input = getInput();
         
         if(model->checkInput(input, player)){
-            //Si le coup valide -> joueur suivant
             player=(player+1)%2;
         }
         else inputFormat(); 
