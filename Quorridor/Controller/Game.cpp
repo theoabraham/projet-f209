@@ -19,16 +19,15 @@ void Game::start() {
     int player = 0;
     view->printBoard();
     inputFormat();
-    while(true){
-        //TODO : Arrêter le jeu lorsqu'un des joueur a gagné
+    while(not model->isEnd()){
         std::cout<<"Player " + std::to_string(player+1) + "'s moves : "<<std::endl;
         std::string input = getInput();
         
         if(model->checkInput(input, player)){
-            //Si le coup valide -> joueur suivant 
             player=(player+1)%2;
         }
         else inputFormat(); 
         view->printBoard();
     }
+    std::cout << "Player "<< player-1 << " has won"<< std::endl;
 }

@@ -16,7 +16,9 @@ public:
     int getY() const {return y;}
 
     bool operator==(const Position& other) const;
-    Position operator*(int i); 
+    Position operator*(int i);
+    Position operator /(int i); 
+    Position operator-(Position& other) const;
 };
 
 #endif

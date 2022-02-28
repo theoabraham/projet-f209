@@ -13,20 +13,24 @@
 
 class Board{
     private:
-        int size=9;
+        int size;
         int boardSize;
         
         std::vector<std::vector< std::shared_ptr<MotherCell> > > matrix;
 
         std::vector<std::shared_ptr<Player>> players;
         int currentPlayer=0;
+
+        bool end = false;
     public:
 
         explicit Board(int size=9);
         int getBoardSize() const {return boardSize;}
         std::vector<std::shared_ptr<Player>> getPlayers() const {return players;};
         std::vector<std::vector< std::shared_ptr<MotherCell> > > getMatrix() const {return matrix;}
-
+        
+        bool isEnd() const{return end;};
+        
         /**
          * @brief Place le mur 
          * @param direction: mur horizontal ou vertical 
@@ -43,20 +47,20 @@ class Board{
         void executeMove(std::string &typeOfMove, Position &pos, int currentP);
 
 
-        bool checkWall(Position &playerPos, Position next_cell);
+        bool checkWall(std::string &direction, Position &next_cell);
 
         /**
          * @brief vérifie si le coup est jouable
          * @param typeOfMove : type de coup (si on veut bouger le pion ou placer un mur)
          *        move : la case qui est jouée 
-         *        playerPos: la position du pion du joueur
+         *        currentP: le joueur actuel
          * @returns bool: true si coup jouable selon les règles du jeu, false sinon
         */
-        bool isValid(std::string &typeOfMove, Position &move, Position &playerPos);
+        bool isValid(std::string &typeOfMove, Position &move, int currentP);
 
 
         /**
-         * @brief vérifie si le coup du joueur est valide 
+         * @brief vérifie si le coup du joueur est valide et fait appel a executeMove qui exécute le coup
          * @param input: coup entré par le joueur
          *        currentP: le joueur en question 
          * @return bool: true si coup valide, false sinon 
@@ -72,7 +76,15 @@ class Board{
         /** 
          * @brief Initialise le plateau, ses pions et ses joueurs
         */
-        void newGame();        
+        void newGame();
+
+
+
+        bool Face2Face(Position& next_pos, int currentP);
+
+        bool JumpOver(Position& next_pos, int currentP);
+
+        bool DiagonalMove(Position& next_pos, int currentP);
 };
 
 #endif
