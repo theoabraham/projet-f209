@@ -57,6 +57,16 @@ int DatabaseHandler::is_string_valid(const std::string &filepath){
     return 1;
 }
 
+bool DatabaseHandler::does_file_exist(const std::string &filename) {
+    std::ifstream ifile;
+    ifile.open(filename);
+    if (ifile){
+        return 1;
+    }else{
+        return 0;
+    }
+}
+
 std::string DatabaseHandler::create_file(const std::string& filename){
     //std::fstream output_file;
     const std::string board="/////\n"; const std::string win="0\n"; const std::string loosed="0\n";const std::string none="none\n";
@@ -75,8 +85,9 @@ std::string DatabaseHandler::create_file(const std::string& filename){
 }
 
 void DatabaseHandler::write_file(const std::string &filename, const std::string &friends_str) {
-    const std::string board="/////\n"; const std::string win="0\n"; const std::string loosed="0\n";const std::string none="none\n";
-    std::string psw = string_arr[0];
+    const std::string board="/////\n"; const std::string win=string_arr[2]+"\n";
+    const std::string loosed=string_arr[3]+"\n";const std::string none="none\n";
+    std::string psw = string_arr[0]+"\n";
     FILE *o_file = fopen(("Data/"+filename).c_str(), "w");
     if (o_file){
         fwrite(psw.c_str(), 1, psw.size(), o_file);
@@ -99,6 +110,13 @@ void DatabaseHandler::transfer_friend(){
             friendList.push_back(s);
         }
     }
+}
+
+void DatabaseHandler::addfriend(const std::string &friendname) {
+    if (!does_file_exist(friendname)){
+        return;
+    }
+
 }
 
 DatabaseHandler::DatabaseHandler() {
