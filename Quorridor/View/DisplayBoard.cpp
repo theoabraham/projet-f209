@@ -25,6 +25,7 @@ void DisplayBoard:: printBoard() const {
                       currentLine += "  ";
                   }
               } else{
+                  //TODO : que print board puisse différencier le pion du joueur (pas une priorité)
                   if(matrix[i][j]->occupied()) {
                       currentLine += "\u265F "; //Caractère du pion 
                   } else{
