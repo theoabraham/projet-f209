@@ -1,4 +1,5 @@
 #include "server.h"
+#include "/home/abraham/Documents/projet-f209/Quorridor/Controller/Game.hpp"
 
 #include <string.h>
 #include <sys/select.h>
@@ -65,9 +66,9 @@ void Server::handleSocketReadActivity(fd_set* in_set, int& nactivities) {
         this->disconnectUser(i);
       } else {
         // message_buffer[nbytes] = '\0';c
-        printf("%s\n",(const char*)&msg.message);
-        if(strcmp(&msg.message[0], ".") == 0){
-          printf("%s\n", "coup joué");
+        std::cout<<msg.message<<std::endl;
+        if(msg.message == "test"){
+          std::cout<<"coup joué"<<std::endl;
         } else {
         //TODO parser le message et verifier si c'est un coup
         char date_buffer[32];
