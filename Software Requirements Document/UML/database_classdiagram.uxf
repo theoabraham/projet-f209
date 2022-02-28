@@ -1,4 +1,4 @@
-<diagram program="umletino" version="14.4.0-SNAPSHOT"><zoom_level>10</zoom_level><element><id>UMLClass</id><coordinates><x>100</x><y>230</y><w>360</w><h>300</h></coordinates><panel_attributes>DatabaseHandler
+<diagram program="umletino" version="14.4.0-SNAPSHOT"><zoom_level>10</zoom_level><element><id>UMLClass</id><coordinates><x>100</x><y>230</y><w>360</w><h>330</h></coordinates><panel_attributes>DatabaseHandler
 --
 - string_arr : array&lt;string, 6&gt;
 - friendList : vector&lt;string&gt;
@@ -12,10 +12,12 @@
 + getTotalGames() const : int
 + getToAddFriendList() const : vector&lt;string&gt;
 + getFriendList() const : vector&lt;string&gt;
-+ parse(const string &amp;filepath, array&lt;string, 6&gt; *arr_adrr) : int
 + checkPswd(const string &amp;inputPsw, const &amp;stockedHash) : int
-+ createPsw() : string
 + isStringValid(const string &amp;filepath) : int
++ doesFileExist(const string &amp;filename) : bool
++ parse(const string &amp;filepath, array&lt;string, 6&gt; *arr_adrr) : int
++ createPsw() : string
 + createFile(const string &amp;filename) : string
 + writeFile(const string &amp;filename, const string &amp;friends_str) : void
-+ transferFriend() : void</panel_attributes><additional_attributes></additional_attributes></element></diagram>
++ transferFriend() : void
++ addFriend(const string &amp;friendName) : void</panel_attributes><additional_attributes></additional_attributes></element></diagram>
