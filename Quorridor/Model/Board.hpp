@@ -79,6 +79,10 @@ class Board{
         bool isEnd() const{return end;};
 
         bool Face2Face(Position& next_pos, int currentP);
+
+        bool JumpOver(Position& next_pos, int currentP);
+
+        bool DiagonalMove(Position& next_pos, int currentP);
 };
 
 #endif
