@@ -13,7 +13,7 @@
 
 class Board{
     private:
-        int size=9;
+        int size;
         int boardSize;
         
         std::vector<std::vector< std::shared_ptr<MotherCell> > > matrix;
@@ -28,7 +28,9 @@ class Board{
         int getBoardSize() const {return boardSize;}
         std::vector<std::shared_ptr<Player>> getPlayers() const {return players;};
         std::vector<std::vector< std::shared_ptr<MotherCell> > > getMatrix() const {return matrix;}
-
+        
+        bool isEnd() const{return end;};
+        
         /**
          * @brief Place le mur 
          * @param direction: mur horizontal ou vertical 
@@ -45,7 +47,7 @@ class Board{
         void executeMove(std::string &typeOfMove, Position &pos, int currentP);
 
 
-        bool checkWall(Position &playerPos, Position next_cell);
+        bool checkWall(std::string &direction, Position &next_cell);
 
         /**
          * @brief vérifie si le coup est jouable
@@ -58,7 +60,7 @@ class Board{
 
 
         /**
-         * @brief vérifie si le coup du joueur est valide 
+         * @brief vérifie si le coup du joueur est valide et fait appel a executeMove qui exécute le coup
          * @param input: coup entré par le joueur
          *        currentP: le joueur en question 
          * @return bool: true si coup valide, false sinon 
@@ -76,7 +78,7 @@ class Board{
         */
         void newGame();
 
-        bool isEnd() const{return end;};
+
 
         bool Face2Face(Position& next_pos, int currentP);
 

@@ -16,6 +16,12 @@ Position Position::operator*(int i) {
     return Position{x,y}; 
 }
 
+Position Position::operator/(int i) {
+    x =x/i;
+    y= y/i;
+    return Position{x,y}; 
+}
+
 Position Position::operator-(Position& other) const {
     return {x-other.x, y-other.y};
 }
