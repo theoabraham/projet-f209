@@ -1,6 +1,6 @@
 #include "DisplayBoard.hpp"
 
-void DisplayBoard:: printBoard() const {
+std::string DisplayBoard:: printBoard() const {
       int boardSize = board->getBoardSize(); 
       std::vector<std::vector< std::shared_ptr<MotherCell> > > matrix = board->getMatrix(); 
 
@@ -47,6 +47,7 @@ void DisplayBoard:: printBoard() const {
       stringBoard+=alphaLine+"\n"; 
 
       std::cout<<stringBoard;
+    return stringBoard;
   }
 
 //push branche spécifique : git push origin "branchName"
