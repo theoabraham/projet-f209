@@ -30,7 +30,15 @@ class Board{
         std::vector<std::vector< std::shared_ptr<MotherCell> > > getMatrix() const {return matrix;}
         
         bool isEnd() const{return end;};
-        
+
+        /**
+         * @brief s'occupe de la condition du jeu lorsque 2 pions se retrouvent face à face (voir règles)
+         * @return bool: true si coup valide, false sinon 
+        */ 
+        bool Face2Face(Position& next_pos, int currentP);
+        bool DiagonalMove(Position& next_pos, int currentP);
+        bool JumpOver(Position& next_pos, int currentP);       
+
         /**
          * @brief Place le mur 
          * @param direction: mur horizontal ou vertical 
@@ -47,7 +55,13 @@ class Board{
         void executeMove(std::string &typeOfMove, Position &pos, int currentP);
 
 
-        bool checkWall(std::string &direction, Position &next_cell);
+        /**
+         * @brief vérifie si le joueur peut placer un mur là où il a joué son coup   
+         * @param direction : mur horizontal ou vertical 
+         *        pos : la où le mur doit être placer (pos = position cible)
+         * @return bool: true si coup valide, false sinon
+        */
+        bool checkWall(std::string &direction, Position &pos);
 
         /**
          * @brief vérifie si le coup est jouable
@@ -78,13 +92,6 @@ class Board{
         */
         void newGame();
 
-
-
-        bool Face2Face(Position& next_pos, int currentP);
-
-        bool JumpOver(Position& next_pos, int currentP);
-
-        bool DiagonalMove(Position& next_pos, int currentP);
 };
 
 #endif

@@ -145,6 +145,8 @@ void Board::executeMove(std::string &typeOfMove, Position &pos, int currentP) {
 
         matrix[pos.getY()][pos.getX()]->setPiece(players[currentP]->getPawn());
         matrix[playerPos.getY()][playerPos.getX()]->setPiece(nullptr);
+
+        //On vérifie si un des joueur a gagné: 
         switch (currentP) {
             case 0:
                 if (players[currentP]->getPawnPos().getY() == (size - 1) * 2) {
@@ -200,7 +202,7 @@ bool Board::isValid(std::string &typeOfMove, Position &next_pos, int currentP) {
 
             //if (matrix[playerPos.getY()][playerPos.getX()]->getNeighbour(next_cell)->occupied()) { --> ne fonctionne pas, pourquoi??? 
             if (not matrix[playerPos.getY() - next_cell.getY()*2][playerPos.getX() + next_cell.getX()*2]->occupied()) {
-                //Si la prochaine case est libre
+                //Si la prochaine case voisine est libre
                 if (not matrix[playerPos.getY() - next_cell.getY()][playerPos.getX() + next_cell.getX()]->occupied())
                     //Si il n'y a pas de mur entre
                     res = true;
@@ -282,13 +284,13 @@ void Board::newGame() {
 
             //Initialisation des pions et joueurs: 
             if (i == 10 and j == 8) {
-                std::shared_ptr<Pawn> pawn1 = std::shared_ptr<Pawn>(new Pawn(Position(8, 10)));
+                std::shared_ptr<Pawn> pawn1 = std::shared_ptr<Pawn>(new Pawn(Position(j, i)));
                 line[j]->setPiece(std::shared_ptr<Pawn>(pawn1));
                 auto player1 = std::shared_ptr<Player>(new Player(0, pawn1));
                 players.push_back(player1);
             }
             if (i == 16 and j == 8) {
-                std::shared_ptr<Pawn> pawn2 = std::shared_ptr<Pawn>(new Pawn(Position(8, 16)));
+                std::shared_ptr<Pawn> pawn2 = std::shared_ptr<Pawn>(new Pawn(Position(j, i)));
                 line[j]->setPiece(std::shared_ptr<Pawn>(pawn2));
                 auto player2 = std::shared_ptr<Player>(new Player(1, pawn2));
                 players.push_back(player2);

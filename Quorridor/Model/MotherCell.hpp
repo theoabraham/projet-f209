@@ -24,6 +24,7 @@ public:
          *@returns la case voisine en question 
         */
         std::shared_ptr<MotherCell> getNeighbour(Position &neighbourPos);
+        
         std::shared_ptr<MotherCell> getNeighbour(int side){return neighbours[side];};
         
         
