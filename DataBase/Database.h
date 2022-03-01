@@ -33,18 +33,17 @@ public:
     std::vector<std::string>  getFriendList() const {return friendList;}
 
     // Méthode "bool"
-    int check_pswd(const std::string& input_psw, const std::string& stocked_hash);
+    int checkPswd(const std::string& input_psw, const std::string& stocked_hash);
     int is_string_valid(const std::string &filepath);
     bool does_file_exist(const std::string &filename);
     // Méthodes
     int parse(const std::string& file_path, std::array<std::string, 6> * arr_addr);
-    std::string create_psw();
-    std::string create_file(const std::string& filename);
-    void write_friends(const std::string& filename,const std::string &friends_str);
-    void transfer_friend();
+    std::string createPsw();
+    std::string createFile(const std::string& filename);
+    void writeFriends(const std::string& filename,const std::string &friends_str);
+    void writeFriendstoAdd(const std::string &friends_name);
+    void transferFriend();
     void addfriend(const std::string& friendname);
 
 };
-
-
 #endif //PROJET_F209_DATABASE_H
