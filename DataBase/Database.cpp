@@ -84,7 +84,7 @@ std::string DatabaseHandler::create_file(const std::string& filename){
     return filename;
 }
 
-void DatabaseHandler::write_file(const std::string &filename, const std::string &friends_str) {
+void DatabaseHandler::write_friends(const std::string &filename, const std::string &friends_str) {
     const std::string board="/////\n"; const std::string win=string_arr[2]+"\n";
     const std::string loosed=string_arr[3]+"\n";const std::string none="none\n";
     std::string psw = string_arr[0]+"\n";
@@ -103,6 +103,10 @@ void DatabaseHandler::write_file(const std::string &filename, const std::string 
 void DatabaseHandler::transfer_friend(){
     for (std::string s : toAddList){
         std::string ans;
+        if (s=="none"){
+            std::cout << "Aucune demande en amis :weary:" << std::endl;
+            return;
+        }
         while (ans != "n" and ans != "N" and ans !="Y" and ans !="y"){
             std::cout << "Voulez vous ajoutez " << s << " en amis ? (Y/n) : "; std::cin >> ans;
         }
@@ -113,9 +117,11 @@ void DatabaseHandler::transfer_friend(){
 }
 
 void DatabaseHandler::addfriend(const std::string &friendname) {
-    if (!does_file_exist(friendname)){
+    if(!does_file_exist(friendname) or username==friendname){
+        std::cout << "Amis innexistant / impossible à ajouter" << std::endl;
         return;
     }
+
 
 }
 
@@ -169,7 +175,7 @@ DatabaseHandler::DatabaseHandler() {
     for (std::string s:friendList){
         friends_str += (s + " ");
     }
-    write_file(username, friends_str);
+    write_friends(username, friends_str);
     std::cout << "______________________________" << std::endl;
     std::cout << "Construction de la matrice" << std::endl;
     std::cout << "..." << std::endl;
@@ -177,8 +183,5 @@ DatabaseHandler::DatabaseHandler() {
 
 int main(){
     DatabaseHandler dbh;
-    for (std::string s: dbh.getFriendList()){
-        std::cout << s << std::endl;
-    }
     return 0;
 }

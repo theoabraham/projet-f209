@@ -40,7 +40,7 @@ public:
     int parse(const std::string& file_path, std::array<std::string, 6> * arr_addr);
     std::string create_psw();
     std::string create_file(const std::string& filename);
-    void write_file(const std::string& filename,const std::string &friends_str);
+    void write_friends(const std::string& filename,const std::string &friends_str);
     void transfer_friend();
     void addfriend(const std::string& friendname);
 
