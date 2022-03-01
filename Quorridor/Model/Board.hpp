@@ -7,8 +7,7 @@
 #include <string>
 #include <array>
 #include <memory>
-
-#include "iostream"
+#include <iostream>
 
 
 class Board{
@@ -38,6 +37,7 @@ class Board{
         bool Face2Face(Position& next_pos, int currentP);
         bool DiagonalMove(Position& next_pos, int currentP);
         bool JumpOver(Position& next_pos, int currentP);       
+
 
         /**
          * @brief Place le mur 
@@ -72,7 +72,6 @@ class Board{
         */
         bool isValid(std::string &typeOfMove, Position &move, int currentP);
 
-
         /**
          * @brief vérifie si le coup du joueur est valide et fait appel a executeMove qui exécute le coup
          * @param input: coup entré par le joueur
@@ -81,17 +80,22 @@ class Board{
         */ 
         bool checkInput(std::string &input, int currentP);
 
+
         /**
          * @brief Lie les cases avec les cases de type PawnCell voisines
         */
         void bindCells();
 
+        /**
+         * @brief initialise le joueur et son pion 
+         * @returns le pion initialisé  
+        */
+        std::shared_ptr<Pawn> setPlayer(Position pos, int id); 
 
         /** 
          * @brief Initialise le plateau, ses pions et ses joueurs
         */
         void newGame();
-
 };
 
 #endif

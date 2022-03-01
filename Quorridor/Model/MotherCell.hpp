@@ -7,7 +7,7 @@
 
 
 class MotherCell{
-protected:
+protected: 
     std::shared_ptr<Piece> cellPiece;
     std::vector<std::shared_ptr<MotherCell>> neighbours{nullptr, nullptr, nullptr, nullptr};
 public:
@@ -24,10 +24,7 @@ public:
          *@returns la case voisine en question 
         */
         std::shared_ptr<MotherCell> getNeighbour(Position &neighbourPos);
-        
-        std::shared_ptr<MotherCell> getNeighbour(int side){return neighbours[side];};
-        
-        
+        std::shared_ptr<MotherCell> getNeighbour(int side){return neighbours[side];}
 };
 
 class PawnCell : public MotherCell{

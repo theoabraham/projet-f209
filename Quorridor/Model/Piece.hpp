@@ -10,8 +10,10 @@
 
 class Piece {
 public:
-    virtual Position getPos()=0; 
+    virtual Position getPos()=0;  
     virtual void setPos(Position pos)=0; 
+    virtual bool isHWall()=0; 
+    virtual int getID() =0; 
     virtual ~Piece(){} 
 };
 
@@ -25,15 +27,20 @@ public:
     Position getPos() override {return position;}
     void setPos(Position pos) override {position = pos;}
     
-    bool isHwall() {return direction=="H";}
+    int getID() override {return 7;}
+    bool isHWall() override {return direction=="H";}
 }; 
 
 class Pawn : public Piece{
     Position position;
+    int id; //Joueur auquel appartient le pion 
 public: 
-    Pawn(Position position): position{position}{}
+    Pawn(Position position, int id): position{position}, id{id} {}
     Position getPos() override {return position;}
     void setPos(Position pos) override {position = pos;}
+    
+    int getID() override {return id;}
+    bool isHWall() override {return false;}
 }; 
 
 #endif 

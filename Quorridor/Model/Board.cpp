@@ -231,7 +231,6 @@ bool Board::checkInput(std::string &input, int currentP) {
     next_pos = next_pos * 2; //*2 pour avoir la vrai position sur la matrice
     currentPlayer = currentP;
     if (isValid(typeOfMove, next_pos, currentP)) {
-        //Si coup valide
         executeMove(typeOfMove, next_pos, currentP);
         return true;
     }
@@ -268,32 +267,35 @@ void Board::bindCells() {
     }
 }
 
+std::shared_ptr<Pawn> Board::setPlayer(Position pos, int id){
+    std::shared_ptr<Pawn> pawn = std::shared_ptr<Pawn>(new Pawn(pos, id));
+
+    std::shared_ptr<Player> player = std::shared_ptr<Player>(new Player(id, pawn));
+    players.push_back(player);
+
+    return pawn; 
+} 
+
 void Board::newGame() {
-    //TODO : pouvoir choisir si on jeux 2 ou 4 joueurs 
+    //TODO : pouvoir choisir si on joue 2 ou 4 joueurs 
     boardSize = size * 2 - 1;
     for (int i = 0; i < size * 2 - 1; i++) {
         std::vector<std::shared_ptr<MotherCell> > line;
         for (int j = 0; j < size * 2 - 1; j++) {
 
             //Initialisation des cases: 
-            if ((i % 2 != 0 and i < boardSize) or (j % 2 != 0 and j < boardSize)) { //Si case impaire : Mur
+            if ((i % 2 != 0 and i < boardSize) or (j % 2 != 0 and j < boardSize)) { 
                 line.push_back(std::shared_ptr<WallCell>(new WallCell()));
-            } else { //Cases Pions
+            } else { 
                 line.push_back(std::shared_ptr<PawnCell>(new PawnCell()));
             }
 
             //Initialisation des pions et joueurs: 
             if (i == 10 and j == 8) {
-                std::shared_ptr<Pawn> pawn1 = std::shared_ptr<Pawn>(new Pawn(Position(j, i)));
-                line[j]->setPiece(std::shared_ptr<Pawn>(pawn1));
-                auto player1 = std::shared_ptr<Player>(new Player(0, pawn1));
-                players.push_back(player1);
+                line[j]->setPiece(setPlayer(Position{j,i}, 0));              
             }
             if (i == 16 and j == 8) {
-                std::shared_ptr<Pawn> pawn2 = std::shared_ptr<Pawn>(new Pawn(Position(j, i)));
-                line[j]->setPiece(std::shared_ptr<Pawn>(pawn2));
-                auto player2 = std::shared_ptr<Player>(new Player(1, pawn2));
-                players.push_back(player2);
+                line[j]->setPiece(setPlayer(Position{j,i}, 1));
             }
         }
         matrix.push_back(line);
