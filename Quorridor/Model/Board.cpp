@@ -8,6 +8,9 @@ bool Board::DiagonalMove(Position &next_pos, int currentP) {
     std::cout<<"Diag move"<<std::endl;
     Position player_pos = players[currentP]->getPawnPos();
     Position difference = player_pos - next_pos;
+    difference.setX(-difference.getX());
+    auto joueur = matrix[player_pos.getY()][player_pos.getX()];
+    auto voisin = matrix[player_pos.getY()][player_pos.getX()]->getNeighbour(2);
     std::vector<int> sides;
     switch (difference.getX()) {
         case 2:
@@ -36,27 +39,29 @@ bool Board::DiagonalMove(Position &next_pos, int currentP) {
             break;
     }
     for (auto side: sides) {
-        if (matrix[player_pos.getX()][player_pos.getY()]->getNeighbour(side)) { // Vérifie si pas de mur entre cases
-            if (matrix[player_pos.getX()][player_pos.getY()]->getNeighbour(side)->occupied()) { // Pion sur case voisine
+        if (matrix[player_pos.getY()][player_pos.getX()]->getNeighbour(side)) {// Vérifie si pas de mur entre cases
+            std::cout<<"ok 1" <<std::endl;
+            if (matrix[player_pos.getY()][player_pos.getX()]->getNeighbour(side)->occupied()) {
+                std::cout<<"ok 2" << std::endl;// Pion sur case voisine
                 switch (side) {
                     case 0:
-                        if (matrix[player_pos.getX()][player_pos.getY() + 3]->occupied() and
-                            not matrix[player_pos.getX() + difference.getX()][player_pos.getY() + 2]->occupied()) {
+                        if (matrix[player_pos.getY() + 3][player_pos.getX()]->occupied() and
+                            not matrix[player_pos.getY() + 2][player_pos.getX() + difference.getX()]->occupied()) {
                             return true; //Mur derrière pion voisin et case cible pas occupée
                         }
                     case 2:
-                        if (matrix[player_pos.getX()][player_pos.getY() - 3]->occupied() and
-                            not matrix[player_pos.getX() + difference.getX()][player_pos.getY() - 2]->occupied()) {
+                        if (matrix[player_pos.getY()-3][player_pos.getX()]->occupied() and
+                            not matrix[player_pos.getY() -2 ][player_pos.getX() +difference.getX()]->occupied()) {
                             return true;
                         }
                     case 1:
-                        if (matrix[player_pos.getX()+3][player_pos.getY()]->occupied() and
-                            not matrix[player_pos.getX()+2][player_pos.getY() + difference.getY()]->occupied()) {
+                        if (matrix[player_pos.getY()][player_pos.getX()+3]->occupied() and
+                            not matrix[player_pos.getY()+difference.getY()][player_pos.getX()+2]->occupied()) {
                             return true; //Mur derrière pion voisin et case cible pas occupée
                         }
                     case 3:
-                        if (matrix[player_pos.getX()-3][player_pos.getY()]->occupied() and
-                            not matrix[player_pos.getX()-2][player_pos.getY() + difference.getY()]->occupied()) {
+                        if (matrix[player_pos.getY()][player_pos.getX()-3]->occupied() and
+                            not matrix[player_pos.getY()+difference.getY()][player_pos.getX()-2]->occupied()) {
                             return true; //Mur derrière pion voisin et case cible pas occupée
                         }
                 }
@@ -262,7 +267,7 @@ void Board::bindCells() {
             } else {
                 neighbours.push_back(nullptr);
             }
-            matrix[j][i]->setNeighbours(neighbours);
+            matrix[i][j]->setNeighbours(neighbours);
         }
     }
 }
