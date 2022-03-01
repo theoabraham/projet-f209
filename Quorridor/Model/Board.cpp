@@ -153,15 +153,17 @@ void Board::executeMove(std::string &typeOfMove, Position &pos, int currentP) {
         //On vérifie si un des joueur a gagné: 
         switch (currentP) {
             case 0:
-                if (players[currentP]->getPawnPos().getY() == (size - 1) * 2) {
-                    end = true;
-                }
+                if (players[currentP]->getPawnPos().getY() == boardSize) end = true;
                 break;
             case 1:
-                if (players[currentP]->getPawnPos().getY() == 0) {
-                    end = true;
-                }
+                if (players[currentP]->getPawnPos().getY() == 0) end = true;
+                break;    
+            case 2:
+                if (players[currentP]->getPawnPos().getX() == 0) end = true;
                 break;
+            case 3:
+                if (players[currentP]->getPawnPos().getX() == boardSize) end = true;
+                break;            
         }
     } else {
         placeWall(typeOfMove, pos);
@@ -290,7 +292,7 @@ void Board::newGame() {
             }
 
             //Initialisation des pions et joueurs: 
-            if (i == 0 and j == 8) {
+            if (i == 10 and j == 8) {
                 line[j]->setPiece(setPlayer(Position{j,i}, 0));              
             }
             if (i == 16 and j == 8) {
