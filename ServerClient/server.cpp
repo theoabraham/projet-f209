@@ -23,10 +23,6 @@ void Server::run(int port) {
   printf("Server is waiting for new connections on port %d...\n", port);
   this->max_fd = master_socket;
 
-  std::shared_ptr<Board> board = std::shared_ptr<Board>(new Board());
-  DisplayBoard displayBoard(board);
-  Game game(board, displayBoard);
-
   fd_set read_set;
   while (true) {
     this->prepateFDSet(&read_set);
@@ -71,10 +67,9 @@ void Server::handleSocketReadActivity(fd_set* in_set, int& nactivities) {
       } else if (nbytes == 0) {
         this->disconnectUser(i);
       } else {
-        // message_buffer[nbytes] = '\0';c
-        std::cout<<msg.message<<std::endl;
-        if(msg.message == "coup"){
-          std::cout<< msg.message.back() <<std::endl;
+        // message_buffer[nbytes] = '\0';
+        if(msg.message.substr(0,1) == (string)"."){
+          std::cout<< msg.message <<std::endl;
         } else {
         //TODO parser le message et verifier si c'est un coup
         char date_buffer[32];
