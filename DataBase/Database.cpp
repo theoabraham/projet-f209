@@ -68,8 +68,10 @@ int DatabaseHandler::is_string_valid(const std::string &filepath){
     return 1;
 }
 
-/*
- * return vrai si le fichier donné en paramètre est existant
+/**
+ * @brief return vrai si le fichier donné en paramètre est existant
+ * @param filename
+ * @return
  */
 bool DatabaseHandler::does_file_exist(const std::string &filename) {
     std::ifstream ifile("Data/"+filename);
@@ -79,8 +81,10 @@ bool DatabaseHandler::does_file_exist(const std::string &filename) {
         return 0;
     }
 }
-/*
- * créé un fichier avec des valeures initiale
+/**
+ * @brief créé un fichier avec des valeures initiale
+ * @param filename
+ * @return
  */
 std::string DatabaseHandler::createFile(const std::string& filename){
     const std::string board="/////\n"; const std::string win="0\n"; const std::string loosed="0\n";
@@ -98,8 +102,10 @@ std::string DatabaseHandler::createFile(const std::string& filename){
     fclose(o_file);
     return filename;
 }
-/*
- * Ecrit dans un fichier donnéé une liste d'amis
+/**
+ * @brief Ecrit dans un fichier donnéé une liste d'amis
+ * @param filename
+ * @param friends_str
  */
 void DatabaseHandler::writeFriends(const std::string &filename, const std::string &friends_str) {
     const std::string board=string_arr[1]+"\n"; const std::string win=string_arr[2]+"\n";
@@ -116,9 +122,8 @@ void DatabaseHandler::writeFriends(const std::string &filename, const std::strin
     }
     fclose(o_file);
 }
-
-/*
- * Transfer les amis de la liste toAdd à FriendList en demandant à l'utilsateur
+/**
+ * @brief Transfer les amis de la liste toAdd à FriendList en demandant à l'utilsateur
  */
 void DatabaseHandler::transferFriend() {
     for (std::string s : toAddList){
@@ -135,8 +140,9 @@ void DatabaseHandler::transferFriend() {
         }
     }
 }
-/*
- *  écrit les amis à ajouter dans la ligne 5 du fichier texte
+/**
+ * @brief écrit les amis à ajouter dans la ligne 5 du fichier texte
+ * @param friends_name
  */
 void DatabaseHandler::writeFriendstoAdd(const std::string &friends_name) {
     // recupération temporaire des données de temp;
@@ -157,6 +163,15 @@ void DatabaseHandler::writeFriendstoAdd(const std::string &friends_name) {
         fwrite(none.c_str(), 1, none.size(), o_file);
     }
     fclose(o_file);
+}
+
+/**
+ * @brief Affiche une liste des amis
+ */
+void DatabaseHandler::listFriends() {
+    for (std::string s:friendList){
+        if (s!= "none") std::cout << s << std::endl;
+    }
 }
 
 DatabaseHandler::DatabaseHandler() {
@@ -210,6 +225,8 @@ DatabaseHandler::DatabaseHandler() {
         friends_str += (s + " ");
     }
     writeFriends(username, friends_str);
+    std::cout << "Voici votre liste d'amis:"<<std::endl;
+    listFriends();
     std::cout << "______________________________" << std::endl;
     //ajout d'amis
     std::cout << "Ajouts d'amis:" << std::endl;
