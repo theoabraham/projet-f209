@@ -1,5 +1,8 @@
 #include "server.h"
-#include "/home/abraham/Documents/projet-f209/Quorridor/Controller/Game.hpp"
+#include "../Quorridor/Controller/Game.hpp"
+#include "../Quorridor/Model/Board.hpp"
+#include "../Quorridor/View/DisplayBoard.hpp"
+
 
 #include <string.h>
 #include <sys/select.h>
@@ -14,7 +17,6 @@
 Server::Server() {}
 
 void Server::run(int port) {
-  //TODO creer une instance de jeu
   this->master_socket = checked(create_socket());
   bind_socket(this->master_socket, port);
   listen_socket(this->master_socket);
@@ -68,12 +70,12 @@ void Server::handleSocketReadActivity(fd_set* in_set, int& nactivities) {
         // message_buffer[nbytes] = '\0';
         if((msg.message.substr(0,1) == (string)".") && socket == this->users[activePlayer]->socket){
           std::string coup = msg.message.substr(msg.message.length() - 4, 4);
+          std::cout<< coup <<std::endl;
           if(this->game.checkInput(coup, this->activePlayer)){
             message_t strBoard;
             strBoard.message = this->displayBoard.printBoard();
             this->forward(&strBoard);
             this->activePlayer = (activePlayer + 1) % 2;
-            
           }
         } else {
         //TODO parser le message et verifier si c'est un coup
@@ -126,6 +128,9 @@ void Server::handleNewConnection() {
   uint16_t port;
   to_ip_host(&remote_host, &ip, &port);
   printf("New user %s connected (%s:%d)\n", username, ip, port);
+  message_t strBoard;
+  strBoard.message = this->displayBoard.printBoard();
+  ssend(socket, &strBoard);
   if (socket > this->max_fd) {
     this->max_fd = socket;
   }
@@ -145,9 +150,4 @@ int main(int argc, char const* argv[]) {
   server.run(port);
   return 0;
 
-
-
 }
-
-}
-
