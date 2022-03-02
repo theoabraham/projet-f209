@@ -65,10 +65,15 @@ void Server::handleSocketReadActivity(fd_set* in_set, int& nactivities) {
       } else if (nbytes == 0) {
         this->disconnectUser(i);
       } else {
-        // message_buffer[nbytes] = '\0';c
-        std::cout<<msg.message<<std::endl;
-        if(msg.message == "test"){
-          std::cout<<"coup joué"<<std::endl;
+        // message_buffer[nbytes] = '\0';
+        if((msg.message.substr(0,1) == (string)".") && socket == this->users[activePlayer]->socket){
+          std::string coup = msg.message.substr(msg.message.length() - 4, 4);
+          if(this->game.checkInput(coup, this->activePlayer)){
+            message_t strBoard;
+            strBoard.message = this->displayBoard.printBoard();
+            this->forward(&strBoard);
+            this->activePlayer = (activePlayer + 1) % 2;
+          }
         } else {
         //TODO parser le message et verifier si c'est un coup
         char date_buffer[32];
