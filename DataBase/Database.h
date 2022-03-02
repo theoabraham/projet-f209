@@ -16,9 +16,9 @@
 
 class DatabaseHandler {
 private:
-    std::array<std::string, 6> string_arr;
-    std::vector<std::string> friendList;
-    std::vector<std::string> toAddList;
+    std::array<std::string, 6> string_arr; // permet le parsing du fichier principal
+    std::vector<std::string> friendList;   // sous liste d'amis du fichier
+    std::vector<std::string> toAddList;    // amis à rajouter
     std::string username;
 public:
     // Constructeurs
@@ -43,7 +43,6 @@ public:
     void writeFriends(const std::string& filename,const std::string &friends_str);
     void writeFriendstoAdd(const std::string &friends_name);
     void transferFriend();
-    void addfriend(const std::string& friendname);
 
 };
 #endif //PROJET_F209_DATABASE_H
