@@ -26,7 +26,7 @@ void Game::start() {
         if(model->checkInput(input, player)){
             player=(player+1)%2;
         }
-        else inputFormat(); 
+        else inputFormat();
         view->printBoard();
     }
     std::cout << "Player "<< player-1 << " has won"<< std::endl;
