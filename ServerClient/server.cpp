@@ -91,6 +91,7 @@ void Server::handleSocketReadActivity(fd_set* in_set, int& nactivities) {
   }
 }
 
+
 void Server::disconnectUser(unsigned user_num) {
   user_t* user = this->users[user_num];
   printf("User %s has disconnected\n", user->name.c_str());
