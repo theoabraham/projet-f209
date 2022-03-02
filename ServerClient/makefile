@@ -21,3 +21,4 @@ clean:
 	rm -f client server *.o
 
 clear: clean
+
