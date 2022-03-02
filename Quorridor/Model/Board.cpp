@@ -1,6 +1,6 @@
 #include "Board.hpp"
 
-Board::Board(int nplayer, int size) : size{size}, nplayer{nplayer} {
+Board::Board(int nplayer, int size, const int START_WALL): size{size}, nplayer{nplayer}, START_WALL{START_WALL} {
     newGame();
 }
 
@@ -268,7 +268,7 @@ void Board::bindCells() {
 std::shared_ptr<Pawn> Board::setPlayer(Position pos, int id){
     std::shared_ptr<Pawn> pawn = std::shared_ptr<Pawn>(new Pawn(pos, id));
 
-    std::shared_ptr<Player> player = std::shared_ptr<Player>(new Player(id, pawn));
+    std::shared_ptr<Player> player = std::shared_ptr<Player>(new Player(id, pawn), START_WALL);
     players.push_back(player);
     return pawn; 
 } 
