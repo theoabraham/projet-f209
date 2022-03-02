@@ -1,92 +1,26 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<diagram program="umlet" version="14.3.0">
-  <zoom_level>6</zoom_level>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>882</x>
-      <y>210</y>
-      <w>90</w>
-      <h>54</h>
-    </coordinates>
-    <panel_attributes>/Coord/
+<diagram program="umletino" version="14.4.0-SNAPSHOT"><zoom_level>10</zoom_level><element><id>UMLClass</id><coordinates><x>270</x><y>80</y><w>150</w><h>90</h></coordinates><panel_attributes>/Coord/
 --
 -data:tuple&lt;int&gt;
 --
 +get_data():tuple&lt;int&gt;
-+set_data():tuple&lt;int&gt;</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>978</x>
-      <y>300</y>
-      <w>60</w>
-      <h>18</h>
-    </coordinates>
-    <panel_attributes>Position</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>762</x>
-      <y>300</y>
-      <w>144</w>
-      <h>72</h>
-    </coordinates>
-    <panel_attributes>Move
++set_data():tuple&lt;int&gt;</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>430</x><y>230</y><w>100</w><h>30</h></coordinates><panel_attributes>Position</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>70</x><y>230</y><w>240</w><h>120</h></coordinates><panel_attributes>Move
 --
 + UP: tuple&lt;int&gt;(+1*player_id,0)
 + DOWN: tuple&lt;int&gt;(-1*player_id,0)
 + LEFT: tuple&lt;int&gt;(0,+1*player_id)
-+ RIGHT: tuple&lt;int&gt;(0, +1*player_id)</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>1440</x>
-      <y>432</y>
-      <w>162</w>
-      <h>66</h>
-    </coordinates>
-    <panel_attributes>Cell
++ RIGHT: tuple&lt;int&gt;(0, +1*player_id)</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1200</x><y>450</y><w>270</w><h>110</h></coordinates><panel_attributes>Cell
 --
 -neighbour: vector&lt;Cell*&gt;
 -occupied: Pawn*
 --
 +setNeighbours(vector&lt;Cell*&gt;):void
-+acceptPion(Pion*):void</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>1236</x>
-      <y>432</y>
-      <w>126</w>
-      <h>60</h>
-    </coordinates>
-    <panel_attributes>Board
++acceptPion(Pion*):void</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>860</x><y>450</y><w>210</w><h>100</h></coordinates><panel_attributes>Board
 --
 -size: int=9
 -matrix: vector&lt;vector&lt;Cell&gt; &gt;
 --
 +printBoard():string
-+bindCase():void</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>1194</x>
-      <y>258</y>
-      <w>126</w>
-      <h>114</h>
-    </coordinates>
-    <panel_attributes>Game
++bindCase():void</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>790</x><y>160</y><w>210</w><h>190</h></coordinates><panel_attributes>Game
 --
 -board:Board
 -players:vector&lt;Player&gt;
@@ -98,40 +32,7 @@
 +ExecuteMove():void
 +nextTurn():void
 +endOfGame():void
-+start():void</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>1356</x>
-      <y>456</y>
-      <w>96</w>
-      <h>18</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;140.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>1260</x>
-      <y>366</y>
-      <w>18</w>
-      <h>78</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;110.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>1068</x>
-      <y>432</y>
-      <w>150</w>
-      <h>114</h>
-    </coordinates>
-    <panel_attributes>Player
++start():void</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1060</x><y>490</y><w>160</w><h>30</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;10;140;10</additional_attributes></element><element><id>Relation</id><coordinates><x>900</x><y>340</y><w>30</w><h>130</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;110</additional_attributes></element><element><id>UMLClass</id><coordinates><x>580</x><y>450</y><w>250</w><h>190</h></coordinates><panel_attributes>Player
 --
 -id: int={-1,1}
 -pawn: Pawn
@@ -144,18 +45,7 @@
 +getName():string
 +setName(string):void
 +getPawn(id):Pawn
-</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>1092</x>
-      <y>600</y>
-      <w>126</w>
-      <h>114</h>
-    </coordinates>
-    <panel_attributes>Pawn
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>620</x><y>730</y><w>210</w><h>190</h></coordinates><panel_attributes>Pawn
 --
 -id: int
 -position: Position
@@ -165,86 +55,6 @@
 +getPos():Position
 +getOwner():Player
 +move(Move):void
-</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>918</x>
-      <y>258</y>
-      <w>102</w>
-      <h>54</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;40.0;150.0;40.0;150.0;70.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>828</x>
-      <y>258</y>
-      <w>108</w>
-      <h>54</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>160.0;10.0;160.0;40.0;10.0;40.0;10.0;70.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>1182</x>
-      <y>366</y>
-      <w>96</w>
-      <h>78</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>140.0;10.0;140.0;60.0;10.0;60.0;10.0;110.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>1032</x>
-      <y>300</y>
-      <w>174</w>
-      <h>144</h>
-    </coordinates>
-    <panel_attributes>lt=-
-</panel_attributes>
-    <additional_attributes>10.0;10.0;100.0;10.0;100.0;220.0;100.0;10.0;270.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>900</x>
-      <y>324</y>
-      <w>306</w>
-      <h>120</h>
-    </coordinates>
-    <panel_attributes>lt=-
-</panel_attributes>
-    <additional_attributes>10.0;10.0;360.0;10.0;360.0;180.0;360.0;10.0;490.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>1146</x>
-      <y>540</y>
-      <w>18</w>
-      <h>72</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;100.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLUseCase</id>
-    <coordinates>
-      <x>1698</x>
-      <y>312</y>
-      <w>72</w>
-      <h>24</h>
-    </coordinates>
-    <panel_attributes>*Use case 3*</panel_attributes>
-    <additional_attributes/>
-  </element>
-</diagram>
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>330</x><y>160</y><w>170</w><h>90</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>10;10;10;40;150;40;150;70</additional_attributes></element><element><id>Relation</id><coordinates><x>180</x><y>160</y><w>180</w><h>90</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>160;10;160;40;10;40;10;70</additional_attributes></element><element><id>Relation</id><coordinates><x>770</x><y>340</y><w>160</w><h>130</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>140;10;140;60;10;60;10;110</additional_attributes></element><element><id>Relation</id><coordinates><x>520</x><y>230</y><w>290</w><h>240</h></coordinates><panel_attributes>lt=-
+</panel_attributes><additional_attributes>10;10;100;10;100;220;100;10;270;10</additional_attributes></element><element><id>Relation</id><coordinates><x>300</x><y>270</y><w>510</w><h>200</h></coordinates><panel_attributes>lt=-
+</panel_attributes><additional_attributes>10;10;360;10;360;180;360;10;490;10</additional_attributes></element><element><id>Relation</id><coordinates><x>710</x><y>630</y><w>30</w><h>120</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;100</additional_attributes></element><element><id>UMLUseCase</id><coordinates><x>1630</x><y>250</y><w>120</w><h>40</h></coordinates><panel_attributes>*Use case 3*</panel_attributes><additional_attributes></additional_attributes></element></diagram>
