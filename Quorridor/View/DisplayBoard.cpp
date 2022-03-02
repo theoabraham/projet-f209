@@ -41,7 +41,7 @@ std::string DisplayBoard:: printBoard() const {
       alphaLine+= "   ";
       for(int al=0; al<(boardSize/2)+1;al++){  
            alphaLine+=alpha[al]; //Lettre du rang
-           alphaLine+="   ";           
+           alphaLine+="   ";
       }
       stringBoard+=alphaLine+"\n"; 
 
