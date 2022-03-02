@@ -8,6 +8,7 @@
 #include <array>
 #include <memory>
 #include <iostream>
+#include <list>
 
 
 class Board{
@@ -99,6 +100,8 @@ class Board{
          * @brief Initialise le plateau, ses pions et ses joueurs
         */
         void newGame();
+
+        bool possiblePaths();
 };
 
 #endif
