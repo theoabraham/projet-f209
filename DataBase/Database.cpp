@@ -63,7 +63,8 @@ bool DatabaseHandler::does_file_exist(const std::string &filename) {
 }
 
 std::string DatabaseHandler::createFile(const std::string& filename){
-    const std::string board="/////\n"; const std::string win="0\n"; const std::string loosed="0\n";const std::string none="none";
+    const std::string board="/////\n"; const std::string win="0\n"; const std::string loosed="0\n";
+    const std::string none1="none\n"; const std::string none2="none";
     std::string psw = createPsw() + '\n' ;
     FILE *o_file = fopen(("Data/"+filename).c_str(), "w");
     if (o_file){
@@ -71,15 +72,15 @@ std::string DatabaseHandler::createFile(const std::string& filename){
         fwrite(board.c_str(), 1, board.size(), o_file);
         fwrite(win.c_str(), 1, win.size(), o_file);
         fwrite(loosed.c_str(), 1, loosed.size(), o_file);
-        fwrite(none.c_str(), 1, none.size(), o_file);
-        fwrite(none.c_str(), 1, none.size(), o_file);
+        fwrite(none1.c_str(), 1, none1.size(), o_file);
+        fwrite(none2.c_str(), 1, none2.size(), o_file);
     }
     fclose(o_file);
     return filename;
 }
 
 void DatabaseHandler::writeFriends(const std::string &filename, const std::string &friends_str) {
-    const std::string board="/////\n"; const std::string win=string_arr[2]+"\n";
+    const std::string board=string_arr[1]+"\n"; const std::string win=string_arr[2]+"\n";
     const std::string loosed=string_arr[3]+"\n";const std::string none="none\n";
     std::string psw = string_arr[0]+"\n";
     FILE *o_file = fopen(("Data/"+filename).c_str(), "w");
@@ -119,10 +120,14 @@ void DatabaseHandler::addfriend(const std::string &friendname) {
 }
 
 void DatabaseHandler::writeFriendstoAdd(const std::string &friends_name) {
-    const std::string board=string_arr[1]+"\n"; const std::string win=string_arr[2]+"\n";
-    const std::string loosed=string_arr[3]+"\n";const std::string none="none";
+    // recupération temporaire des données de temp;
+    std::array<std::string, 6> temp;
+    parse(friends_name, &temp);
+    //réécriture en fichier
+    const std::string board=temp[1]+"\n"; const std::string win=temp[2]+"\n";
+    const std::string loosed=temp[3]+"\n";const std::string none="none";
     const std::string friends= username+"\n";
-    std::string psw = string_arr[0]+"\n";
+    std::string psw = temp[0]+"\n";
     FILE *o_file = fopen(("Data/"+friends_name).c_str(), "w");
     if (o_file){
         fwrite(psw.c_str(), 1, psw.size(), o_file);
