@@ -5,7 +5,6 @@ Board::Board(int nplayer, int size) : size{size}, nplayer{nplayer} {
 }
 
 bool Board::DiagonalMove(Position &next_pos, int currentP) {
-    std::cout<<"Diag move"<<std::endl;
     Position player_pos = players[currentP]->getPawnPos();
     Position difference = player_pos - next_pos;
     difference.setX(-difference.getX());
@@ -37,8 +36,15 @@ bool Board::DiagonalMove(Position &next_pos, int currentP) {
             break;
     }
     for (auto side: sides) {
+
         if (matrix[player_pos.getY()][player_pos.getX()]->getNeighbour(side)) {// Vérifie si pas de mur entre cases
             if (matrix[player_pos.getY()][player_pos.getX()]->getNeighbour(side)->occupied()) {
+
+        if (matrix[player_pos.getY()][player_pos.getX()]->getNeighbour(side)) {
+            // Vérifie si pas de mur entre cases
+            if (matrix[player_pos.getY()][player_pos.getX()]->getNeighbour(side)->occupied()) {
+                // Pion sur case voisine
+
                 switch (side) {
                     case 0:
                         if (matrix[player_pos.getY() - 3][player_pos.getX()]->occupied() and
@@ -68,7 +74,6 @@ bool Board::DiagonalMove(Position &next_pos, int currentP) {
 }
 
 bool Board::JumpOver(Position &next_pos, int currentP) {
-    std::cout << "Jump Over"<<std::endl;
     Position player_pos = players[currentP]->getPawnPos();
     Position diff = (player_pos - next_pos)/4;
 
@@ -86,7 +91,6 @@ bool Board::JumpOver(Position &next_pos, int currentP) {
 
 
 bool Board::Face2Face(Position &next_pos, int currentP) {
-    std::cout<< "Face2Face "<<std::endl;
     Position player_pos = players[currentP]->getPawnPos();
     Position difference = player_pos - next_pos;
     switch (difference.getX()) {
@@ -180,7 +184,8 @@ bool Board::checkWall(std::string &direction, Position &next_pos){
     }
     else { 
         Position wallPos{next_pos.getX() + 1, next_pos.getY()}; // Case cible (voir srd)
-        if (wallPos.getX() < boardSize && (wallPos.getY() - 2 > 0)){
+        std::cout<<wallPos.getX()<<" "<< wallPos.getY()<<std::endl; 
+        if (wallPos.getY() > 0 && (wallPos.getX() + 2 < boardSize)){ 
             for (int i = 0; i < 3; i++) {
             posY = next_pos.getY() - i;
             posX = next_pos.getX() + 1;
@@ -307,6 +312,7 @@ void Board::newGame() {
         matrix.push_back(line);
     }
     bindCells();
+
 }
 
 bool Board::possiblePaths() {
@@ -356,4 +362,6 @@ bool Board::possiblePaths() {
 
 
 
+
+}
 
