@@ -207,7 +207,7 @@ DatabaseHandler::DatabaseHandler() {
     //réécriture dans le fichier
     std::string friends_str;
     for (std::string s:friendList){
-        friends_str += (s + " ");
+        if (s!="none") friends_str += (s + " ");
     }
     writeFriends(username, friends_str);
     std::cout << "______________________________" << std::endl;
