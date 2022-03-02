@@ -8,6 +8,7 @@
 #include <array>
 #include <memory>
 #include <iostream>
+#include <list>
 
 
 class Board{
@@ -25,12 +26,13 @@ class Board{
     public:
         explicit Board(int nplayer, int size=9);
 
+
         int getNplayer() const {return nplayer; }
 
         int getBoardSize() const {return boardSize;}
         std::vector<std::shared_ptr<Player>> getPlayers() const {return players;};
         std::vector<std::vector< std::shared_ptr<MotherCell> > > getMatrix() const {return matrix;}
-
+        
         bool isEnd() const{return end;};
 
         /**
@@ -99,6 +101,8 @@ class Board{
          * @brief Initialise le plateau, ses pions et ses joueurs
         */
         void newGame();
+
+        bool possiblePaths();
 };
 
 #endif
