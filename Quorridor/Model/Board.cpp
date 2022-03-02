@@ -8,6 +8,9 @@ bool Board::DiagonalMove(Position &next_pos, int currentP) {
     std::cout<<"Diag move"<<std::endl;
     Position player_pos = players[currentP]->getPawnPos();
     Position difference = player_pos - next_pos;
+    difference.setX(-difference.getX());
+    auto joueur = matrix[player_pos.getY()][player_pos.getX()];
+    auto voisin = matrix[player_pos.getY()][player_pos.getX()]->getNeighbour(2);
     std::vector<int> sides;
     switch (difference.getX()) {
         case 2:
@@ -36,27 +39,29 @@ bool Board::DiagonalMove(Position &next_pos, int currentP) {
             break;
     }
     for (auto side: sides) {
-        if (matrix[player_pos.getX()][player_pos.getY()]->getNeighbour(side)) { // Vérifie si pas de mur entre cases
-            if (matrix[player_pos.getX()][player_pos.getY()]->getNeighbour(side)->occupied()) { // Pion sur case voisine
+        if (matrix[player_pos.getY()][player_pos.getX()]->getNeighbour(side)) {// Vérifie si pas de mur entre cases
+            std::cout<<"ok 1" <<std::endl;
+            if (matrix[player_pos.getY()][player_pos.getX()]->getNeighbour(side)->occupied()) {
+                std::cout<<"ok 2" << std::endl;// Pion sur case voisine
                 switch (side) {
                     case 0:
-                        if (matrix[player_pos.getX()][player_pos.getY() + 3]->occupied() and
-                            not matrix[player_pos.getX() + difference.getX()][player_pos.getY() + 2]->occupied()) {
+                        if (matrix[player_pos.getY() + 3][player_pos.getX()]->occupied() and
+                            not matrix[player_pos.getY() + 2][player_pos.getX() + difference.getX()]->occupied()) {
                             return true; //Mur derrière pion voisin et case cible pas occupée
                         }
                     case 2:
-                        if (matrix[player_pos.getX()][player_pos.getY() - 3]->occupied() and
-                            not matrix[player_pos.getX() + difference.getX()][player_pos.getY() - 2]->occupied()) {
+                        if (matrix[player_pos.getY()-3][player_pos.getX()]->occupied() and
+                            not matrix[player_pos.getY() -2 ][player_pos.getX() +difference.getX()]->occupied()) {
                             return true;
                         }
                     case 1:
-                        if (matrix[player_pos.getX()+3][player_pos.getY()]->occupied() and
-                            not matrix[player_pos.getX()+2][player_pos.getY() + difference.getY()]->occupied()) {
+                        if (matrix[player_pos.getY()][player_pos.getX()+3]->occupied() and
+                            not matrix[player_pos.getY()+difference.getY()][player_pos.getX()+2]->occupied()) {
                             return true; //Mur derrière pion voisin et case cible pas occupée
                         }
                     case 3:
-                        if (matrix[player_pos.getX()-3][player_pos.getY()]->occupied() and
-                            not matrix[player_pos.getX()-2][player_pos.getY() + difference.getY()]->occupied()) {
+                        if (matrix[player_pos.getY()][player_pos.getX()-3]->occupied() and
+                            not matrix[player_pos.getY()+difference.getY()][player_pos.getX()-2]->occupied()) {
                             return true; //Mur derrière pion voisin et case cible pas occupée
                         }
                 }
@@ -145,6 +150,8 @@ void Board::executeMove(std::string &typeOfMove, Position &pos, int currentP) {
 
         matrix[pos.getY()][pos.getX()]->setPiece(players[currentP]->getPawn());
         matrix[playerPos.getY()][playerPos.getX()]->setPiece(nullptr);
+
+        //On vérifie si un des joueur a gagné: 
         switch (currentP) {
             case 0:
                 if (players[currentP]->getPawnPos().getY() == (size - 1) * 2) {
@@ -200,7 +207,7 @@ bool Board::isValid(std::string &typeOfMove, Position &next_pos, int currentP) {
 
             //if (matrix[playerPos.getY()][playerPos.getX()]->getNeighbour(next_cell)->occupied()) { --> ne fonctionne pas, pourquoi??? 
             if (not matrix[playerPos.getY() - next_cell.getY()*2][playerPos.getX() + next_cell.getX()*2]->occupied()) {
-                //Si la prochaine case est libre
+                //Si la prochaine case voisine est libre
                 if (not matrix[playerPos.getY() - next_cell.getY()][playerPos.getX() + next_cell.getX()]->occupied())
                     //Si il n'y a pas de mur entre
                     res = true;
@@ -229,7 +236,6 @@ bool Board::checkInput(std::string &input, int currentP) {
     next_pos = next_pos * 2; //*2 pour avoir la vrai position sur la matrice
     currentPlayer = currentP;
     if (isValid(typeOfMove, next_pos, currentP)) {
-        //Si coup valide
         executeMove(typeOfMove, next_pos, currentP);
         return true;
     }
@@ -261,37 +267,40 @@ void Board::bindCells() {
             } else {
                 neighbours.push_back(nullptr);
             }
-            matrix[j][i]->setNeighbours(neighbours);
+            matrix[i][j]->setNeighbours(neighbours);
         }
     }
 }
 
+std::shared_ptr<Pawn> Board::setPlayer(Position pos, int id){
+    std::shared_ptr<Pawn> pawn = std::shared_ptr<Pawn>(new Pawn(pos, id));
+
+    std::shared_ptr<Player> player = std::shared_ptr<Player>(new Player(id, pawn));
+    players.push_back(player);
+
+    return pawn; 
+} 
+
 void Board::newGame() {
-    //TODO : pouvoir choisir si on jeux 2 ou 4 joueurs 
+    //TODO : pouvoir choisir si on joue 2 ou 4 joueurs 
     boardSize = size * 2 - 1;
     for (int i = 0; i < size * 2 - 1; i++) {
         std::vector<std::shared_ptr<MotherCell> > line;
         for (int j = 0; j < size * 2 - 1; j++) {
 
             //Initialisation des cases: 
-            if ((i % 2 != 0 and i < boardSize) or (j % 2 != 0 and j < boardSize)) { //Si case impaire : Mur
+            if ((i % 2 != 0 and i < boardSize) or (j % 2 != 0 and j < boardSize)) { 
                 line.push_back(std::shared_ptr<WallCell>(new WallCell()));
-            } else { //Cases Pions
+            } else { 
                 line.push_back(std::shared_ptr<PawnCell>(new PawnCell()));
             }
 
             //Initialisation des pions et joueurs: 
             if (i == 10 and j == 8) {
-                std::shared_ptr<Pawn> pawn1 = std::shared_ptr<Pawn>(new Pawn(Position(8, 10)));
-                line[j]->setPiece(std::shared_ptr<Pawn>(pawn1));
-                auto player1 = std::shared_ptr<Player>(new Player(0, pawn1));
-                players.push_back(player1);
+                line[j]->setPiece(setPlayer(Position{j,i}, 0));              
             }
             if (i == 16 and j == 8) {
-                std::shared_ptr<Pawn> pawn2 = std::shared_ptr<Pawn>(new Pawn(Position(8, 16)));
-                line[j]->setPiece(std::shared_ptr<Pawn>(pawn2));
-                auto player2 = std::shared_ptr<Player>(new Player(1, pawn2));
-                players.push_back(player2);
+                line[j]->setPiece(setPlayer(Position{j,i}, 1));
             }
         }
         matrix.push_back(line);
