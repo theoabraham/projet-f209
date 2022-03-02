@@ -9,8 +9,6 @@ bool Board::DiagonalMove(Position &next_pos, int currentP) {
     Position player_pos = players[currentP]->getPawnPos();
     Position difference = player_pos - next_pos;
     difference.setX(-difference.getX());
-    auto joueur = matrix[player_pos.getY()][player_pos.getX()];
-    auto voisin = matrix[player_pos.getY()][player_pos.getX()]->getNeighbour(2);
     std::vector<int> sides;
     switch (difference.getX()) {
         case 2:
@@ -45,23 +43,23 @@ bool Board::DiagonalMove(Position &next_pos, int currentP) {
                 std::cout<<"ok 2" << std::endl;// Pion sur case voisine
                 switch (side) {
                     case 0:
-                        if (matrix[player_pos.getY() + 3][player_pos.getX()]->occupied() and
-                            not matrix[player_pos.getY() + 2][player_pos.getX() + difference.getX()]->occupied()) {
+                        if (matrix[player_pos.getY() - 3][player_pos.getX()]->occupied() and
+                            not matrix[next_pos.getY()][next_pos.getX()]->occupied()) {
                             return true; //Mur derrière pion voisin et case cible pas occupée
                         }
                     case 2:
-                        if (matrix[player_pos.getY()-3][player_pos.getX()]->occupied() and
-                            not matrix[player_pos.getY() -2 ][player_pos.getX() +difference.getX()]->occupied()) {
+                        if (matrix[player_pos.getY()+3][player_pos.getX()]->occupied() and
+                            not matrix[next_pos.getY()][next_pos.getX()]->occupied()) {
                             return true;
                         }
                     case 1:
                         if (matrix[player_pos.getY()][player_pos.getX()+3]->occupied() and
-                            not matrix[player_pos.getY()+difference.getY()][player_pos.getX()+2]->occupied()) {
+                            not matrix[next_pos.getY()][next_pos.getX()]->occupied()) {
                             return true; //Mur derrière pion voisin et case cible pas occupée
                         }
                     case 3:
                         if (matrix[player_pos.getY()][player_pos.getX()-3]->occupied() and
-                            not matrix[player_pos.getY()+difference.getY()][player_pos.getX()-2]->occupied()) {
+                            not matrix[next_pos.getY()][next_pos.getX()]->occupied()) {
                             return true; //Mur derrière pion voisin et case cible pas occupée
                         }
                 }
@@ -70,7 +68,6 @@ bool Board::DiagonalMove(Position &next_pos, int currentP) {
     }
     return false;
 }
-
 
 bool Board::JumpOver(Position &next_pos, int currentP) {
     std::cout << "Jump Over"<<std::endl;
