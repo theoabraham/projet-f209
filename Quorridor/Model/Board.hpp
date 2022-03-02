@@ -8,6 +8,7 @@
 #include <array>
 #include <memory>
 #include <iostream>
+#include <list>
 
 
 class Board{
@@ -25,8 +26,6 @@ class Board{
     public:
         explicit Board(int nplayer, int size=9);
 
-
-        explicit Board(int size=9);
 
         int getNplayer() const {return nplayer; }
 
@@ -102,6 +101,8 @@ class Board{
          * @brief Initialise le plateau, ses pions et ses joueurs
         */
         void newGame();
+
+        bool possiblePaths();
 };
 
 #endif
