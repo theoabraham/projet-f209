@@ -1,6 +1,6 @@
 FLAGS = -Wall -std=c++17 -g 
 
-MODEL = Model/Board.cpp Model/Board.hpp Model/MotherCell.hpp Model/MotherCell.cpp Model/Piece.cpp Model/Piece.hpp Model/Player.hpp Model/Position.hpp Model/Position.cpp
+MODEL = Model/Board.cpp Model/Board.hpp Model/MotherCell.hpp Model/MotherCell.cpp Model/Piece.cpp Model/Piece.hpp Model/Player.cpp Model/Player.hpp Model/Position.hpp Model/Position.cpp
 
 VIEW = View/DisplayBoard.cpp View/DisplayBoard.hpp
 
