@@ -5,6 +5,7 @@ Board::Board(int nplayer, int size) : size{size}, nplayer{nplayer} {
 }
 
 bool Board::DiagonalMove(Position &next_pos, int currentP) {
+    std::cout<<"Diag move"<<std::endl;
     Position player_pos = players[currentP]->getPawnPos();
     Position difference = player_pos - next_pos;
     difference.setX(-difference.getX());
@@ -36,10 +37,8 @@ bool Board::DiagonalMove(Position &next_pos, int currentP) {
             break;
     }
     for (auto side: sides) {
-        if (matrix[player_pos.getY()][player_pos.getX()]->getNeighbour(side)) {
-            // Vérifie si pas de mur entre cases
+        if (matrix[player_pos.getY()][player_pos.getX()]->getNeighbour(side)) {// Vérifie si pas de mur entre cases
             if (matrix[player_pos.getY()][player_pos.getX()]->getNeighbour(side)->occupied()) {
-                // Pion sur case voisine
                 switch (side) {
                     case 0:
                         if (matrix[player_pos.getY() - 3][player_pos.getX()]->occupied() and
@@ -69,6 +68,7 @@ bool Board::DiagonalMove(Position &next_pos, int currentP) {
 }
 
 bool Board::JumpOver(Position &next_pos, int currentP) {
+    std::cout << "Jump Over"<<std::endl;
     Position player_pos = players[currentP]->getPawnPos();
     Position diff = (player_pos - next_pos)/4;
 
@@ -86,6 +86,7 @@ bool Board::JumpOver(Position &next_pos, int currentP) {
 
 
 bool Board::Face2Face(Position &next_pos, int currentP) {
+    std::cout<< "Face2Face "<<std::endl;
     Position player_pos = players[currentP]->getPawnPos();
     Position difference = player_pos - next_pos;
     switch (difference.getX()) {
@@ -147,7 +148,7 @@ void Board::executeMove(std::string &typeOfMove, Position &pos, int currentP) {
         //On vérifie si un des joueur a gagné: 
         switch (currentP) {
             case 0:
-                if (players[currentP]->getPawnPos().getY() == boardSize) end = true;
+                if (players[currentP]->getPawnPos().getY() == boardSize-1) end = true;
                 break;
             case 1:
                 if (players[currentP]->getPawnPos().getY() == 0) end = true;
@@ -156,7 +157,7 @@ void Board::executeMove(std::string &typeOfMove, Position &pos, int currentP) {
                 if (players[currentP]->getPawnPos().getX() == 0) end = true;
                 break;
             case 3:
-                if (players[currentP]->getPawnPos().getX() == boardSize) end = true;
+                if (players[currentP]->getPawnPos().getX() == boardSize-1) end = true;
                 break;            
         }
     } else {
@@ -179,8 +180,7 @@ bool Board::checkWall(std::string &direction, Position &next_pos){
     }
     else { 
         Position wallPos{next_pos.getX() + 1, next_pos.getY()}; // Case cible (voir srd)
-        std::cout<<wallPos.getX()<<" "<< wallPos.getY()<<std::endl; 
-        if (wallPos.getY() > 0 && (wallPos.getX() + 2 < boardSize)){ 
+        if (wallPos.getX() < boardSize && (wallPos.getY() - 2 > 0)){
             for (int i = 0; i < 3; i++) {
             posY = next_pos.getY() - i;
             posX = next_pos.getX() + 1;
@@ -245,12 +245,12 @@ void Board::bindCells() {
             } else {
                 neighbours.push_back(nullptr);
             }
-            if (j < boardSize - 2) {
+            if (j < boardSize -3) {
                 neighbours.push_back(matrix[i][j + 2]);
             } else {
                 neighbours.push_back(nullptr);
             }
-            if (i < boardSize - 2) {
+            if (i < boardSize -3) {
                 neighbours.push_back(matrix[i + 2][j]);
             } else {
                 neighbours.push_back(nullptr);
@@ -308,3 +308,52 @@ void Board::newGame() {
     }
     bindCells();
 }
+
+bool Board::possiblePaths() {
+    for(const auto& player:players){
+    std::vector<std::vector<bool>> visited(size,std::vector<bool>(size, false));
+    std::list<std::shared_ptr<MotherCell>>queue;
+    bool end = false;
+    Position pawn = player->getPawnPos();
+    visited[pawn.getY()/2][pawn.getX()/2] = true;
+    queue.push_back(matrix[pawn.getY()][pawn.getX()]);
+    while(!queue.empty() and not end){
+        std::shared_ptr<MotherCell> s = queue.front();
+        queue.pop_front();
+        for(int i = 0; i<4;i++){
+            if(s->getNeighbour(i) ){
+                Position difference(0,0);
+                switch (i) {
+                    case 0:
+                        difference.setY(-1);
+                        break;
+                    case 1:
+                        difference.setX(1);
+                        break;
+                    case 2:
+                        difference.setY(+1);
+                        break;
+                    case 3:
+                        difference.setX(-1);
+                        break;
+                }
+                if(!visited[pawn.getY()+difference.getY()][pawn.getX()+difference.getX()]){
+                    visited[pawn.getY()+difference.getY()][pawn.getX()+difference.getX()]=true;
+                    queue.push_back(s->getNeighbour(i));
+                }
+            }
+        }
+    }
+    }
+
+    return false;
+}
+
+
+
+
+
+
+
+
+

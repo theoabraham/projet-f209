@@ -18,6 +18,7 @@ public:
     void setPawnPos(Position pos) {pawn->setPos(pos);}
     void useWall(){walls--;};
     bool hasWalls() const{return walls;};
+    int getId() const{return id;};
 };
 
 #endif
