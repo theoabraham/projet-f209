@@ -1,6 +1,6 @@
 #include "Board.hpp"
 
-Board::Board(int size) : size{size} {
+Board::Board(int size, const int START_WALLS): size{size}, START_WALLS{START_WALLS} {
     newGame();
 }
 
@@ -284,13 +284,13 @@ void Board::newGame() {
             if (i == 10 and j == 8) {
                 std::shared_ptr<Pawn> pawn1 = std::shared_ptr<Pawn>(new Pawn(Position(8, 10)));
                 line[j]->setPiece(std::shared_ptr<Pawn>(pawn1));
-                auto player1 = std::shared_ptr<Player>(new Player(0, pawn1));
+                auto player1 = std::shared_ptr<Player>(new Player(0, pawn1, START_WALLS));
                 players.push_back(player1);
             }
             if (i == 16 and j == 8) {
                 std::shared_ptr<Pawn> pawn2 = std::shared_ptr<Pawn>(new Pawn(Position(8, 16)));
                 line[j]->setPiece(std::shared_ptr<Pawn>(pawn2));
-                auto player2 = std::shared_ptr<Player>(new Player(1, pawn2));
+                auto player2 = std::shared_ptr<Player>(new Player(1, pawn2, START_WALLS));
                 players.push_back(player2);
             }
         }
