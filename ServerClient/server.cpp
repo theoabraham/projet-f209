@@ -73,6 +73,7 @@ void Server::handleSocketReadActivity(fd_set* in_set, int& nactivities) {
             strBoard.message = this->displayBoard.printBoard();
             this->forward(&strBoard);
             this->activePlayer = (activePlayer + 1) % 2;
+            
           }
         } else {
         //TODO parser le message et verifier si c'est un coup
