@@ -25,9 +25,6 @@ class Board{
     public:
         explicit Board(int nplayer, int size=9);
 
-
-        explicit Board(int size=9);
-
         int getNplayer() const {return nplayer; }
 
         int getBoardSize() const {return boardSize;}
