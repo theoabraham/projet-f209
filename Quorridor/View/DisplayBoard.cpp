@@ -1,6 +1,6 @@
 #include "DisplayBoard.hpp"
 
-void DisplayBoard:: printBoard() const {
+std::string DisplayBoard:: printBoard() const {
       int boardSize = board->getBoardSize(); 
       std::vector<std::vector< std::shared_ptr<MotherCell> > > matrix = board->getMatrix(); 
 
@@ -26,9 +26,16 @@ void DisplayBoard:: printBoard() const {
                   }
               } else{
                   if(matrix[i][j]->occupied()) {
-                      if (matrix[i][j]->getPiece()->getID() == 0)
-                        currentLine += "\u265F "; //Caractère du pion noir 
-                      else currentLine += "\u2659 "; //Caractère du pion blanc 
+                      if (board->getNplayer()==2){
+                        if (matrix[i][j]->getPiece()->getID() == 0)
+                            currentLine += "\u265F "; //Caractère du pion noir 
+                        else currentLine += "\u2659 "; //Caractère du pion blanc
+                      }
+                      else {
+                          currentLine+= std::to_string(matrix[i][j]->getPiece()->getID()+1);
+                          currentLine+=" ";  
+                      }
+ 
                   } else{
                       currentLine += "\u2610 "; //Caractère de la Case 
                   }
@@ -42,13 +49,11 @@ void DisplayBoard:: printBoard() const {
       alphaLine+= "   ";
       for(int al=0; al<(boardSize/2)+1;al++){  
            alphaLine+=alpha[al]; //Lettre du rang
-           alphaLine+="   ";           
+           alphaLine+="   ";
       }
       stringBoard+=alphaLine+"\n"; 
 
       std::cout<<stringBoard;
+    return stringBoard;
   }
-
-//push branche spécifique : git push origin "branchName"
-
 

@@ -15,6 +15,10 @@ void Game::inputFormat(){
     std::cout<<"Format: (ex: P e1) " <<std::endl<< "1.Type of move: P (pawn), H (horizontal Wall), V (vertical wall)" <<std::endl<< "2.move: cell number" <<std::endl;
 }
 
+bool Game::checkInput(std::string input, int player){
+    return this->model->checkInput(input, player);
+}
+
 void Game::start() {
     int player = 0;
     view->printBoard();

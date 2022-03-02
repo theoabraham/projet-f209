@@ -26,6 +26,7 @@ class Server {
   std::shared_ptr<Board> board = std::shared_ptr<Board>(new Board());
   DisplayBoard displayBoard = DisplayBoard(board);
   Game game = Game(board, displayBoard);
+  int activePlayer = 0;
 
  private:
   void prepateFDSet(fd_set* read_set);

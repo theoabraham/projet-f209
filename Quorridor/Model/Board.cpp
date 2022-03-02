@@ -1,6 +1,6 @@
 #include "Board.hpp"
 
-Board::Board(int size) : size{size} {
+Board::Board(int nplayer, int size) : size{size}, nplayer{nplayer} {
     newGame();
 }
 
@@ -9,8 +9,6 @@ bool Board::DiagonalMove(Position &next_pos, int currentP) {
     Position player_pos = players[currentP]->getPawnPos();
     Position difference = player_pos - next_pos;
     difference.setX(-difference.getX());
-    auto joueur = matrix[player_pos.getY()][player_pos.getX()];
-    auto voisin = matrix[player_pos.getY()][player_pos.getX()]->getNeighbour(2);
     std::vector<int> sides;
     switch (difference.getX()) {
         case 2:
@@ -45,23 +43,23 @@ bool Board::DiagonalMove(Position &next_pos, int currentP) {
                 std::cout<<"ok 2" << std::endl;// Pion sur case voisine
                 switch (side) {
                     case 0:
-                        if (matrix[player_pos.getY() + 3][player_pos.getX()]->occupied() and
-                            not matrix[player_pos.getY() + 2][player_pos.getX() + difference.getX()]->occupied()) {
+                        if (matrix[player_pos.getY() - 3][player_pos.getX()]->occupied() and
+                            not matrix[next_pos.getY()][next_pos.getX()]->occupied()) {
                             return true; //Mur derrière pion voisin et case cible pas occupée
                         }
                     case 2:
-                        if (matrix[player_pos.getY()-3][player_pos.getX()]->occupied() and
-                            not matrix[player_pos.getY() -2 ][player_pos.getX() +difference.getX()]->occupied()) {
+                        if (matrix[player_pos.getY()+3][player_pos.getX()]->occupied() and
+                            not matrix[next_pos.getY()][next_pos.getX()]->occupied()) {
                             return true;
                         }
                     case 1:
                         if (matrix[player_pos.getY()][player_pos.getX()+3]->occupied() and
-                            not matrix[player_pos.getY()+difference.getY()][player_pos.getX()+2]->occupied()) {
+                            not matrix[next_pos.getY()][next_pos.getX()]->occupied()) {
                             return true; //Mur derrière pion voisin et case cible pas occupée
                         }
                     case 3:
                         if (matrix[player_pos.getY()][player_pos.getX()-3]->occupied() and
-                            not matrix[player_pos.getY()+difference.getY()][player_pos.getX()-2]->occupied()) {
+                            not matrix[next_pos.getY()][next_pos.getX()]->occupied()) {
                             return true; //Mur derrière pion voisin et case cible pas occupée
                         }
                 }
@@ -71,13 +69,11 @@ bool Board::DiagonalMove(Position &next_pos, int currentP) {
     return false;
 }
 
-
 bool Board::JumpOver(Position &next_pos, int currentP) {
     std::cout << "Jump Over"<<std::endl;
     Position player_pos = players[currentP]->getPawnPos();
     Position diff = (player_pos - next_pos)/4;
 
-    //if (matrix[player_pos.getY()][player_pos.getX()]->getNeighbour(difference)->occupied()) ne fonctionne pas, pourquoi???
     if (matrix[player_pos.getY()-diff.getY()*2][player_pos.getX() - diff.getX()*2]->occupied()){
         //Si la case voisine est bien occupée
         if (not matrix[player_pos.getY() - diff.getY()*3][player_pos.getX() - diff.getX()*3]->occupied()){
@@ -154,15 +150,17 @@ void Board::executeMove(std::string &typeOfMove, Position &pos, int currentP) {
         //On vérifie si un des joueur a gagné: 
         switch (currentP) {
             case 0:
-                if (players[currentP]->getPawnPos().getY() == (size - 1) * 2) {
-                    end = true;
-                }
+                if (players[currentP]->getPawnPos().getY() == boardSize) end = true;
                 break;
             case 1:
-                if (players[currentP]->getPawnPos().getY() == 0) {
-                    end = true;
-                }
+                if (players[currentP]->getPawnPos().getY() == 0) end = true;
+                break;    
+            case 2:
+                if (players[currentP]->getPawnPos().getX() == 0) end = true;
                 break;
+            case 3:
+                if (players[currentP]->getPawnPos().getX() == boardSize) end = true;
+                break;            
         }
     } else {
         placeWall(typeOfMove, pos);
@@ -204,9 +202,7 @@ bool Board::isValid(std::string &typeOfMove, Position &next_pos, int currentP) {
         Position next_cell = (playerPos - next_pos)/2;  
         if (matrix[playerPos.getY()][playerPos.getX()]->getNeighbour(next_cell)) {
             //Si la prochaine case est une case voisine 
-
-            //if (matrix[playerPos.getY()][playerPos.getX()]->getNeighbour(next_cell)->occupied()) { --> ne fonctionne pas, pourquoi??? 
-            if (not matrix[playerPos.getY() - next_cell.getY()*2][playerPos.getX() + next_cell.getX()*2]->occupied()) {
+            if (not matrix[playerPos.getY()][playerPos.getX()]->getNeighbour(next_cell)->occupied()) {
                 //Si la prochaine case voisine est libre
                 if (not matrix[playerPos.getY() - next_cell.getY()][playerPos.getX() + next_cell.getX()]->occupied())
                     //Si il n'y a pas de mur entre
@@ -243,7 +239,6 @@ bool Board::checkInput(std::string &input, int currentP) {
 }
 
 void Board::bindCells() {
-    //TODO:  Bug voisins de droite dernière ligne
     for (int i = 0; i < boardSize; i += 2) {
         for (int j = 0; j < boardSize; j += 2) {
             std::vector<std::shared_ptr<MotherCell>> neighbours;
@@ -277,12 +272,10 @@ std::shared_ptr<Pawn> Board::setPlayer(Position pos, int id){
 
     std::shared_ptr<Player> player = std::shared_ptr<Player>(new Player(id, pawn));
     players.push_back(player);
-
     return pawn; 
 } 
 
 void Board::newGame() {
-    //TODO : pouvoir choisir si on joue 2 ou 4 joueurs 
     boardSize = size * 2 - 1;
     for (int i = 0; i < size * 2 - 1; i++) {
         std::vector<std::shared_ptr<MotherCell> > line;
@@ -302,6 +295,16 @@ void Board::newGame() {
             if (i == 16 and j == 8) {
                 line[j]->setPiece(setPlayer(Position{j,i}, 1));
             }
+
+            if (nplayer==4){
+                if (i == 8 and j == 0) {
+                line[j]->setPiece(setPlayer(Position{j,i}, 2));              
+                }
+                if (i == 8 and j == 16) {
+                    line[j]->setPiece(setPlayer(Position{j,i}, 3));
+                } 
+            }
+
         }
         matrix.push_back(line);
     }
