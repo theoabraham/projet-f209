@@ -30,7 +30,7 @@ class Board{
         int getBoardSize() const {return boardSize;}
         std::vector<std::shared_ptr<Player>> getPlayers() const {return players;};
         std::vector<std::vector< std::shared_ptr<MotherCell> > > getMatrix() const {return matrix;}
-        
+
         bool isEnd() const{return end;};
 
         /**
