@@ -10,8 +10,8 @@
 
 class Piece {
 public:
-    virtual Position getPos()=0; 
-    virtual void setPos(Position pos)=0; 
+    virtual Position getPos()=0;
+    virtual void setPos(Position pos)=0;
     virtual ~Piece(){} 
 };
 

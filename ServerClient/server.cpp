@@ -70,7 +70,6 @@ void Server::handleSocketReadActivity(fd_set* in_set, int& nactivities) {
         // message_buffer[nbytes] = '\0';
         if((msg.message.substr(0,1) == (string)".") && socket == this->users[activePlayer]->socket){
           std::string coup = msg.message.substr(msg.message.length() - 4, 4);
-          std::cout<< coup <<std::endl;
           if(this->game.checkInput(coup, this->activePlayer)){
             message_t strBoard;
             strBoard.message = this->displayBoard.printBoard();
