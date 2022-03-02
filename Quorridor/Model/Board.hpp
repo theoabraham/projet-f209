@@ -15,6 +15,7 @@ class Board{
     private:
         int size;
         int boardSize;
+        const int START_WALL;
         
         std::vector<std::vector< std::shared_ptr<MotherCell> > > matrix;
 
@@ -24,10 +25,10 @@ class Board{
 
         bool end = false;
     public:
-        explicit Board(int nplayer, int size=9);
+        explicit Board(int nplayer, int size=9, int START_WALL=10);
 
 
-        int getNplayer() const {return nplayer; }
+        int getNplayer() const {return nplayer;}
 
         int getBoardSize() const {return boardSize;}
         std::vector<std::shared_ptr<Player>> getPlayers() const {return players;};
