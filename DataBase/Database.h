@@ -22,10 +22,11 @@ private:
     std::string username;
 public:
     // Constructeurs
-    DatabaseHandler();
+    DatabaseHandler(std::string filename);
 
     // Getters Setters
     std::string getPlayerBoard()const{return string_arr[1];}
+    // faire un setter de friend list a partir d'un string
     int getWinGames()const{return std::stoi(string_arr[2]);}
     int getLoseGames()const{return std::stoi(string_arr[3]);}
     int getTotalGames()const{return getWinGames()+getLoseGames();}
@@ -43,6 +44,7 @@ public:
     void writeFriends(const std::string& filename,const std::string &friends_str);
     void writeFriendstoAdd(const std::string &friends_name);
     void transferFriend();
+    void listFriends();
 
 };
 #endif //PROJET_F209_DATABASE_H
