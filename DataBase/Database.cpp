@@ -1,9 +1,11 @@
 #include "Database.h"
 
-/*
- * Passe en revue uun fichier texte pour placer dans une liste différentes informations
- * soit l une liste:
+/**
+ * @brief Passe en revue uun fichier texte pour placer dans une liste différentes informations soit l une liste:
  *      l[0]=mot de passe, l[1]=plateau, l[2]=parties gagnées, l[3]=parties perdues, l[4]=amis a ajouter, l[5]=amis
+ * @param file_path
+ * @param arr_addr
+ * @return
  */
 int DatabaseHandler::parse(const std::string& file_path, std::array<std::string, 6> * arr_addr){
     std::ifstream file;
@@ -31,8 +33,14 @@ int DatabaseHandler::parse(const std::string& file_path, std::array<std::string,
     file.close();
     return 1;
 }
+/**
+ * @brief Vérifie si le mot de passe entré une fois hashé équivaut au hash stocké dans le fichier texte
+ * @param input_psw
+ * @param stocked_hash
+ * @return
+ */
 /*
- * Vérifie si le mot de passe entré une fois hashé équivaut au hash stocké dans le fichier texte
+ *
  */
 int DatabaseHandler::checkPswd(const std::string& input_psw, const std::string& stocked_hash){
     std::hash<std::string> h;
@@ -43,8 +51,9 @@ int DatabaseHandler::checkPswd(const std::string& input_psw, const std::string& 
     return 1;
 }
 
-/*
- * Demande à l'utilisateur d'entrer deux fois son mdp sans espace !, une fois validé, le mdp est hashé et retourné
+/**
+ * @brief Demande à l'utilisateur d'entrer deux fois son mdp sans espace !, une fois validé, le mdp est hashé et retourné
+ * @return
  */
 std::string DatabaseHandler::createPsw() {
     std::hash<std::string> hashed;
@@ -58,8 +67,10 @@ std::string DatabaseHandler::createPsw() {
     return std::to_string(hashed(psw));
 }
 
-/*
- * vérifier si un ficher donné en entrée est valide (ne correspond pas à un dossier , fichier caché, etc)
+/**
+ * @brief vérifier si un ficher donné en entrée est valide (ne correspond pas à un dossier , fichier caché, etc)
+ * @param filepath
+ * @return
  */
 int DatabaseHandler::is_string_valid(const std::string &filepath){
     for (auto &c: filepath){
