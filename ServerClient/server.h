@@ -23,7 +23,7 @@ class Server {
   int max_fd;
   int master_socket;
   vector<user_t*> users;
-  std::shared_ptr<Board> board = std::shared_ptr<Board>(new Board());
+  std::shared_ptr<Board> board = std::shared_ptr<Board>(new Board(2));
   DisplayBoard displayBoard = DisplayBoard(board);
   Game game = Game(board, displayBoard);
   int activePlayer = 0;
