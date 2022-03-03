@@ -1,3 +1,0 @@
-/Users/markdimitrov/Documents/projets/année/Quorridor/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/Users/markdimitrov/Documents/projets/année/Quorridor/cmake-build-debug/CMakeFiles/edit_cache.dir
-/Users/markdimitrov/Documents/projets/année/Quorridor/cmake-build-debug/CMakeFiles/Quorridor.dir
