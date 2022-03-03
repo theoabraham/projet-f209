@@ -14,7 +14,6 @@ int main(){
     while (not res){
         std::cin>>input;
         if (input==2 || input==4) res= true;  
-        std::cout<<(input!=2)<<std::endl;
     }
         
     std::shared_ptr<Board> board = std::shared_ptr<Board>(new Board(input));
