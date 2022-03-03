@@ -95,6 +95,7 @@ bool Board::JumpOver(Position &next_pos, int currentP) {
 bool Board::Face2Face(Position &next_pos, int currentP) {
     Position player_pos = players[currentP]->getPawnPos();
     Position difference = player_pos - next_pos;
+       
     switch (difference.getX()) {
         case 4:
             if(difference.getY() == 0){
@@ -238,7 +239,6 @@ bool Board::checkInput(std::string &input, int currentP) {
     }  
     
     std::string typeOfMove{input.substr(0, 1)};
-
     Position next_pos{input.substr(2, len)};
     
     next_pos = next_pos * 2; //*2 pour avoir la vrai position sur la matrice
@@ -291,9 +291,9 @@ void Board::newGame() {
 
             //Initialisation des cases: 
             if ((i % 2 != 0 and i < boardSize) or (j % 2 != 0 and j < boardSize)) { 
-                line.push_back(std::shared_ptr<WallCell>(new WallCell()));
+                line.push_back(std::shared_ptr<MotherCell>(new MotherCell()));
             } else { 
-                line.push_back(std::shared_ptr<PawnCell>(new PawnCell()));
+                line.push_back(std::shared_ptr<MotherCell>(new MotherCell()));
             }
 
             //Initialisation des pions et joueurs: 
@@ -320,41 +320,86 @@ void Board::newGame() {
 }
 
 bool Board::possiblePaths() {
-    for(const auto& player:players){
-    std::vector<std::vector<bool>> visited(size,std::vector<bool>(size, false));
-    std::list<std::shared_ptr<MotherCell>>queue;
-    bool end = false;
-    Position pawn = player->getPawnPos();
-    visited[pawn.getY()/2][pawn.getX()/2] = true;
-    queue.push_back(matrix[pawn.getY()][pawn.getX()]);
-    while(!queue.empty() and not end){
-        std::shared_ptr<MotherCell> s = queue.front();
-        queue.pop_front();
-        for(int i = 0; i<4;i++){
-            if(s->getNeighbour(i) ){
-                Position difference(0,0);
-                switch (i) {
-                    case 0:
-                        difference.setY(-1);
-                        break;
-                    case 1:
-                        difference.setX(1);
-                        break;
-                    case 2:
-                        difference.setY(+1);
-                        break;
-                    case 3:
-                        difference.setX(-1);
-                        break;
-                }
-                if(!visited[pawn.getY()+difference.getY()][pawn.getX()+difference.getX()]){
-                    visited[pawn.getY()+difference.getY()][pawn.getX()+difference.getX()]=true;
-                    queue.push_back(s->getNeighbour(i));
+    int nb_players = sizeof(players);
+    bool endOfSearch=false;
+    for (const auto &player: players) {
+        std::cout<<player->getId()<<std::endl;
+        std::vector<std::vector<bool>> visited(size, std::vector<bool>(size, false));
+        std::list<Position> queue;
+        Position pawn = player->getPawnPos();
+        visited[pawn.getY() / 2][pawn.getX() / 2] = true;
+        queue.push_back(pawn);
+        while (!queue.empty() and not endOfSearch) {
+            Position s = queue.front();
+            std::cout << "(" << s.getX()/2 << ", " << s.getY()/2<<")" << std::endl;
+            queue.pop_front();
+            for (int i = 0; i < 4; i++) {
+                if (matrix[s.getY()][s.getX()]->getNeighbour(i)) {
+                    Position difference(0, 0);
+                    switch (i) {
+                        case 0:
+                            difference.setY(-2);
+                            break;
+                        case 1:
+                            difference.setX(2);
+                            break;
+                        case 2:
+                            difference.setY(+2);
+                            break;
+                        case 3:
+                            difference.setX(-2);
+                            break;
+                    }
+                    if (!visited[(s.getY() + difference.getY())/2][(s.getX() + difference.getX())/2]) {
+                        visited[(s.getY() + difference.getY())/2][(s.getX() + difference.getX())/2] = true;
+                        queue.emplace_back(s.getY() + difference.getY(), s.getX() + difference.getX());
+                        switch (nb_players) {
+                            case 2:
+                                switch (player->getId()) {
+                                    case 0:
+                                        if (s.getY() + difference.getY() == boardSize-1) {
+                                            endOfSearch = true;
+                                        }
+                                        break;
+                                    case 1:
+                                        if (s.getY() + difference.getY() == 0) {
+                                            endOfSearch = true;
+                                        }
+                                        break;
+                                }
+                                break;
+                            case 4:
+                                switch (player->getId()) {
+                                    case 0:
+                                        if (s.getY() + difference.getY() == boardSize-1) {
+                                            endOfSearch = true;
+                                        }
+                                        break;
+                                    case 1:
+                                        if (s.getX() + difference.getX() == 0) {
+                                            endOfSearch = true;
+                                        }
+                                        break;
+                                    case 2:
+                                        if (s.getY() + difference.getY() == 0) {
+                                            endOfSearch = true;
+                                        }
+                                        break;
+                                    case 3:
+                                        if (s.getX() + difference.getX() == boardSize - 1) {
+                                            endOfSearch = true;
+                                        }
+                                        break;
+                                }
+                                break;
+
+                        }
+                    }
                 }
             }
         }
+        if(not endOfSearch)
+            return endOfSearch;
     }
-    }
-
-    return false;
+    return endOfSearch;
 }
