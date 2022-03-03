@@ -17,13 +17,15 @@ class Board{
         int boardSize;
         const int START_WALL;
         
-        std::vector<std::vector< std::shared_ptr<MotherCell> > > matrix;
-
-        std::vector<std::shared_ptr<Player>> players;
         int currentPlayer=0;
-        int nplayer; 
+        int nplayer;
 
         bool end = false;
+
+    protected:
+        std::vector<std::vector< std::shared_ptr<MotherCell> > > matrix;
+        std::vector<std::shared_ptr<Player>> players;
+
     public:
         explicit Board(int nplayer, int size=9, int START_WALL=10);
 
@@ -67,7 +69,7 @@ class Board{
          *        pos : la où le mur doit être placer (pos = position cible)
          * @return bool: true si coup valide, false sinon
         */
-        bool checkWall(std::string &direction, Position &pos);
+        virtual bool checkWall(std::string &direction, Position &pos);
 
         /**
          * @brief vérifie si le coup est jouable
