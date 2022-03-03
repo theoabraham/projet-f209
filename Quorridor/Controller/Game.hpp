@@ -18,7 +18,12 @@ public:
     /**
      * @brief cout avec les explication de comment un coup doit être entré 
     */
-    void inputFormat(); 
+    void inputFormat();
+
+    /**
+     * @brief Appelle board.checkinput (inaccessible depuis le serveur)
+    */
+    bool checkInput(std::string input, int player);
 
     /**
      * @brief Fonction qui permet aux joueur de jouer grâce à une boucle while

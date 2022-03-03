@@ -33,6 +33,7 @@ void Client::manageInputs() {
   while (fgets(buffer, 1024, stdin) != NULL) {
     buffer[strlen(buffer) - 1] = '\0';
     message_t msg = {.timestamp = time(NULL), .message = string(buffer)};
+    printf("\033[A\33[2KT\r");
     if (ssend(this->socket, &msg) <= 0) {
       exit(0);
     }

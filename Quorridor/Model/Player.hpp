@@ -9,15 +9,16 @@
 class Player {
     int id;
     std::shared_ptr<Pawn> pawn; 
-    int walls = 6;  //idée:  décrémenter chaque fois que le joueur place un mur 
+    int walls; 
 public:    
-    Player(int id, std::shared_ptr<Pawn> pawn):id{id}, pawn{std::move(pawn)} {}
+    Player(int id, std::shared_ptr<Pawn> pawn, int walls):id{id}, pawn{std::move(pawn)}, walls{walls} {}
     
     std::shared_ptr<Pawn> getPawn(){return pawn;}
     Position getPawnPos() {return pawn->getPos();}
     void setPawnPos(Position pos) {pawn->setPos(pos);}
     void useWall(){walls--;};
     bool hasWalls() const{return walls;};
+    int getId() const{return id;};
 };
 
 #endif
