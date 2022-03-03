@@ -195,8 +195,7 @@ bool Board::isValid(std::string &typeOfMove, Position &next_pos, int currentP) {
     Position playerPos = players[currentP]->getPawnPos();
     if (typeOfMove == "P") {
         Position next_cell = (playerPos - next_pos)/2;  
-
-        std::cout<<matrix[playerPos.getY()][playerPos.getX()]->getNeighbour(next_cell)<<std::endl; 
+        
         if (matrix[playerPos.getY()][playerPos.getX()]->getNeighbour(next_cell)) {
             //Si la prochaine case est une case voisine 
             if (not matrix[playerPos.getY()][playerPos.getX()]->getNeighbour(next_cell)->occupied()) {
@@ -298,19 +297,19 @@ void Board::newGame() {
             }
 
             //Initialisation des pions et joueurs: 
-            if (i == 10 and j == 16) {
-                line[j]->setPiece(setPlayer(Position{j,i}, 0));              
+            if (i == 0 and j == 8) {
+                line[j]->setPiece(setPlayer(Position{j,i}, players.size()));              
             }
-            if (i == 14 and j == 4) {
-                line[j]->setPiece(setPlayer(Position{j,i}, 1));
+            if (i == 16 and j == 8) {
+                line[j]->setPiece(setPlayer(Position{j,i}, players.size()));
             }
 
             if (nplayer==4){
                 if (i == 8 and j == 0) {
-                line[j]->setPiece(setPlayer(Position{j,i}, 2));              
+                line[j]->setPiece(setPlayer(Position{j,i}, players.size()));              
                 }
                 if (i == 8 and j == 16) {
-                    line[j]->setPiece(setPlayer(Position{j,i}, 3));
+                    line[j]->setPiece(setPlayer(Position{j,i}, players.size()));
                 } 
             }
 
