@@ -1,42 +1,51 @@
 #include "Board.hpp"
 
-Board::Board(int nplayer, int size, const int START_WALL):size{size}, START_WALL{START_WALL}, nplayer{nplayer}{
+Board::Board(int nplayer, int size, const int START_WALL): size{size}, START_WALL{START_WALL}, nplayer{nplayer} {
     newGame();
 }
 
+
+std::vector<int> Board::sidesP(Position& next_pos, int currentP){
+    Position player_pos = players[currentP]->getPawnPos();
+        Position difference = player_pos - next_pos;
+        difference.setX(-difference.getX());
+        std::vector<int> sides;
+        switch (difference.getX()) {
+            case 2:
+                switch (difference.getY()) {
+                    case 2:
+                        sides.push_back(0);
+                        sides.push_back(1);
+                        break;
+                    case -2:
+                        sides.push_back(1);
+                        sides.push_back(2);
+                        break;
+                }
+                break;
+            case -2:
+                switch (difference.getY()) {
+                    case 2:
+                        sides.push_back(3);
+                        sides.push_back(0);
+                        break;
+                    case -2:
+                        sides.push_back(3);
+                        sides.push_back(2);
+                        break;
+                }
+                break;  
+        }
+    return sides; 
+}
+
+
 bool Board::DiagonalMove(Position &next_pos, int currentP) {
     Position player_pos = players[currentP]->getPawnPos();
-    Position difference = player_pos - next_pos;
-    difference.setX(-difference.getX());
-    std::vector<int> sides;
-    switch (difference.getX()) {
-        case 2:
-            switch (difference.getY()) {
-                case 2:
-                    sides.push_back(0);
-                    sides.push_back(1);
-                    break;
-                case -2:
-                    sides.push_back(1);
-                    sides.push_back(2);
-                    break;
-            }
-            break;
-        case -2:
-            switch (difference.getY()) {
-                case 2:
-                    sides.push_back(3);
-                    sides.push_back(0);
-                    break;
-                case -2:
-                    sides.push_back(3);
-                    sides.push_back(2);
-                    break;
-            }
-            break;
-    }
+    std::vector<int> sides = sidesP(next_pos, currentP); 
     for (auto side: sides) {
-        if (matrix[player_pos.getY()][player_pos.getX()]->getNeighbour(side)) {// Vérifie si pas de mur entre cases
+        if (matrix[player_pos.getY()][player_pos.getX()]->getNeighbour(side)) {
+            // Vérifie si pas de mur entre cases
             if (matrix[player_pos.getY()][player_pos.getX()]->getNeighbour(side)->occupied()) {
                 switch (side) {
                     case 0:
@@ -165,8 +174,7 @@ void Board::executeMove(std::string &typeOfMove, Position &pos, int currentP) {
 bool Board::checkWall(std::string &direction, Position &next_pos){
     int posX, posY;
     if (direction == "H") {
-        Position wallPos{next_pos.getX(), next_pos.getY() - 1}; // Case cible (voir srd)
-        if (wallPos.getY() > 0 && (wallPos.getX() + 2 < boardSize)){
+        if (next_pos.getX()<boardSize-2 && next_pos.getY() > 0){
             for (int i = 0; i < 3; i++) {
                 posY = next_pos.getY() - 1;
                 posX = next_pos.getX() + i;
@@ -176,8 +184,7 @@ bool Board::checkWall(std::string &direction, Position &next_pos){
         else return false;    
     }
     else { 
-        Position wallPos{next_pos.getX() + 1, next_pos.getY()}; // Case cible (voir srd)
-        if (wallPos.getY() > 0 && (wallPos.getX() + 2 <= boardSize)){
+        if (next_pos.getX()< boardSize-2 && next_pos.getY() > 0){
             for (int i = 0; i < 3; i++) {
             posY = next_pos.getY() - i;
             posX = next_pos.getX() + 1;
@@ -193,9 +200,10 @@ bool Board::checkWall(std::string &direction, Position &next_pos){
 bool Board::isValid(std::string &typeOfMove, Position &next_pos, int currentP) {
     bool res = false; 
     Position playerPos = players[currentP]->getPawnPos();
+
     if (typeOfMove == "P") {
         Position next_cell = (playerPos - next_pos)/2;  
-        
+        next_cell.setX(-next_cell.getX());
         if (matrix[playerPos.getY()][playerPos.getX()]->getNeighbour(next_cell)) {
             //Si la prochaine case est une case voisine 
             if (not matrix[playerPos.getY()][playerPos.getX()]->getNeighbour(next_cell)->occupied()) {
@@ -230,6 +238,7 @@ bool Board::checkInput(std::string &input, int currentP) {
     }  
     
     std::string typeOfMove{input.substr(0, 1)};
+
     Position next_pos{input.substr(2, len)};
     
     next_pos = next_pos * 2; //*2 pour avoir la vrai position sur la matrice
@@ -241,34 +250,25 @@ bool Board::checkInput(std::string &input, int currentP) {
     return false;
 }
 
-
 void Board::bindCells() {
-    //TODO lier cases aux extrémités 
     for (int i = 0; i < boardSize; i += 2) {
         for (int j = 0; j < boardSize; j += 2) {
-            std::vector<std::shared_ptr<MotherCell>> neighbours;
+            std::vector<std::shared_ptr<MotherCell>> neighbours{nullptr, nullptr, nullptr, nullptr};
             if (i > 0) {
-                //Lie case du haut
-                neighbours.push_back(matrix[i - 2][j]);
-            } else {
-                neighbours.push_back(nullptr);
+                //Lie case haut
+                neighbours[0] = matrix[i - 2][j];
             }
-            if (j < boardSize - 3) {
-                //Lie case gauche et droite?? 
-                neighbours.push_back(matrix[i][j + 2]);
-            } else {
-                neighbours.push_back(nullptr);
+            if (j < boardSize - 3 ) { 
+                //Lie case droite
+                neighbours [1] = matrix[i][j + 2]; 
             }
             if (i < boardSize - 3) {
-                //Lie case du bas
-                neighbours.push_back(matrix[i + 2][j]);
-            } else {
-                neighbours.push_back(nullptr);
+                //Lie case bas
+                neighbours[2] = matrix[i + 2][j];
             }
             if (j > 0) {
-                neighbours.push_back(matrix[i][j - 2]);
-            } else {
-                neighbours.push_back(nullptr);
+                //Lie case gauche
+                neighbours[3] = matrix[i][j - 2]; 
             }
             matrix[i][j]->setNeighbours(neighbours);
         }
