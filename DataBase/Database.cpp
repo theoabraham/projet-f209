@@ -3,9 +3,8 @@
 /**
  * @brief Passe en revue uun fichier texte pour placer dans une liste différentes informations soit l une liste:
  *      l[0]=mot de passe, l[1]=plateau, l[2]=parties gagnées, l[3]=parties perdues, l[4]=amis a ajouter, l[5]=amis
- * @param file_path
- * @param arr_addr
- * @return
+ * @param file_path nom du fichier à parse, pas besoin de spécifier /Data
+ * @param arr_addr addresse mémoire de l'array de taille 6
  */
 void DatabaseHandler::parse(const std::string& file_path, std::array<std::string, 6> * arr_addr){
     std::ifstream file;
@@ -30,12 +29,9 @@ void DatabaseHandler::parse(const std::string& file_path, std::array<std::string
 }
 /**
  * @brief Vérifie si le mot de passe entré une fois hashé équivaut au hash stocké dans le fichier texte
- * @param input_psw
- * @param stocked_hash
- * @return
- */
-/*
- *
+ * @param input_psw mot de passe de l'utilisateur
+ * @param stocked_hash le hash stocké dans son fichier (string_arr[0])
+ * @return bool(int)
  */
 int DatabaseHandler::checkPswd(const std::string& input_psw, const std::string& stocked_hash){
     std::hash<std::string> h;
@@ -48,7 +44,7 @@ int DatabaseHandler::checkPswd(const std::string& input_psw, const std::string& 
 
 /**
  * @brief Demande à l'utilisateur d'entrer deux fois son mdp sans espace !, une fois validé, le mdp est hashé et retourné
- * @return
+ * @return string du psw une fois hashé
  */
 std::string DatabaseHandler::createPsw() {
     std::hash<std::string> hashed;
@@ -64,8 +60,8 @@ std::string DatabaseHandler::createPsw() {
 
 /**
  * @brief vérifier si un ficher donné en entrée est valide (ne correspond pas à un dossier , fichier caché, etc)
- * @param filepath
- * @return
+ * @param filepath chemin d'accès à un fichier
+ * @return (bool) int
  */
 int DatabaseHandler::isStringValid(const std::string &filepath) {
     if (filepath =="") return 0;
@@ -80,8 +76,8 @@ int DatabaseHandler::isStringValid(const std::string &filepath) {
 
 /**
  * @brief return vrai si le fichier donné en paramètre est existant
- * @param filename
- * @return
+ * @param filename fichier dont l'existance doit être testée
+ * @return (bool) int
  */
 bool DatabaseHandler::does_file_exist(const std::string &filename) {
     std::ifstream ifile("Data/"+filename);
@@ -93,8 +89,8 @@ bool DatabaseHandler::does_file_exist(const std::string &filename) {
 }
 /**
  * @brief créé un fichier avec des valeures initiale
- * @param filename
- * @return
+ * @param filename nom du fichier à créé
+ * @return le nom du fichier crée
  */
 std::string DatabaseHandler::createFile(const std::string& filename){
     const std::string board="/////\n"; const std::string win="0\n"; const std::string loosed="0\n";
@@ -149,6 +145,13 @@ void DatabaseHandler::transferFriend() {
             friendList.push_back(s);
         }
     }
+
+    //réécriture dans le fichier
+    std::string friends_str;
+    for (std::string s:friendList){
+        if (s!="") friends_str += (s + " ");
+    }
+    writeFriends(username, friends_str);
 }
 /**
  * @brief écrit les amis à ajouter dans la ligne 5 du fichier texte
@@ -186,6 +189,10 @@ void DatabaseHandler::listFriends() {
     }
 }
 // Méthodes "ask"
+/**
+ * @brief Demande à l'utilisateur d'entrer un fichier
+ * @return nom du fichier
+ */
 std::string DatabaseHandler::askFile() {
     std::string input_file = "";
     // vérification de la syntaxe
@@ -210,6 +217,10 @@ std::string DatabaseHandler::askFile() {
     return input_file;
 }
 
+/**
+ * @brief Demande un mot de passe à l'utilisateur
+ * @return mot de passe
+ */
 std::string DatabaseHandler::askPswd() {
     std::string psw;
     std::cout << "Entrez votre mot de passe: ";
@@ -217,6 +228,9 @@ std::string DatabaseHandler::askPswd() {
     return psw;
 }
 
+/**
+ * @brief Demande à l'utilisateur de rentrer en boucle des amis à ajouter
+ */
 void DatabaseHandler::askFriends() {
     std::string friends;
     while (friends != "N" and friends != "n"){
@@ -231,7 +245,10 @@ void DatabaseHandler::askFriends() {
         }
     }
 }
-
+/**
+ * @brief constructeur de l'objet databaseHandler
+ * @param inputFile fichié donné en entrée, doit etre vérifié via DatabaseHandler::askFile()
+ */
 DatabaseHandler::DatabaseHandler(const std::string &inputFile) {
     // parse le fichier donné
     parse(inputFile, &string_arr);
@@ -252,12 +269,6 @@ DatabaseHandler::DatabaseHandler(const std::string &inputFile) {
     std::cout << "Mise à jours des amis:" << std::endl;
     transferFriend();
 
-    //réécriture dans le fichier
-    std::string friends_str;
-    for (std::string s:friendList){
-        if (s!="") friends_str += (s + " ");
-    }
-    writeFriends(username, friends_str);
     std::cout << "______________________________" << std::endl;
 
     //liste d'amis
