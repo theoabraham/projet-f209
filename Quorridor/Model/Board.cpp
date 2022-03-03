@@ -251,7 +251,6 @@ bool Board::checkInput(std::string &input, int currentP) {
 }
 
 void Board::bindCells() {
-    //TODO lier cases aux extrémités 
     for (int i = 0; i < boardSize; i += 2) {
         for (int j = 0; j < boardSize; j += 2) {
             std::vector<std::shared_ptr<MotherCell>> neighbours{nullptr, nullptr, nullptr, nullptr};
