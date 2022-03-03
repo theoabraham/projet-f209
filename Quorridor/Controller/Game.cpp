@@ -35,5 +35,5 @@ void Game::start() {
         else inputFormat(); 
         view->printBoard();
     }
-    std::cout << "Player "<< player << " has won"<< std::endl;
+    std::cout << "Player "<< (player-1)%nplayer << " has won"<< std::endl;
 }
