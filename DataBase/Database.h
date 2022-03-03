@@ -22,10 +22,11 @@ private:
     std::string username;
 public:
     // Constructeurs
-    DatabaseHandler(std::string filename);
+    DatabaseHandler(const std::string &inputFile);
 
     // Getters Setters
     std::string getPlayerBoard()const{return string_arr[1];}
+    std::string getPlayerName() const{return username;}
     // faire un setter de friend list a partir d'un string
     int getWinGames()const{return std::stoi(string_arr[2]);}
     int getLoseGames()const{return std::stoi(string_arr[3]);}
@@ -35,16 +36,22 @@ public:
 
     // Méthode "bool"
     int checkPswd(const std::string& input_psw, const std::string& stocked_hash);
-    int is_string_valid(const std::string &filepath);
-    bool does_file_exist(const std::string &filename);
+    static int isStringValid(const std::string &filepath);
+    static bool does_file_exist(const std::string &filename);
     // Méthodes
-    int parse(const std::string& file_path, std::array<std::string, 6> * arr_addr);
-    std::string createPsw();
-    std::string createFile(const std::string& filename);
+    void parse(const std::string& file_path, std::array<std::string, 6> * arr_addr);
+    static std::string createPsw();
+    static std::string createFile(const std::string& filename);
     void writeFriends(const std::string& filename,const std::string &friends_str);
     void writeFriendstoAdd(const std::string &friends_name);
     void transferFriend();
     void listFriends();
+
+    // Méthodes "ask"
+    static std::string askFile();
+    std::string askPswd();
+    void askFriends();
+
 
 };
 #endif //PROJET_F209_DATABASE_H
