@@ -11,6 +11,7 @@ class DestruQtionWall: Wall {
 
 class DestruQtionBoard: Board {
     public:
-       explicit DestruQtionBoard(int nplayer, int size=9, const int START_WALL=99): Board(nplayer, size, START_WALL) {}
-
+        explicit DestruQtionBoard(int nplayer, int size=9, const int START_WALL=99): Board(nplayer, size, START_WALL) {}
+        bool checkWall(std::string &direction, Position &next_pos) override;
+        void destroyWall();
 };
