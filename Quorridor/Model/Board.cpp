@@ -1,6 +1,6 @@
 #include "Board.hpp"
 
-Board::Board(int nplayer, int size, const int START_WALL):size{size}, START_WALL{START_WALL}, nplayer{nplayer}{
+Board::Board(int nplayer, int size, const int START_WALL): size{size}, START_WALL{START_WALL}, nplayer{nplayer} {
     newGame();
 }
 
@@ -229,6 +229,7 @@ bool Board::checkInput(std::string &input, int currentP) {
     }  
     
     std::string typeOfMove{input.substr(0, 1)};
+
     Position next_pos{input.substr(2, len)};
     
     next_pos = next_pos * 2; //*2 pour avoir la vrai position sur la matrice
