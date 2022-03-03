@@ -2,7 +2,7 @@
 
 #include <utility>
 
-Game::Game(std::shared_ptr<Board> model, DisplayBoard &view):model{std::move(model)},view{&view} {
+Game::Game(std::shared_ptr<Board> model, std::shared_ptr<DisplayBoard> view): model{std::move(model)}, view{std::move(view)} {
 }
 
 std::string Game::getInput() {
@@ -35,5 +35,5 @@ void Game::start() {
         else inputFormat(); 
         view->printBoard();
     }
-    std::cout << "Player "<< player-1 << " has won"<< std::endl;
+    std::cout << "Player "<< player << " has won"<< std::endl;
 }
