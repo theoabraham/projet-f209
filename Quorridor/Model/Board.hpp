@@ -119,6 +119,10 @@ class Board{
         */
         void newGame();
 
+        /**
+         * @brief Algorithme qui vérfie si il y a encore un chemin possible pour le joueur de gagner 
+         * @return true si chemin possible, false sinon  
+        */
         bool possiblePaths();
 };
 
