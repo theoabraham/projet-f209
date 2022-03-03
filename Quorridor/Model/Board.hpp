@@ -13,8 +13,9 @@
 
 class Board{
     private:
-        int size;
+        const int size;
         int boardSize;
+        int START_WALL;
         
         std::vector<std::vector< std::shared_ptr<MotherCell> > > matrix;
 
@@ -24,14 +25,15 @@ class Board{
 
         bool end = false;
     public:
-        explicit Board(int nplayer, int size=9);
+        explicit Board(int nplayer, int size=9, int START_WALL=10);
 
-        int getNplayer() const {return nplayer; }
+
+        int getNplayer() const {return nplayer;}
 
         int getBoardSize() const {return boardSize;}
         std::vector<std::shared_ptr<Player>> getPlayers() const {return players;};
         std::vector<std::vector< std::shared_ptr<MotherCell> > > getMatrix() const {return matrix;}
-
+        
         bool isEnd() const{return end;};
 
         /**
@@ -82,7 +84,7 @@ class Board{
          *        currentP: le joueur en question 
          * @return bool: true si coup valide, false sinon 
         */ 
-        bool checkInput(std::string &input, int currentP);
+        virtual bool checkInput(std::string &input, int currentP);
 
 
         /**

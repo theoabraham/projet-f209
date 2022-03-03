@@ -22,6 +22,7 @@ bool Game::checkInput(std::string input, int player){
 void Game::start() {
     int player = 0;
     int nplayer = model->getNplayer(); 
+    
     view->printBoard();
     inputFormat();
     while(not model->isEnd()){
@@ -29,7 +30,7 @@ void Game::start() {
         std::string input = getInput();
         
         if(model->checkInput(input, player)){
-            player=(player+1) % nplayer;
+            player=(player+1)%nplayer;
         }
         else inputFormat(); 
         view->printBoard();

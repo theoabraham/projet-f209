@@ -1,4 +1,7 @@
 #include <pthread.h>
+#include "../Quorridor/Controller/Game.hpp"
+#include "../Quorridor/Model/Board.hpp"
+#include "../Quorridor/View/DisplayBoard.hpp"
 
 #include <queue>
 #include <string>
@@ -24,6 +27,8 @@ class Server {
   DisplayBoard displayBoard = DisplayBoard(board);
   Game game = Game(board, displayBoard);
   int activePlayer = 0;
+  int registeredPlayers = 0;
+  int neededPlayers = 2;
 
  private:
   void prepateFDSet(fd_set* read_set);
@@ -31,14 +36,11 @@ class Server {
   void handleNewConnection();
   void disconnectUser(unsigned user_num);
   void forward(message_t* msg);
+  void handleCommand(string command);
 
  public:
   Server();
   void run(int port = 8080);
   void shutDown();
 
-
 };
-
-};
-

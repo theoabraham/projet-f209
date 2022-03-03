@@ -9,9 +9,9 @@
 class Player {
     int id;
     std::shared_ptr<Pawn> pawn; 
-    int walls = 10; 
+    int walls; 
 public:    
-    Player(int id, std::shared_ptr<Pawn> pawn):id{id}, pawn{std::move(pawn)} {}
+    Player(int id, std::shared_ptr<Pawn> pawn, int walls):id{id}, pawn{std::move(pawn)}, walls{walls} {}
     
     std::shared_ptr<Pawn> getPawn(){return pawn;}
     Position getPawnPos() {return pawn->getPos();}
