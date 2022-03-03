@@ -33,6 +33,8 @@ public:
     int getTotalGames()const{return getWinGames()+getLoseGames();}
     std::vector<std::string> getToAddFriendList() const{return toAddList;}
     std::vector<std::string>  getFriendList() const {return friendList;}
+    void setFriendsList(const std::string &fstr);
+    void setToaddList(const std::string &fstr);
 
     // Méthode "bool"
     int checkPswd(const std::string& input_psw, const std::string& stocked_hash);
