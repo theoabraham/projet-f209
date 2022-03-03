@@ -4,39 +4,48 @@ Board::Board(int nplayer, int size, const int START_WALL):size{size}, START_WALL
     newGame();
 }
 
+
+std::vector<int> Board::sidesP(Position& next_pos, int currentP){
+    Position player_pos = players[currentP]->getPawnPos();
+        Position difference = player_pos - next_pos;
+        difference.setX(-difference.getX());
+        std::vector<int> sides;
+        switch (difference.getX()) {
+            case 2:
+                switch (difference.getY()) {
+                    case 2:
+                        sides.push_back(0);
+                        sides.push_back(1);
+                        break;
+                    case -2:
+                        sides.push_back(1);
+                        sides.push_back(2);
+                        break;
+                }
+                break;
+            case -2:
+                switch (difference.getY()) {
+                    case 2:
+                        sides.push_back(3);
+                        sides.push_back(0);
+                        break;
+                    case -2:
+                        sides.push_back(3);
+                        sides.push_back(2);
+                        break;
+                }
+                break;  
+        }
+    return sides; 
+}
+
+
 bool Board::DiagonalMove(Position &next_pos, int currentP) {
     Position player_pos = players[currentP]->getPawnPos();
-    Position difference = player_pos - next_pos;
-    difference.setX(-difference.getX());
-    std::vector<int> sides;
-    switch (difference.getX()) {
-        case 2:
-            switch (difference.getY()) {
-                case 2:
-                    sides.push_back(0);
-                    sides.push_back(1);
-                    break;
-                case -2:
-                    sides.push_back(1);
-                    sides.push_back(2);
-                    break;
-            }
-            break;
-        case -2:
-            switch (difference.getY()) {
-                case 2:
-                    sides.push_back(3);
-                    sides.push_back(0);
-                    break;
-                case -2:
-                    sides.push_back(3);
-                    sides.push_back(2);
-                    break;
-            }
-            break;
-    }
+    std::vector<int> sides = sidesP(next_pos, currentP); 
     for (auto side: sides) {
-        if (matrix[player_pos.getY()][player_pos.getX()]->getNeighbour(side)) {// Vérifie si pas de mur entre cases
+        if (matrix[player_pos.getY()][player_pos.getX()]->getNeighbour(side)) {
+            // Vérifie si pas de mur entre cases
             if (matrix[player_pos.getY()][player_pos.getX()]->getNeighbour(side)->occupied()) {
                 switch (side) {
                     case 0:
