@@ -13,18 +13,18 @@
 
 class Board{
     private:
-        int size;
-        const int START_WALL;
-        
+        int START_WALL;
+
         int nplayer;
 
         bool end = false;
 
     protected:
-        int currentPlayer=0;
         int boardSize;
         std::vector<std::vector< std::shared_ptr<MotherCell> > > matrix;
         std::vector<std::shared_ptr<Player>> players;
+        int currentPlayer=0;
+        const int size;
 
     public:
         explicit Board(int nplayer, int size=9, int START_WALL=10);
@@ -58,7 +58,7 @@ class Board{
         /**
          *@brief cas si il n'y a pas de mur derrière lors du face2face 
         */
-        bool JumpOver(Position& target_pos, int currentP);       
+        bool JumpOver(Position& target_pos, int currentP);
 
 
         /**
@@ -66,7 +66,7 @@ class Board{
          * @param direction: mur horizontal ou vertical 
          *        pos: case où doit commencer le mur 
         */
-        virtual void placeWall(std::string &direction, Position &pos); 
+        virtual void placeWall(std::string &direction, Position &pos);
               
         /**
          * @brief Execute le coup  
@@ -100,7 +100,7 @@ class Board{
          *        currentP: le joueur en question 
          * @return bool: true si coup valide, false sinon 
         */ 
-        bool checkInput(std::string &input, int currentP);
+        virtual bool checkInput(std::string &input, int currentP);
 
 
         /**
