@@ -2,6 +2,7 @@
 #define MOTHERCELL_HPP
 
 #include <memory>
+#include <utility>
 #include <vector>
 #include "Piece.hpp"
 
@@ -11,7 +12,7 @@ protected:
     std::vector<std::shared_ptr<MotherCell>> neighbours{nullptr, nullptr, nullptr, nullptr};
 public:
         std::shared_ptr<Piece> getPiece() {return cellPiece;} 
-        void setPiece(std::shared_ptr<Piece> piece) {cellPiece = piece;}
+        void setPiece(std::shared_ptr<Piece> piece) {cellPiece = std::move(piece);}
         bool occupied();
 
         void setNeighbours(std::vector<std::shared_ptr<MotherCell>> &neighboursVector) {neighbours = neighboursVector;}          

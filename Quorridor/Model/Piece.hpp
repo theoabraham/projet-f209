@@ -3,6 +3,7 @@
 
 #include "Position.hpp"
 #include <memory>
+#include <utility>
 #include <vector>
 #include <iostream>
 #include <string>
@@ -22,7 +23,7 @@ private:
     Position position; 
     std::string direction;
 public:
-    Wall(Position position, std::string direction): position(position), direction(direction) {}; 
+    Wall(Position position, std::string direction): position(position), direction(std::move(direction)) {};
     Position getPos() override {return position;}
     void setPos(Position pos) override {position = pos;}
     
