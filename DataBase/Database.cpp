@@ -1,5 +1,15 @@
 #include "Database.h"
 
+void DatabaseHandler::setFriendsList(const std::string &fstr){
+    std::istringstream friend_str(fstr);
+    friendList = std::vector<std::string>(std::istream_iterator<std::string>{friend_str},std::istream_iterator<std::string>());
+}
+
+void DatabaseHandler::setToaddList(const std::string &fstr) {
+    std::istringstream to_add_str(fstr);
+    toAddList = std::vector<std::string>(std::istream_iterator<std::string>{to_add_str},std::istream_iterator<std::string>());
+}
+
 /**
  * @brief Passe en revue uun fichier texte pour placer dans une liste différentes informations soit l une liste:
  *      l[0]=mot de passe, l[1]=plateau, l[2]=parties gagnées, l[3]=parties perdues, l[4]=amis a ajouter, l[5]=amis
@@ -21,10 +31,12 @@ void DatabaseHandler::parse(const std::string& file_path, std::array<std::string
         num_of_line++;
     }
     // mets à jours friendsList et toAddList
-    std::istringstream to_add_str(string_arr[4]);
-    std::istringstream friend_str(string_arr[5]);
-    toAddList = std::vector<std::string>(std::istream_iterator<std::string>{to_add_str},std::istream_iterator<std::string>());
-    friendList = std::vector<std::string>(std::istream_iterator<std::string>{friend_str},std::istream_iterator<std::string>());
+    setToaddList(string_arr[4]);
+    setFriendsList(string_arr[5]);
+    //std::istringstream to_add_str(string_arr[4]);
+    //std::istringstream friend_str(string_arr[5]);
+    //toAddList = std::vector<std::string>(std::istream_iterator<std::string>{to_add_str},std::istream_iterator<std::string>());
+    //friendList = std::vector<std::string>(std::istream_iterator<std::string>{friend_str},std::istream_iterator<std::string>());
     file.close();
 }
 /**
