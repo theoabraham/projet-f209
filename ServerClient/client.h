@@ -1,10 +1,15 @@
 #include <queue>
 #include <string>
+
+#include "../DataBase/Database.h"
+
+
 using namespace std;
 
 class Client {
  private:
   int socket;
+  string pseudo;
 
  private:
   int handshake(string ip, int port, string pseudo);

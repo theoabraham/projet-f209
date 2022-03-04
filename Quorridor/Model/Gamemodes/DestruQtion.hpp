@@ -2,15 +2,16 @@
 #include "../Piece.hpp"
 
 class DestruQtionWall: Wall {
-        Wall *twin;
+        std::vector<Wall *> triplet;
     public:
-        explicit DestruQtionWall(Position position, std::string direction): Wall(position, direction), twin{nullptr} {}
-        void setTwin(Wall* otherWall) {twin = otherWall;}
-        ~DestruQtionWall() {delete twin;}
+        explicit DestruQtionWall(Position position, std::string direction): Wall(position, direction) {}
+        void setTriplet(Wall *otherWall) {triplet.push_back(otherWall);}
+        ~DestruQtionWall() {for (auto w: triplet) delete w;}
 };
 
 class DestruQtionBoard: Board {
     public:
-       explicit DestruQtionBoard(int nplayer, int size=9, const int START_WALL=99): Board(nplayer, size, START_WALL) {}
-
+        explicit DestruQtionBoard(int nplayer, int size=9, const int START_WALL=99): Board(nplayer, size, START_WALL) {}
+        bool checkWall(std::string &direction, Position &next_pos) override;
+        bool destroyWall(std::shared_ptr<Piece> wall);
 };

@@ -13,17 +13,19 @@
 
 class Board{
     private:
-        const int size;
-        int boardSize;
-        int START_WALL;
+        int size;
+        const int START_WALL;
         
-        std::vector<std::vector< std::shared_ptr<MotherCell> > > matrix;
-
-        std::vector<std::shared_ptr<Player>> players;
         int currentPlayer=0;
-        int nplayer; 
+        int nplayer;
 
         bool end = false;
+
+    protected:
+        int boardSize;
+        std::vector<std::vector< std::shared_ptr<MotherCell> > > matrix;
+        std::vector<std::shared_ptr<Player>> players;
+
     public:
         explicit Board(int nplayer, int size=9, int START_WALL=10);
 
@@ -40,9 +42,23 @@ class Board{
          * @brief s'occupe de la condition du jeu lorsque 2 pions se retrouvent face à face (voir règles)
          * @return bool: true si coup valide, false sinon 
         */ 
-        bool Face2Face(Position& next_pos, int currentP);
-        bool DiagonalMove(Position& next_pos, int currentP);
-        bool JumpOver(Position& next_pos, int currentP);       
+        bool Face2Face(Position& target_pos, int currentP);
+
+        /**
+         * @returns un vecteur qui indique vers quel voisin regarder 
+         *          selon comment on l'utilise (pour la fonction diagonalMove) 
+        */
+        std::vector<int> sidesP(Position& target_pos, int currentP);
+
+        /**
+         * @brief cas si il y a un mur derrière lors du face2face 
+        */
+        bool DiagonalMove(Position& target_pos, int currentP);
+
+        /**
+         *@brief cas si il n'y a pas de mur derrière lors du face2face 
+        */
+        bool JumpOver(Position& target_pos, int currentP);       
 
 
         /**
@@ -67,7 +83,7 @@ class Board{
          *        pos : la où le mur doit être placer (pos = position cible)
          * @return bool: true si coup valide, false sinon
         */
-        bool checkWall(std::string &direction, Position &pos);
+        virtual bool checkWall(std::string &direction, Position &pos);
 
         /**
          * @brief vérifie si le coup est jouable
@@ -84,7 +100,7 @@ class Board{
          *        currentP: le joueur en question 
          * @return bool: true si coup valide, false sinon 
         */ 
-        virtual bool checkInput(std::string &input, int currentP);
+        bool checkInput(std::string &input, int currentP);
 
 
         /**
@@ -103,6 +119,10 @@ class Board{
         */
         void newGame();
 
+        /**
+         * @brief Algorithme qui vérfie si il y a encore un chemin possible pour le joueur de gagner 
+         * @return true si chemin possible, false sinon  
+        */
         bool possiblePaths();
 };
 

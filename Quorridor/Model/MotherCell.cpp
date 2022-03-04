@@ -3,8 +3,6 @@
 #include <utility>
 
 
-
-//MotherCell:
 std::shared_ptr<MotherCell> MotherCell::getNeighbour(Position &neighbourPos){
     switch (neighbourPos.getX()) {
         case (0):
@@ -32,23 +30,4 @@ bool MotherCell::occupied() {
     else return false;
 }
 
-
-//PawnCell:
-void PawnCell::setPiece(std::shared_ptr<Piece> piece) {
-    cellPiece = piece;
-}
-
-std::shared_ptr<Piece> PawnCell::getPiece() {
-    return MotherCell::getPiece();
-}
-
-
-//WallCell: 
-void WallCell::setPiece(std::shared_ptr<Piece> piece) {
-    cellPiece = piece;
-}
-
-std::shared_ptr<Piece> WallCell::getPiece() {
-    return cellPiece;
-}
 

@@ -5,14 +5,13 @@
 #include <vector>
 #include "Piece.hpp"
 
-
 class MotherCell{
 protected: 
     std::shared_ptr<Piece> cellPiece;
     std::vector<std::shared_ptr<MotherCell>> neighbours{nullptr, nullptr, nullptr, nullptr};
 public:
-        virtual std::shared_ptr<Piece> getPiece() {return cellPiece;} //En faire des fonctions abstraites ? ("=0;")
-        virtual void setPiece(std::shared_ptr<Piece> piece) {cellPiece = piece;}
+        std::shared_ptr<Piece> getPiece() {return cellPiece;} 
+        void setPiece(std::shared_ptr<Piece> piece) {cellPiece = piece;}
         bool occupied();
 
         void setNeighbours(std::vector<std::shared_ptr<MotherCell>> &neighboursVector) {neighbours = neighboursVector;}          
@@ -25,18 +24,6 @@ public:
         */
         std::shared_ptr<MotherCell> getNeighbour(Position &neighbourPos);
         std::shared_ptr<MotherCell> getNeighbour(int side){return neighbours[side];}
-};
-
-class PawnCell : public MotherCell{
-public:
-    std::shared_ptr<Piece> getPiece() override;
-    void setPiece(std::shared_ptr<Piece> piece) override;
-};
-
-class WallCell: public MotherCell{
-public:
-    std::shared_ptr<Piece> getPiece() override;
-    void setPiece(std::shared_ptr<Piece> piece) override;
 };
 
 #endif
