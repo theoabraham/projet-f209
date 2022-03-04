@@ -7,6 +7,7 @@
 
 #include <string>
 
+
 #include "socketlib.h"
 
 using namespace std;
@@ -79,21 +80,26 @@ int Client::handshake(string ip, int port, string pseudo) {
 }
 
 int main(int argc, char const *argv[]) {
-  if (argc < 3) {
-    fprintf(stderr, "Utilisation: ./client <pseudo> <port> [<ip>]\n");
+  std::string inputFile = DatabaseHandler::askFile();
+  if (inputFile=="") exit(0);
+  DatabaseHandler dbh(inputFile);
+
+  if (argc < 2) {
+    fprintf(stderr, "Utilisation: ./client <port> [<ip>]\n");
     exit(0);
   }
-  const string pseudo = argv[1];
-  const int port = atoi(argv[2]);
+  const string pseudo = dbh.getPlayerName();
+  const int port = atoi(argv[1]);
   if (port < 1024) {
     fprintf(stderr, "Le port doit être supérieur à 1023.\n");
     exit(0);
   }
   string ip = "127.0.0.1";
-  if (argc > 3) {
-    ip = argv[3];
+  if (argc > 2) {
+    ip = argv[2];
   }
   Client client = Client();
   client.run(pseudo, ip, port);
   return 0;
+
 }
