@@ -2,7 +2,6 @@
 #define PIECE_HPP
 
 #include "Position.hpp"
-//#include "Player.hpp"
 #include <memory>
 #include <vector>
 #include <iostream>

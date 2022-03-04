@@ -13,9 +13,8 @@
 
 class Board{
     private:
-        const int size;
-        int boardSize;
-        int START_WALL;
+        int size;
+        const int START_WALL;
         
         int currentPlayer=0;
         int nplayer;
@@ -23,6 +22,7 @@ class Board{
         bool end = false;
 
     protected:
+        int boardSize;
         std::vector<std::vector< std::shared_ptr<MotherCell> > > matrix;
         std::vector<std::shared_ptr<Player>> players;
 
@@ -86,7 +86,7 @@ class Board{
          *        currentP: le joueur en question 
          * @return bool: true si coup valide, false sinon 
         */ 
-        virtual bool checkInput(std::string &input, int currentP);
+        bool checkInput(std::string &input, int currentP);
 
 
         /**
