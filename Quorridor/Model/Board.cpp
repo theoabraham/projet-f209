@@ -1,6 +1,8 @@
 #include "Board.hpp"
 
-Board::Board(int nplayer, int size, const int START_WALL): size{size}, START_WALL{START_WALL}, nplayer{nplayer} {
+
+Board::Board(int nplayer, int size, const int START_WALL) : size{size}, START_WALL{START_WALL}, nplayer{nplayer} {
+
     newGame();
 }
 
@@ -54,18 +56,20 @@ bool Board::DiagonalMove(Position &target_pos, int currentP) {
                             return true; //Mur derrière pion voisin et case cible pas occupée
                         }
                     case 2:
-                        if (matrix[player_pos.getY()+3][player_pos.getX()]->occupied() and
-                            not matrix[target_pos.getY()][target_pos.getX()]->occupied()) {
+
+                        if (matrix[player_pos.getY() + 3][player_pos.getX()]->occupied() and
+                            not matrix[next_pos.getY()][next_pos.getX()]->occupied()) {
                             return true;
                         }
                     case 1:
-                        if (matrix[player_pos.getY()][player_pos.getX()+3]->occupied() and
-                            not matrix[target_pos.getY()][target_pos.getX()]->occupied()) {
+                        if (matrix[player_pos.getY()][player_pos.getX() + 3]->occupied() and
+                            not matrix[next_pos.getY()][next_pos.getX()]->occupied()) {
                             return true; //Mur derrière pion voisin et case cible pas occupée
                         }
                     case 3:
-                        if (matrix[player_pos.getY()][player_pos.getX()-3]->occupied() and
-                            not matrix[target_pos.getY()][target_pos.getX()]->occupied()) {
+                        if (matrix[player_pos.getY()][player_pos.getX() - 3]->occupied() and
+                            not matrix[next_pos.getY()][next_pos.getX()]->occupied()) {
+
                             return true; //Mur derrière pion voisin et case cible pas occupée
                         }
                 }
@@ -77,19 +81,21 @@ bool Board::DiagonalMove(Position &target_pos, int currentP) {
 
 bool Board::JumpOver(Position &target_pos, int currentP) {
     Position player_pos = players[currentP]->getPawnPos();
-    Position diff = (player_pos - target_pos)/4;
 
-    if (matrix[player_pos.getY()-diff.getY()*2][player_pos.getX() - diff.getX()*2]->occupied()){
+    Position diff = (player_pos - next_pos) / 4;
+
+
+    if (matrix[player_pos.getY() - diff.getY() * 2][player_pos.getX() - diff.getX() * 2]->occupied()) {
         //Si la case voisine est bien occupée
-        if (not matrix[player_pos.getY() - diff.getY()*3][player_pos.getX() - diff.getX()*3]->occupied()){
+        if (not matrix[player_pos.getY() - diff.getY() * 3][player_pos.getX() - diff.getX() * 3]->occupied()) {
             //Si il n'y a pas de murs entre
-            if (not matrix[player_pos.getY() - diff.getY()*4][player_pos.getX() - diff.getX()*4]->occupied())
+            if (not matrix[player_pos.getY() - diff.getY() * 4][player_pos.getX() - diff.getX() * 4]->occupied())
                 //Si la case voisine suivante est libre
-                return true; 
+                return true;
         }
     }
     return false;
-}                
+}
 
 
 bool Board::Face2Face(Position &target_pos, int currentP) {
@@ -98,27 +104,30 @@ bool Board::Face2Face(Position &target_pos, int currentP) {
        
     switch (difference.getX()) {
         case 4:
-            if(difference.getY() == 0){
-                return JumpOver(target_pos, currentP);
+            if (difference.getY() == 0) {
+                return JumpOver(next_pos, currentP);
             }
         case -4:
-            if(difference.getY() == 0){
-                return JumpOver(target_pos, currentP);
+            if (difference.getY() == 0) {
+                return JumpOver(next_pos, currentP);
+
             }
         case 0:
             switch (difference.getY()) {
                 case 4:
                     return JumpOver(target_pos, currentP);
                 case -4:
-                    return JumpOver(target_pos,currentP);
+
+                    return JumpOver(next_pos, currentP);
             }
         case 2:
-            if(difference.getY() == 2 or difference.getY() == -2){
-                return DiagonalMove(target_pos,currentP);
+            if (difference.getY() == 2 or difference.getY() == -2) {
+                return DiagonalMove(next_pos, currentP);
             }
         case -2:
-            if(difference.getY() == 2 or difference.getY() == -2){
-                return DiagonalMove(target_pos,currentP);
+            if (difference.getY() == 2 or difference.getY() == -2) {
+                return DiagonalMove(next_pos, currentP);
+
             }
     }
     return false;
@@ -141,6 +150,7 @@ void Board::placeWall(std::string &direction, Position &pos) {
         }
     }
     players[currentPlayer]->useWall();
+    possiblePaths();
 }
 
 
@@ -155,56 +165,62 @@ void Board::executeMove(std::string &typeOfMove, Position &pos, int currentP) {
         //On vérifie si un des joueur a gagné: 
         switch (currentP) {
             case 0:
-                if (players[currentP]->getPawnPos().getY() == boardSize-1) end = true;
+                if (players[currentP]->getPawnPos().getY() == boardSize - 1) end = true;
                 break;
             case 1:
                 if (players[currentP]->getPawnPos().getY() == 0) end = true;
-                break;    
+                break;
             case 2:
                 if (players[currentP]->getPawnPos().getX() == 0) end = true;
                 break;
             case 3:
-                if (players[currentP]->getPawnPos().getX() == boardSize-1) end = true;
-                break;            
+                if (players[currentP]->getPawnPos().getX() == boardSize - 1) end = true;
+                break;
         }
     } else {
         placeWall(typeOfMove, pos);
     }
 }
 
-bool Board::checkWall(std::string &direction, Position &target_pos){
+
+bool Board::checkWall(std::string &direction, Position &next_pos) {
     int posX, posY;
     if (direction == "H") {
-        if (target_pos.getX()<boardSize-2 && target_pos.getY() > 0){
+        Position wallPos{next_pos.getX(), next_pos.getY() - 1}; // Case cible (voir srd)
+        if (wallPos.getY() > 0 && (wallPos.getX() + 2 < boardSize)) {
+
             for (int i = 0; i < 3; i++) {
                 posY = target_pos.getY() - 1; // décalage vers les WallCell
                 posX = target_pos.getX() + i; // longueur du mur
                 if (matrix[posY][posX]->occupied()) return false;
             }
-        }
-        else return false;
-    }
-    else { 
-        if (target_pos.getX()< boardSize-2 && target_pos.getY() > 0){
+
+        } else return false;
+    } else {
+        Position wallPos{next_pos.getX() + 1, next_pos.getY()}; // Case cible (voir srd)
+        if (wallPos.getY() > 0 && (wallPos.getX() + 2 <= boardSize)) {
             for (int i = 0; i < 3; i++) {
-            posY = target_pos.getY() - i; // largeur du mur
-            posX = target_pos.getX() + 1; // décalage vers les WallCell
-            if (matrix[posY][posX]->occupied()) return false;
+                posY = next_pos.getY() - i;
+                posX = next_pos.getX() + 1;
+                if (matrix[posY][posX]->occupied()) return false;
+
             }
-        }
-        else return  false; 
+        } else return false;
     }
     return true;
-}    
-    
+}
 
-bool Board::isValid(std::string &typeOfMove, Position &target_pos, int currentP) {
-    bool res = false; 
+
+bool Board::isValid(std::string &typeOfMove, Position &next_pos, int currentP) {
+    bool res = false;
+
     Position playerPos = players[currentP]->getPawnPos();
 
     if (typeOfMove == "P") {
-        Position next_cell = (playerPos - target_pos)/2;  
-        next_cell.setX(-next_cell.getX());
+
+        Position next_cell = (playerPos - next_pos) / 2;
+
+
         if (matrix[playerPos.getY()][playerPos.getX()]->getNeighbour(next_cell)) {
             //Si la prochaine case est une case voisine 
             if (not matrix[playerPos.getY()][playerPos.getX()]->getNeighbour(next_cell)->occupied()) {
@@ -213,35 +229,40 @@ bool Board::isValid(std::string &typeOfMove, Position &target_pos, int currentP)
                     //Si il n'y a pas de mur entre
                     res = true;
             }
-        }else
-            return Face2Face(target_pos,currentP);    
-    
+
+        } else
+            return Face2Face(next_pos, currentP);
+
+
     } else if (typeOfMove == "H" || typeOfMove == "V") {
-        
+
         if (players[currentP]->hasWalls()) {
-            res = checkWall(typeOfMove,target_pos); 
+
+            res = checkWall(typeOfMove, next_pos);
+
         }
     }
-    
+
     return res;
 }
 
 
 bool Board::checkInput(std::string &input, int currentP) {
-    int len; 
-    if (size>=10){
-        if (input.size() != 5) return false; 
-        len = 4; 
+    int len;
+    if (size >= 10) {
+        if (input.size() != 5) return false;
+        len = 4;
+    } else {
+        if (input.size() != 4) return false;
+        len = 3;
     }
-    else{
-        if (input.size()!=4) return false;
-        len = 3; 
-    }  
-    
+
     std::string typeOfMove{input.substr(0, 1)};
-    Position target_pos{input.substr(2, len)};
-    
-    target_pos = target_pos * 2; //*2 pour avoir la vrai position sur la matrice
+
+    Position next_pos{input.substr(2, len)};
+
+    next_pos = next_pos * 2; //*2 pour avoir la vrai position sur la matrice
+
     currentPlayer = currentP;
     if (isValid(typeOfMove, target_pos, currentP)) {
         executeMove(typeOfMove, target_pos, currentP);
@@ -275,13 +296,13 @@ void Board::bindCells() {
     }
 }
 
-std::shared_ptr<Pawn> Board::setPlayer(Position pos, int id){
+std::shared_ptr<Pawn> Board::setPlayer(Position pos, int id) {
     std::shared_ptr<Pawn> pawn = std::shared_ptr<Pawn>(new Pawn(pos, id));
 
     std::shared_ptr<Player> player = std::shared_ptr<Player>(new Player(id, pawn, START_WALL));
     players.push_back(player);
-    return pawn; 
-} 
+    return pawn;
+}
 
 void Board::newGame() {
     boardSize = size * 2 - 1;
@@ -290,27 +311,29 @@ void Board::newGame() {
         for (int j = 0; j < boardSize; j++) {
 
             //Initialisation des cases: 
-            if ((i % 2 != 0 and i < boardSize) or (j % 2 != 0 and j < boardSize)) { 
-                line.push_back(std::shared_ptr<MotherCell>(new MotherCell()));
-            } else { 
-                line.push_back(std::shared_ptr<MotherCell>(new MotherCell()));
+
+            if ((i % 2 != 0 and i < boardSize) or (j % 2 != 0 and j < boardSize)) {
+                line.push_back(std::shared_ptr<WallCell>(new WallCell()));
+            } else {
+                line.push_back(std::shared_ptr<PawnCell>(new PawnCell()));
+
             }
 
             //Initialisation des pions et joueurs: 
             if (i == 0 and j == 8) {
-                line[j]->setPiece(setPlayer(Position{j,i}, players.size()));              
+                line[j]->setPiece(setPlayer(Position{j, i}, players.size()));
             }
             if (i == 16 and j == 8) {
-                line[j]->setPiece(setPlayer(Position{j,i}, players.size()));
+                line[j]->setPiece(setPlayer(Position{j, i}, players.size()));
             }
 
-            if (nplayer==4){
+            if (nplayer == 4) {
                 if (i == 8 and j == 0) {
-                line[j]->setPiece(setPlayer(Position{j,i}, players.size()));              
+                    line[j]->setPiece(setPlayer(Position{j, i}, players.size()));
                 }
                 if (i == 8 and j == 16) {
-                    line[j]->setPiece(setPlayer(Position{j,i}, players.size()));
-                } 
+                    line[j]->setPiece(setPlayer(Position{j, i}, players.size()));
+                }
             }
 
         }
