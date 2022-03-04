@@ -217,7 +217,7 @@ bool Board::isValid(std::string &typeOfMove, Position &next_pos, int currentP) {
     if (typeOfMove == "P") {
 
         Position next_cell = (playerPos - next_pos) / 2;
-
+        next_cell.setX(-next_cell.getX()); 
 
         if (matrix[playerPos.getY()][playerPos.getX()]->getNeighbour(next_cell)) {
             //Si la prochaine case est une case voisine 
