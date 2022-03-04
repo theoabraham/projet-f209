@@ -76,25 +76,10 @@ void Server::handleSocketReadActivity(fd_set* in_set, int& nactivities) {
         // message_buffer[nbytes] = '\0';
         bool enoughPlayers = (this->registeredPlayers >= this->neededPlayers);
         //Si le message commence par un point ET provient du joueur actif ET que la partie est en cour :
-        if((msg.message.substr(0,1) == (string)".") && socket == this->users[activePlayer]->socket && enoughPlayers){
-          std::string coup = msg.message.substr(msg.message.length() - 4, 4);
+        if((msg.message.substr(0,1) == (string)"/") && socket == this->users[activePlayer]->socket && enoughPlayers){
+          std::string command = msg.message.substr(msg.message.length() - 4, 4);
           //Si le coup demandé est valide, on le joue et on affiche le plateau
-          if(this->game.checkInput(coup, this->activePlayer)){
-            message_t strBoard;
-            strBoard.message = this->displayBoard.printBoard();
-            this->forward(&strBoard);
-            //Si la partie est finie : on affiche un message annoncant le joueur gagnant
-            if (this->board->isEnd()) {
-              message_t endingMsg;
-              endingMsg.message = users[activePlayer]->name + " remporte la victoire!";
-              this->forward(&endingMsg);
-            } else { //Sinon, on affiche un message qui annonce le début du tour du nouveau joueur actif.
-              this->activePlayer = (activePlayer + 1) % this->neededPlayers;
-              message_t newTurnMsg;
-              newTurnMsg.message = "C'est a " + users[activePlayer]->name + " de jouer!";
-              this->forward(&newTurnMsg);
-            }
-          }
+          this->handleCommand(command);
         } else {
         //Si de base ce n'était pas une commande (ou que ce n'était pas le tour du joueur expediteur)
         //C'est un message, qui est renvoyé a tout le monde
@@ -107,6 +92,26 @@ void Server::handleSocketReadActivity(fd_set* in_set, int& nactivities) {
       }
     }
     i--;
+  }
+}
+
+void Server::handleCommand(string command){
+  //gestion d'une commande (.Message) d'un utilisateur
+  if(this->game.checkInput(command, this->activePlayer)){
+    message_t strBoard;
+    strBoard.message = this->displayBoard.printBoard();
+    this->forward(&strBoard);
+    //Si la partie est finie : on affiche un message annoncant le joueur gagnant
+    if (this->board->isEnd()) {
+      message_t endingMsg;
+      endingMsg.message = users[activePlayer]->name + " remporte la victoire!";
+      this->forward(&endingMsg);
+    } else { //Sinon, on affiche un message qui annonce le début du tour du nouveau joueur actif.
+      this->activePlayer = (activePlayer + 1) % this->neededPlayers;
+      message_t newTurnMsg;
+      newTurnMsg.message = "C'est a " + users[activePlayer]->name + " de jouer!";
+      this->forward(&newTurnMsg);
+    }
   }
 }
 
@@ -170,7 +175,7 @@ void Server::handleNewConnection() {
   registeredPlayers++;
   if (this->registeredPlayers == this->neededPlayers){
     message_t startingMsg;
-    startingMsg.message = "C'est a " + users[0]->name + " de jouer!";
+    startingMsg.message = "C'est a " + users[this->activePlayer]->name + " de jouer!";
     this->forward(&startingMsg);
   }
 }
