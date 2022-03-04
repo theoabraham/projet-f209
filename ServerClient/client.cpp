@@ -13,11 +13,8 @@ using namespace std;
 
 Client::Client() {}
 
-void Client::runMenu(){
-  //TODO implementer le menu de Hisao
-}
-
-void Client::runGame(string pseudo, string ip, int port) {
+void Client::run(string pseudo, string ip, int port) {
+  //Le client se connecte au serveur, et créé un thread pour gérer la reception de messages.
   this->socket = this->handshake(ip, port, pseudo);
   pthread_t tid;
   pthread_create(&tid, nullptr, Client::manageInputs, this);
@@ -26,18 +23,19 @@ void Client::runGame(string pseudo, string ip, int port) {
 }
 
 void *Client::manageInputs(void *instance) {
+  //Version void* de manage input pour pouvoir creer le thread
   Client *c = (Client *)instance;
   c->manageInputs();
   return nullptr;
 }
 
 void Client::manageInputs() {
+  // Le client peut ecrire et envoyer ses messages
   char buffer[1024];
   write(STDOUT_FILENO, ">> ", 3);
   while (fgets(buffer, 1024, stdin) != NULL) {
     buffer[strlen(buffer) - 1] = '\0';
     message_t msg = {.timestamp = time(NULL), .message = string(buffer)};
-    printf("\033[A\33[2KT\r");
     if (ssend(this->socket, &msg) <= 0) {
       exit(0);
     }
@@ -48,6 +46,7 @@ void Client::manageInputs() {
 }
 
 void Client::manageSocketTraffic() {
+  //Reception des messages via le serveur
   while (true) {
     message_t msg;
     size_t nbytes = receive(this->socket, &msg);
@@ -95,6 +94,6 @@ int main(int argc, char const *argv[]) {
     ip = argv[3];
   }
   Client client = Client();
-  client.runGame(pseudo, ip, port);
+  client.run(pseudo, ip, port);
   return 0;
 }

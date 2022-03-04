@@ -15,7 +15,7 @@ MODEL = ../Quorridor/Model/Board.cpp ../Quorridor/Model/Board.hpp ../Quorridor/M
 
 VIEW = ../Quorridor/View/DisplayBoard.cpp ../Quorridor/View/DisplayBoard.hpp
 
-CONTROLLER = ../Quorridor/Controller/Game.cpp ../Quorridor/Controller/Game.hpp 
+CONTROLLER = ../Quorridor/Controller/Game.cpp ../Quorridor/Controller/Game.hpp
 
 clean:
 	rm -f client server *.o
