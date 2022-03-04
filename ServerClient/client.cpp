@@ -13,7 +13,11 @@ using namespace std;
 
 Client::Client() {}
 
-void Client::run(string pseudo, string ip, int port) {
+void Client::runMenu(){
+  //TODO implementer le menu de Hisao
+}
+
+void Client::runGame(string pseudo, string ip, int port) {
   this->socket = this->handshake(ip, port, pseudo);
   pthread_t tid;
   pthread_create(&tid, nullptr, Client::manageInputs, this);
@@ -91,6 +95,6 @@ int main(int argc, char const *argv[]) {
     ip = argv[3];
   }
   Client client = Client();
-  client.run(pseudo, ip, port);
+  client.runGame(pseudo, ip, port);
   return 0;
 }
