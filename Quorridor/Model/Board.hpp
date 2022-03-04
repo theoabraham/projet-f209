@@ -16,12 +16,12 @@ class Board{
         int size;
         const int START_WALL;
         
-        int currentPlayer=0;
         int nplayer;
 
         bool end = false;
 
     protected:
+        int currentPlayer=0;
         int boardSize;
         std::vector<std::vector< std::shared_ptr<MotherCell> > > matrix;
         std::vector<std::shared_ptr<Player>> players;
@@ -66,7 +66,7 @@ class Board{
          * @param direction: mur horizontal ou vertical 
          *        pos: case où doit commencer le mur 
         */
-        void placeWall(std::string &direction, Position &pos); 
+        virtual void placeWall(std::string &direction, Position &pos); 
               
         /**
          * @brief Execute le coup  
