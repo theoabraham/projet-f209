@@ -1,26 +1,60 @@
 #include "DestruQtion.hpp"
 
 bool DestruQtionBoard::checkWall(std::string &direction, Position &target_pos){
-    int posX, posY;
-    if (direction == "H") {
-        if (target_pos.getY() > 0 && (target_pos.getX() + 2 < boardSize)){
-            for (int i = 0; i < 3; i++) {
-                posY = target_pos.getY() - 1; // décalage vers les WallCell
-                posX = target_pos.getX() + i; // longueur du mur
-                if (matrix[posY][posX]->occupied()) return destroyWall(matrix[posY][posX]->getPiece());
-            }
-        } 
-        else return false;    
+    //si l'emplacement du mur horizontal est occupé, on détruit le mur ciblé
+    if (direction == "H" && matrix[target_pos.getY() - 1][target_pos.getX()]->occupied()) {
+        return true;
     }
+    //Pareil à la verticale
+    if (direction == "V" && matrix[target_pos.getY()][target_pos.getX() + 1]->occupied()) {
+        return true;
+    }
+    return Board::checkWall(direction, target_pos);
+}
+
+void DestruQtionBoard::placeWall(std::string &direction, Position &pos) {
+    int posX = pos.getX(), posY = pos.getY();
+    //Destruction de mur
+    if (direction == "H" && matrix[pos.getY() - 1][pos.getX()]->occupied()) {
+        destroyWall(matrix[pos.getY() - 1][pos.getX()]->getPiece());
+    }
+    else if (direction == "V" && matrix[pos.getY()][pos.getX() + 1]->occupied()) {
+        destroyWall(matrix[pos.getY()][pos.getX() + 1]->getPiece());
+    }
+    // Placement de mur
     else {
-        if (target_pos.getY() > 0 && (target_pos.getX() + 2 <= boardSize)){
+        std::vector<std::shared_ptr<DestruQtionWall>> triplets;
+        if (direction == "H") {
             for (int i = 0; i < 3; i++) {
-            posY = target_pos.getY() - i; // largeur du mur
-            posX = target_pos.getX() + 1; // décalage vers les WallCell
-            if (matrix[posY][posX]->occupied()) return destroyWall(matrix[posY][posX]->getPiece());
+                posY = pos.getY() - 1;
+                posX = pos.getX() + i;
+                triplets.push_back(std::shared_ptr<DestruQtionWall>(new DestruQtionWall(Position{posX, posY}, direction)));
+                matrix[posY][posX]->setPiece(triplets[i]);
+            }
+        } else if (direction == "V") {
+            for (int i = 0; i < 3; i++) {
+                posY = pos.getY() - i;
+                posX = pos.getX() + 1;
+                triplets.push_back(std::shared_ptr<DestruQtionWall>(new DestruQtionWall(Position{posX, posY}, direction)));
+                matrix[posY][posX]->setPiece(triplets[i]);
             }
         }
-        else return  false; 
+        for (int i = 0; i < 3; i++) {
+            triplets[i]->setTriplet(triplets[(i+1) % 3]);
+            triplets[i]->setTriplet(triplets[(i+2) % 3]);
+        }
     }
-    return true;
+    players[currentPlayer]->useWall();
+}
+
+void DestruQtionBoard::destroyWall(std::shared_ptr<DestruQtionWall> wall) {
+    int posY, posX;
+    for (auto w: wall->getTriplet()) {
+        posY = w->getPos().getY();
+        posX = w->getPos().getX();
+        matrix[posY][posX]->setPiece(nullptr);
+    }
+    posY = wall->getPos().getY();
+    posX = wall->getPos().getX();
+    matrix[posY][posX]->setPiece(nullptr);
 }
