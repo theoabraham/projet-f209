@@ -27,7 +27,6 @@ public:
     // Getters Setters
     std::string getPlayerBoard()const{return string_arr[1];}
     std::string getPlayerName() const{return username;}
-    // faire un setter de friend list a partir d'un string
     int getWinGames()const{return std::stoi(string_arr[2]);}
     int getLoseGames()const{return std::stoi(string_arr[3]);}
     int getTotalGames()const{return getWinGames()+getLoseGames();}
