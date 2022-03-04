@@ -124,6 +124,8 @@ class Board{
          * @return true si chemin possible, false sinon  
         */
         bool possiblePaths();
+
+        void removeWall(const std::string& direction, Position& pos);
 };
 
 #endif

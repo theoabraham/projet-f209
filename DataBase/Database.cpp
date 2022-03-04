@@ -21,7 +21,7 @@ void DatabaseHandler::parse(const std::string& file_path, std::array<std::string
     unsigned int num_of_line=0;
 
     // ouvre le fichier
-    file.open("Data/"+file_path);
+    file.open("../DataBase/Data/"+file_path);
 
     // pour chaque line du fichier place le dans la liste
     while (num_of_line < string_arr.size()){
@@ -33,10 +33,6 @@ void DatabaseHandler::parse(const std::string& file_path, std::array<std::string
     // mets à jours friendsList et toAddList
     setToaddList(string_arr[4]);
     setFriendsList(string_arr[5]);
-    //std::istringstream to_add_str(string_arr[4]);
-    //std::istringstream friend_str(string_arr[5]);
-    //toAddList = std::vector<std::string>(std::istream_iterator<std::string>{to_add_str},std::istream_iterator<std::string>());
-    //friendList = std::vector<std::string>(std::istream_iterator<std::string>{friend_str},std::istream_iterator<std::string>());
     file.close();
 }
 /**
@@ -63,9 +59,11 @@ std::string DatabaseHandler::createPsw() {
     std::string psw;std::string pswv;
     do{
         std::cout<< "Entrez votre mot de passe: ";
-        std::cin >> psw;
+        //std::cin >> psw;
+        getline(std::cin,psw);
         std::cout<< "Confirmez votre mot de passe: ";
-        std::cin >> pswv;
+        //std::cin >> pswv;
+        getline(std::cin,pswv);
     }while (psw != pswv);
     return std::to_string(hashed(psw));
 }
@@ -92,7 +90,7 @@ int DatabaseHandler::isStringValid(const std::string &filepath) {
  * @return (bool) int
  */
 bool DatabaseHandler::does_file_exist(const std::string &filename) {
-    std::ifstream ifile("Data/"+filename);
+    std::ifstream ifile("../DataBase/Data/"+filename);
     if (ifile.is_open()){
         return 1;
     }else{
@@ -108,7 +106,7 @@ std::string DatabaseHandler::createFile(const std::string& filename){
     const std::string board="/////\n"; const std::string win="0\n"; const std::string loosed="0\n";
     const std::string none1="\n"; const std::string none2="";
     std::string psw = createPsw() + '\n' ;
-    FILE *o_file = fopen(("Data/"+filename).c_str(), "w");
+    FILE *o_file = fopen(("../DataBase/Data/"+filename).c_str(), "w");
     if (o_file){
         fwrite(psw.c_str(), 1, psw.size(), o_file);
         fwrite(board.c_str(), 1, board.size(), o_file);
@@ -129,7 +127,7 @@ void DatabaseHandler::writeFriends(const std::string &filename, const std::strin
     const std::string board=string_arr[1]+"\n"; const std::string win=string_arr[2]+"\n";
     const std::string loosed=string_arr[3]+"\n";const std::string none="\n";
     std::string psw = string_arr[0]+"\n";
-    FILE *o_file = fopen(("Data/"+filename).c_str(), "w");
+    FILE *o_file = fopen(("../DataBase/Data/"+filename).c_str(), "w");
     if (o_file){
         fwrite(psw.c_str(), 1, psw.size(), o_file);
         fwrite(board.c_str(), 1, board.size(), o_file);
@@ -151,7 +149,9 @@ void DatabaseHandler::transferFriend() {
             return;
         }
         while (ans != "n" and ans != "N" and ans !="Y" and ans !="y"){
-            std::cout << "Voulez vous ajoutez " << s << " en amis ? (Y/n) : "; std::cin >> ans;
+            std::cout << "Voulez vous ajoutez " << s << " en amis ? (Y/n) : ";
+            getline(std::cin,ans);
+            //std::cin >> ans;
         }
         if (ans == "Y" or ans == "y"){
             friendList.push_back(s);
@@ -179,7 +179,7 @@ void DatabaseHandler::writeFriendstoAdd(const std::string &friends_name) {
     std::string friends;
     temp[4]=="" ? friends = username + "\n" : friends = temp[4] + " " + username + "\n";
     std::string psw = temp[0]+"\n";
-    FILE *o_file = fopen(("Data/"+friends_name).c_str(), "w");
+    FILE *o_file = fopen(("../DataBase/Data/"+friends_name).c_str(), "w");
     if (o_file){
         fwrite(psw.c_str(), 1, psw.size(), o_file);
         fwrite(board.c_str(), 1, board.size(), o_file);
@@ -218,7 +218,8 @@ std::string DatabaseHandler::askFile() {
         std::string ans = "";
         while (ans != "n" and ans != "N" and ans != "Y" and ans != "y") {
             std::cout << "Voulez vous créé une nouvelle entrée (Y/n)? ";
-            std::cin >> ans;
+            getline(std::cin, ans);
+            //std::cin >> ans;
         }
         if (ans == "n") {
             return "";
@@ -236,7 +237,7 @@ std::string DatabaseHandler::askFile() {
 std::string DatabaseHandler::askPswd() {
     std::string psw;
     std::cout << "Entrez votre mot de passe: ";
-    std::cin >> psw;
+    std::getline(std::cin,psw);
     return psw;
 }
 
@@ -247,7 +248,8 @@ void DatabaseHandler::askFriends() {
     std::string friends;
     while (friends != "N" and friends != "n"){
         std::cout << "Entrez un amis a ajouter (N/n pour annuler): ";
-        std::cin >> friends;
+        getline(std::cin,friends);
+        //std::cin >> friends;
         if (friends != "N" and friends != "n") {
             if (!does_file_exist(friends) or username == friends) {
                 std::cout << "Amis innexistant / impossible à ajouter" << std::endl;
@@ -270,10 +272,13 @@ DatabaseHandler::DatabaseHandler(const std::string &inputFile) {
     std::cout << "Fichier " << username << " trouvé." << std::endl;
     std::cout << "______________________________" << std::endl;
 
+
     //demande + vérification du mdp
     std::cout << "Vérification du mdp:" << std::endl;
-    while(!checkPswd(askPswd(), string_arr[0])){
-        std::cout << "Erreur, mauvais mot de passe." << std::endl;
+
+    if(!checkPswd(askPswd(), string_arr[0])){
+        std::cerr << "Erreur, mauvais mot de passe." << std::endl;
+        exit(1);
     }
 
     //mise à jours des amis
@@ -291,13 +296,13 @@ DatabaseHandler::DatabaseHandler(const std::string &inputFile) {
     //ajout d'amis
     std::cout << "Ajouts d'amis:" << std::endl;
     askFriends();
-    std::cout << "______________________________" << std::endl;
-    std::cout << "Construction de la matrice" << std::endl;
-    std::cout << "..." << std::endl;
 }
 
+/*
 int main(){
     std::string inputFile = DatabaseHandler::askFile();
     if (inputFile!= "") DatabaseHandler dbh(inputFile);
+
     return 0;
-}
+
+}*/
