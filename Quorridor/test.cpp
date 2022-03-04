@@ -2,7 +2,7 @@
 #include <string>
 
 
-int main(){
+/*int main(){
     std::string str = "Bonsoir yoyoy oui";
     //std::cout<< str.substr(4,3)<<std::endl; 
     //std::cout<< str[5] <<std::endl; 
@@ -11,4 +11,4 @@ int main(){
 
     std::cout<<3%2<<std::endl; 
     return 0;
-}
+}*/
