@@ -89,7 +89,7 @@ int main(int argc, char const *argv[]) {
   //  fprintf(stderr, "Utilisation: ./client <port> [<ip>]\n");
   //  exit(0);
   //}
-  const int port = 4040;//atoi(argv[1]);
+  const int port = atoi(argv[1]);
   if (port < 1024) {
     fprintf(stderr, "Le port doit être supérieur à 1023.\n");
     exit(0);

@@ -99,7 +99,7 @@ void Server::handleCommand(string command){
   //gestion d'une commande (.Message) d'un utilisateur
   if(this->game.checkInput(command, this->activePlayer)){
     message_t strBoard;
-    strBoard.message = this->displayBoard.printBoard();
+    strBoard.message = this->displayBoard->printBoard();
     this->forward(&strBoard);
     //Si la partie est finie : on affiche un message annoncant le joueur gagnant
     if (this->board->isEnd()) {
@@ -166,7 +166,7 @@ void Server::handleNewConnection() {
   printf("New user %s connected (%s:%d)\n", username, ip, port);
   //On envoit le plateau actuel au nouvel arrivant
   message_t strBoard;
-  strBoard.message = this->displayBoard.printBoard();
+  strBoard.message = this->displayBoard->printBoard();
   ssend(socket, &strBoard);
   if (socket > this->max_fd) {
     this->max_fd = socket;
