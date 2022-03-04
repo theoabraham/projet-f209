@@ -17,7 +17,7 @@ int main(){
     }
         
     std::shared_ptr<Board> board = std::shared_ptr<Board>(new Board(input));
-    DisplayBoard displayBoard(board);
+    auto displayBoard = std::shared_ptr<DisplayBoard>(new DisplayBoard(board));
     
     Game game(board, displayBoard);
     game.start();

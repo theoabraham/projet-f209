@@ -19,6 +19,7 @@ public:
     void useWall(){walls--;};
     bool hasWalls() const{return walls;};
     int getId() const{return id;};
+    void addWall(){walls++;};
 };
 
 #endif
