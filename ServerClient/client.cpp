@@ -41,6 +41,7 @@ void Client::manageInputs() {
       exit(0);
     }
     write(STDOUT_FILENO, ">> ", 3);
+    printf("\033[A\33[2KT\r");
   }
   close(this->socket);
   exit(0);
@@ -73,7 +74,7 @@ int Client::handshake(string ip, int port, string pseudo) {
     exit(1);
   }
   if (ack != 0) {
-    printf("Connection rejected by server\n");
+    std::cout<<"Connection rejected by server\n";
     exit(1);
   }
   return socket;
@@ -88,7 +89,7 @@ int main(int argc, char const *argv[]) {
   //  fprintf(stderr, "Utilisation: ./client <port> [<ip>]\n");
   //  exit(0);
   //}
-  const int port = 4040;//atoi(argv[1]);
+  const int port = atoi(argv[1]);
   if (port < 1024) {
     fprintf(stderr, "Le port doit être supérieur à 1023.\n");
     exit(0);
