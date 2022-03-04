@@ -1,5 +1,7 @@
 #include <queue>
 #include <string>
+#include "../DataBase/Database.h"
+
 using namespace std;
 
 class Client {
