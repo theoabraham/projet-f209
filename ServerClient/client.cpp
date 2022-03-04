@@ -10,7 +10,7 @@
 
 #include "socketlib.h"
 
-using namespace std;
+//using namespace std;
 
 Client::Client() {}
 
@@ -81,26 +81,25 @@ int Client::handshake(string ip, int port, string pseudo) {
 }
 
 int main(int argc, char const *argv[]) {
-  std::string inputFile = DatabaseHandler::askFile();
-  if (inputFile=="") exit(0);
-  DatabaseHandler dbh(inputFile);
+ std::string inputFile = DatabaseHandler::askFile();
+ if (inputFile=="") exit(0);
+ DatabaseHandler dbh(inputFile);
 
-  if (argc < 2) {
-    fprintf(stderr, "Utilisation: ./client <port> [<ip>]\n");
-    exit(0);
-  }
-  const string pseudo = dbh.getPlayerName();
-  const int port = atoi(argv[1]);
+  //if (argc < 2) {
+  //  fprintf(stderr, "Utilisation: ./client <port> [<ip>]\n");
+  //  exit(0);
+  //}
+  const int port = 4040;//atoi(argv[1]);
   if (port < 1024) {
     fprintf(stderr, "Le port doit être supérieur à 1023.\n");
     exit(0);
   }
-  string ip = "127.0.0.1";
-  if (argc > 2) {
-    ip = argv[2];
-  }
+  const std::string ip = "127.0.0.1";
+  //if (argc > 2) {
+  //  ip = argv[2];
+  //}
   Client client = Client();
-  client.run(pseudo, ip, port);
+  std::string pseudo = dbh.getPlayerName();
+  client.run(pseudo, ip.c_str(), port);
   return 0;
-
 }

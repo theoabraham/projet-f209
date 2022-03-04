@@ -59,9 +59,11 @@ std::string DatabaseHandler::createPsw() {
     std::string psw;std::string pswv;
     do{
         std::cout<< "Entrez votre mot de passe: ";
-        std::cin >> psw;
+        //std::cin >> psw;
+        getline(std::cin,psw);
         std::cout<< "Confirmez votre mot de passe: ";
-        std::cin >> pswv;
+        //std::cin >> pswv;
+        getline(std::cin,pswv);
     }while (psw != pswv);
     return std::to_string(hashed(psw));
 }
@@ -148,7 +150,8 @@ void DatabaseHandler::transferFriend() {
         }
         while (ans != "n" and ans != "N" and ans !="Y" and ans !="y"){
             std::cout << "Voulez vous ajoutez " << s << " en amis ? (Y/n) : ";
-            std::cin >> ans;
+            getline(std::cin,ans);
+            //std::cin >> ans;
         }
         if (ans == "Y" or ans == "y"){
             friendList.push_back(s);
@@ -215,7 +218,8 @@ std::string DatabaseHandler::askFile() {
         std::string ans = "";
         while (ans != "n" and ans != "N" and ans != "Y" and ans != "y") {
             std::cout << "Voulez vous créé une nouvelle entrée (Y/n)? ";
-            std::cin >> ans;
+            getline(std::cin, ans);
+            //std::cin >> ans;
         }
         if (ans == "n") {
             return "";
@@ -233,7 +237,7 @@ std::string DatabaseHandler::askFile() {
 std::string DatabaseHandler::askPswd() {
     std::string psw;
     std::cout << "Entrez votre mot de passe: ";
-    std::cin >> psw;
+    std::getline(std::cin,psw);
     return psw;
 }
 
@@ -244,7 +248,8 @@ void DatabaseHandler::askFriends() {
     std::string friends;
     while (friends != "N" and friends != "n"){
         std::cout << "Entrez un amis a ajouter (N/n pour annuler): ";
-        std::cin >> friends;
+        getline(std::cin,friends);
+        //std::cin >> friends;
         if (friends != "N" and friends != "n") {
             if (!does_file_exist(friends) or username == friends) {
                 std::cout << "Amis innexistant / impossible à ajouter" << std::endl;
@@ -267,10 +272,13 @@ DatabaseHandler::DatabaseHandler(const std::string &inputFile) {
     std::cout << "Fichier " << username << " trouvé." << std::endl;
     std::cout << "______________________________" << std::endl;
 
+
     //demande + vérification du mdp
     std::cout << "Vérification du mdp:" << std::endl;
-    while(!checkPswd(askPswd(), string_arr[0])){
-        std::cout << "Erreur, mauvais mot de passe." << std::endl;
+
+    if(!checkPswd(askPswd(), string_arr[0])){
+        std::cerr << "Erreur, mauvais mot de passe." << std::endl;
+        exit(1);
     }
 
     //mise à jours des amis
@@ -288,9 +296,6 @@ DatabaseHandler::DatabaseHandler(const std::string &inputFile) {
     //ajout d'amis
     std::cout << "Ajouts d'amis:" << std::endl;
     askFriends();
-    std::cout << "______________________________" << std::endl;
-    std::cout << "Construction de la matrice" << std::endl;
-    std::cout << "..." << std::endl;
 }
 
 /*
@@ -299,4 +304,5 @@ int main(){
     if (inputFile!= "") DatabaseHandler dbh(inputFile);
 
     return 0;
+
 }*/
