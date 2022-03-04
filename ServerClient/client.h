@@ -1,10 +1,12 @@
 #include <queue>
 #include <string>
+#include "../menus/menuOptions.hpp"
 using namespace std;
 
 class Client {
  private:
   int socket;
+
 
  private:
   int handshake(string ip, int port, string pseudo);
@@ -14,5 +16,6 @@ class Client {
 
  public:
   Client();
-  void run(string pseudo, string ip, int port = 8080);
+  void runMenu();
+  void runGame(string pseudo, string ip, int port = 8080);
 };
