@@ -5,8 +5,6 @@
 #include <string.h>
 #include <unistd.h>
 
-#include <string>
-
 
 #include "socketlib.h"
 
