@@ -4,39 +4,48 @@ Board::Board(int nplayer, int size, const int START_WALL): size{size}, START_WAL
     newGame();
 }
 
+
+std::vector<int> Board::sidesP(Position& target_pos, int currentP){
+    Position player_pos = players[currentP]->getPawnPos();
+        Position difference = player_pos - target_pos;
+        difference.setX(-difference.getX());
+        std::vector<int> sides;
+        switch (difference.getX()) {
+            case 2:
+                switch (difference.getY()) {
+                    case 2:
+                        sides.push_back(0);
+                        sides.push_back(1);
+                        break;
+                    case -2:
+                        sides.push_back(1);
+                        sides.push_back(2);
+                        break;
+                }
+                break;
+            case -2:
+                switch (difference.getY()) {
+                    case 2:
+                        sides.push_back(3);
+                        sides.push_back(0);
+                        break;
+                    case -2:
+                        sides.push_back(3);
+                        sides.push_back(2);
+                        break;
+                }
+                break;  
+        }
+    return sides; 
+}
+
+
 bool Board::DiagonalMove(Position &target_pos, int currentP) {
     Position player_pos = players[currentP]->getPawnPos();
-    Position difference = player_pos - target_pos;
-    difference.setX(-difference.getX());
-    std::vector<int> sides;
-    switch (difference.getX()) {
-        case 2:
-            switch (difference.getY()) {
-                case 2:
-                    sides.push_back(0);
-                    sides.push_back(1);
-                    break;
-                case -2:
-                    sides.push_back(1);
-                    sides.push_back(2);
-                    break;
-            }
-            break;
-        case -2:
-            switch (difference.getY()) {
-                case 2:
-                    sides.push_back(3);
-                    sides.push_back(0);
-                    break;
-                case -2:
-                    sides.push_back(3);
-                    sides.push_back(2);
-                    break;
-            }
-            break;
-    }
+    std::vector<int> sides = sidesP(target_pos, currentP); 
     for (auto side: sides) {
-        if (matrix[player_pos.getY()][player_pos.getX()]->getNeighbour(side)) {// Vérifie si pas de mur entre cases
+        if (matrix[player_pos.getY()][player_pos.getX()]->getNeighbour(side)) {
+            // Vérifie si pas de mur entre cases
             if (matrix[player_pos.getY()][player_pos.getX()]->getNeighbour(side)->occupied()) {
                 switch (side) {
                     case 0:
@@ -86,6 +95,7 @@ bool Board::JumpOver(Position &target_pos, int currentP) {
 bool Board::Face2Face(Position &target_pos, int currentP) {
     Position player_pos = players[currentP]->getPawnPos();
     Position difference = player_pos - target_pos;
+       
     switch (difference.getX()) {
         case 4:
             if(difference.getY() == 0){
@@ -165,7 +175,7 @@ void Board::executeMove(std::string &typeOfMove, Position &pos, int currentP) {
 bool Board::checkWall(std::string &direction, Position &target_pos){
     int posX, posY;
     if (direction == "H") {
-        if (target_pos.getY() > 0 && (target_pos.getX() + 2 < boardSize)){
+        if (target_pos.getX()<boardSize-2 && target_pos.getY() > 0){
             for (int i = 0; i < 3; i++) {
                 posY = target_pos.getY() - 1; // décalage vers les WallCell
                 posX = target_pos.getX() + i; // longueur du mur
@@ -174,8 +184,8 @@ bool Board::checkWall(std::string &direction, Position &target_pos){
         }
         else return false;
     }
-    else {
-        if (target_pos.getY() > 0 && (target_pos.getX() + 2 <= boardSize)){
+    else { 
+        if (target_pos.getX()< boardSize-2 && target_pos.getY() > 0){
             for (int i = 0; i < 3; i++) {
             posY = target_pos.getY() - i; // largeur du mur
             posX = target_pos.getX() + 1; // décalage vers les WallCell
@@ -191,9 +201,10 @@ bool Board::checkWall(std::string &direction, Position &target_pos){
 bool Board::isValid(std::string &typeOfMove, Position &target_pos, int currentP) {
     bool res = false; 
     Position playerPos = players[currentP]->getPawnPos();
+
     if (typeOfMove == "P") {
         Position next_cell = (playerPos - target_pos)/2;  
-        
+        next_cell.setX(-next_cell.getX());
         if (matrix[playerPos.getY()][playerPos.getX()]->getNeighbour(next_cell)) {
             //Si la prochaine case est une case voisine 
             if (not matrix[playerPos.getY()][playerPos.getX()]->getNeighbour(next_cell)->occupied()) {
@@ -228,7 +239,6 @@ bool Board::checkInput(std::string &input, int currentP) {
     }  
     
     std::string typeOfMove{input.substr(0, 1)};
-
     Position target_pos{input.substr(2, len)};
     
     target_pos = target_pos * 2; //*2 pour avoir la vrai position sur la matrice
@@ -240,34 +250,25 @@ bool Board::checkInput(std::string &input, int currentP) {
     return false;
 }
 
-
 void Board::bindCells() {
-    //TODO lier cases aux extrémités 
     for (int i = 0; i < boardSize; i += 2) {
         for (int j = 0; j < boardSize; j += 2) {
-            std::vector<std::shared_ptr<MotherCell>> neighbours;
+            std::vector<std::shared_ptr<MotherCell>> neighbours{nullptr, nullptr, nullptr, nullptr};
             if (i > 0) {
-                //Lie case du haut
-                neighbours.push_back(matrix[i - 2][j]);
-            } else {
-                neighbours.push_back(nullptr);
+                //Lie case haut
+                neighbours[0] = matrix[i - 2][j];
             }
-            if (j < boardSize - 3) {
-                //Lie case gauche et droite?? 
-                neighbours.push_back(matrix[i][j + 2]);
-            } else {
-                neighbours.push_back(nullptr);
+            if (j < boardSize - 3 ) { 
+                //Lie case droite
+                neighbours [1] = matrix[i][j + 2]; 
             }
             if (i < boardSize - 3) {
-                //Lie case du bas
-                neighbours.push_back(matrix[i + 2][j]);
-            } else {
-                neighbours.push_back(nullptr);
+                //Lie case bas
+                neighbours[2] = matrix[i + 2][j];
             }
             if (j > 0) {
-                neighbours.push_back(matrix[i][j - 2]);
-            } else {
-                neighbours.push_back(nullptr);
+                //Lie case gauche
+                neighbours[3] = matrix[i][j - 2]; 
             }
             matrix[i][j]->setNeighbours(neighbours);
         }
@@ -290,9 +291,9 @@ void Board::newGame() {
 
             //Initialisation des cases: 
             if ((i % 2 != 0 and i < boardSize) or (j % 2 != 0 and j < boardSize)) { 
-                line.push_back(std::shared_ptr<WallCell>(new WallCell()));
+                line.push_back(std::shared_ptr<MotherCell>(new MotherCell()));
             } else { 
-                line.push_back(std::shared_ptr<PawnCell>(new PawnCell()));
+                line.push_back(std::shared_ptr<MotherCell>(new MotherCell()));
             }
 
             //Initialisation des pions et joueurs: 
@@ -319,41 +320,86 @@ void Board::newGame() {
 }
 
 bool Board::possiblePaths() {
-    for(const auto& player:players){
-    std::vector<std::vector<bool>> visited(size,std::vector<bool>(size, false));
-    std::list<std::shared_ptr<MotherCell>>queue;
-    bool end = false;
-    Position pawn = player->getPawnPos();
-    visited[pawn.getY()/2][pawn.getX()/2] = true;
-    queue.push_back(matrix[pawn.getY()][pawn.getX()]);
-    while(!queue.empty() and not end){
-        std::shared_ptr<MotherCell> s = queue.front();
-        queue.pop_front();
-        for(int i = 0; i<4;i++){
-            if(s->getNeighbour(i) ){
-                Position difference(0,0);
-                switch (i) {
-                    case 0:
-                        difference.setY(-1);
-                        break;
-                    case 1:
-                        difference.setX(1);
-                        break;
-                    case 2:
-                        difference.setY(+1);
-                        break;
-                    case 3:
-                        difference.setX(-1);
-                        break;
-                }
-                if(!visited[pawn.getY()+difference.getY()][pawn.getX()+difference.getX()]){
-                    visited[pawn.getY()+difference.getY()][pawn.getX()+difference.getX()]=true;
-                    queue.push_back(s->getNeighbour(i));
+    int nb_players = sizeof(players);
+    bool endOfSearch=false;
+    for (const auto &player: players) {
+        std::cout<<player->getId()<<std::endl;
+        std::vector<std::vector<bool>> visited(size, std::vector<bool>(size, false));
+        std::list<Position> queue;
+        Position pawn = player->getPawnPos();
+        visited[pawn.getY() / 2][pawn.getX() / 2] = true;
+        queue.push_back(pawn);
+        while (!queue.empty() and not endOfSearch) {
+            Position s = queue.front();
+            std::cout << "(" << s.getX()/2 << ", " << s.getY()/2<<")" << std::endl;
+            queue.pop_front();
+            for (int i = 0; i < 4; i++) {
+                if (matrix[s.getY()][s.getX()]->getNeighbour(i)) {
+                    Position difference(0, 0);
+                    switch (i) {
+                        case 0:
+                            difference.setY(-2);
+                            break;
+                        case 1:
+                            difference.setX(2);
+                            break;
+                        case 2:
+                            difference.setY(+2);
+                            break;
+                        case 3:
+                            difference.setX(-2);
+                            break;
+                    }
+                    if (!visited[(s.getY() + difference.getY())/2][(s.getX() + difference.getX())/2]) {
+                        visited[(s.getY() + difference.getY())/2][(s.getX() + difference.getX())/2] = true;
+                        queue.emplace_back(s.getY() + difference.getY(), s.getX() + difference.getX());
+                        switch (nb_players) {
+                            case 2:
+                                switch (player->getId()) {
+                                    case 0:
+                                        if (s.getY() + difference.getY() == boardSize-1) {
+                                            endOfSearch = true;
+                                        }
+                                        break;
+                                    case 1:
+                                        if (s.getY() + difference.getY() == 0) {
+                                            endOfSearch = true;
+                                        }
+                                        break;
+                                }
+                                break;
+                            case 4:
+                                switch (player->getId()) {
+                                    case 0:
+                                        if (s.getY() + difference.getY() == boardSize-1) {
+                                            endOfSearch = true;
+                                        }
+                                        break;
+                                    case 1:
+                                        if (s.getX() + difference.getX() == 0) {
+                                            endOfSearch = true;
+                                        }
+                                        break;
+                                    case 2:
+                                        if (s.getY() + difference.getY() == 0) {
+                                            endOfSearch = true;
+                                        }
+                                        break;
+                                    case 3:
+                                        if (s.getX() + difference.getX() == boardSize - 1) {
+                                            endOfSearch = true;
+                                        }
+                                        break;
+                                }
+                                break;
+
+                        }
+                    }
                 }
             }
         }
+        if(not endOfSearch)
+            return endOfSearch;
     }
-    }
-
-    return false;
+    return endOfSearch;
 }
