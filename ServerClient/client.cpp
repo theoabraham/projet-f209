@@ -41,6 +41,7 @@ void Client::manageInputs() {
       exit(0);
     }
     write(STDOUT_FILENO, ">> ", 3);
+    printf("\033[A\33[2KT\r");
   }
   close(this->socket);
   exit(0);
@@ -73,7 +74,7 @@ int Client::handshake(string ip, int port, string pseudo) {
     exit(1);
   }
   if (ack != 0) {
-    printf("Connection rejected by server\n");
+    std::cout<<"Connection rejected by server\n";
     exit(1);
   }
   return socket;
