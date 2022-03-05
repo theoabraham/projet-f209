@@ -104,12 +104,12 @@ void Server::handleCommand(string command){
     //Si la partie est finie : on affiche un message annoncant le joueur gagnant
     if (this->board->isEnd()) {
       message_t endingMsg;
-      endingMsg.message = users[activePlayer]->name + " remporte la victoire!";
+      endingMsg.message = "[system] : " + users[activePlayer]->name + " remporte la victoire!";
       this->forward(&endingMsg);
     } else { //Sinon, on affiche un message qui annonce le début du tour du nouveau joueur actif.
       this->activePlayer = (activePlayer + 1) % this->neededPlayers;
       message_t newTurnMsg;
-      newTurnMsg.message = "C'est a " + users[activePlayer]->name + " de jouer!";
+      newTurnMsg.message = "[system] : C'est a " + users[activePlayer]->name + " de jouer!";
       this->forward(&newTurnMsg);
     }
   }
@@ -131,7 +131,7 @@ void Server::disconnectUser(unsigned user_num) {
   //handleSocketReadActivity() mais les joueurs sont prévenus ici
   if (this->registeredPlayers < this->neededPlayers){
     message_t waitNewPlayerMsg;
-    waitNewPlayerMsg.message = "Plus assez de joueurs connectés pour continuer la partie, partie mise en pause";
+    waitNewPlayerMsg.message = "[system] : Plus assez de joueurs connectés pour continuer la partie, partie mise en pause";
     this->forward(&waitNewPlayerMsg);
   }
 }
@@ -175,7 +175,7 @@ void Server::handleNewConnection() {
   registeredPlayers++;
   if (this->registeredPlayers == this->neededPlayers){
     message_t startingMsg;
-    startingMsg.message = "C'est a " + users[this->activePlayer]->name + " de jouer!";
+    startingMsg.message = "[system] : C'est a " + users[this->activePlayer]->name + " de jouer!";
     this->forward(&startingMsg);
   }
 }

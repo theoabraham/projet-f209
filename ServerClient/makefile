@@ -3,7 +3,7 @@ FLAGS=-Wall -Werror -std=c++17 -g
 all: client server
 
 client: client.cpp socketlib.o client.h
-	g++ $(DATABASE) -o client client.cpp socketlib.o socketlib.h client.h ${FLAGS} -pthread
+	g++ $(DATABASE) -o client client.cpp socketlib.o socketlib.h client.h ${FLAGS} -pthread -lncursesw
 
 server: server.cpp $(MODEL) $(VIEW) $(CONTROLLER) socketlib.o server.h
 	g++ $(MODEL) $(VIEW) $(CONTROLLER) -g -o server server.cpp socketlib.o socketlib.h ${FLAGS}

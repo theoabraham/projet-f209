@@ -10,7 +10,25 @@
 
 //using namespace std;
 
-Client::Client() {}
+Client::Client() {
+  initscr();
+  cbreak();
+
+  int maxX, maxY;
+  getmaxyx(stdscr, maxY, maxX);
+  clear();
+
+  boardWindow = newwin(2*maxY/3, maxX/2, 0, 0);
+  chatWindow = newwin(2*maxY/3, maxX/2, 0, maxX/2 + 1);
+  inputWindow = newwin(maxY/3, maxX, 2*maxY/3, 0);
+  refresh();
+  box(boardWindow, 0, 0);
+  box(chatWindow, 0, 0);
+  box(inputWindow, 0, 0);
+  wrefresh(boardWindow);
+  wrefresh(chatWindow);
+  wrefresh(inputWindow);
+}
 
 void Client::run(string pseudo, string ip, int port) {
   //Le client se connecte au serveur, et créé un thread pour gérer la reception de messages.
@@ -32,14 +50,16 @@ void Client::manageInputs() {
   // Le client peut ecrire et envoyer ses messages
   char buffer[1024];
   write(STDOUT_FILENO, ">> ", 3);
-  while (fgets(buffer, 1024, stdin) != NULL) {
-    buffer[strlen(buffer) - 1] = '\0';
+  while (mvwgetstr(inputWindow, 1, 1, buffer) == 0) {
+    buffer[strlen(buffer)] = '\0';
     message_t msg = {.timestamp = time(NULL), .message = string(buffer)};
+    werase(inputWindow);
+    box(inputWindow, 0, 0);
+    wrefresh(inputWindow);
     if (ssend(this->socket, &msg) <= 0) {
       exit(0);
     }
     write(STDOUT_FILENO, ">> ", 3);
-    printf("\033[A\33[2KT\r");
   }
   close(this->socket);
   exit(0);
@@ -47,13 +67,24 @@ void Client::manageInputs() {
 
 void Client::manageSocketTraffic() {
   //Reception des messages via le serveur
+  int x = 1;
+  int y = 0;
   while (true) {
     message_t msg;
     size_t nbytes = receive(this->socket, &msg);
     if (nbytes <= 0) {
       exit(0);
     }
-    printf("%s\n", msg.message.c_str());
+    if (msg.message.substr(0,1) == (string)"["){
+      mvwprintw(chatWindow, y+1, 1, msg.message.c_str());
+      getyx(chatWindow, y, x);
+      wrefresh(chatWindow);
+      y += 1;
+    } else {
+      werase(boardWindow);
+      box(boardWindow, 0, 0);
+      mvwprintw(boardWindow, 1, 1, msg.message.c_str());
+    }
   }
 }
 
@@ -79,25 +110,23 @@ int Client::handshake(string ip, int port, string pseudo) {
 }
 
 int main(int argc, char const *argv[]) {
- std::string inputFile = DatabaseHandler::askFile();
- if (inputFile=="") exit(0);
- DatabaseHandler dbh(inputFile);
 
-  //if (argc < 2) {
-  //  fprintf(stderr, "Utilisation: ./client <port> [<ip>]\n");
-  //  exit(0);
-  //}
+  if (argc < 2) {
+    fprintf(stderr, "Utilisation: ./client <port> [<ip>]\n");
+    exit(0);
+  }
   const int port = atoi(argv[1]);
   if (port < 1024) {
     fprintf(stderr, "Le port doit être supérieur à 1023.\n");
     exit(0);
   }
-  const std::string ip = "127.0.0.1";
+  const std::string  ip = "127.0.0.1";
+  
   //if (argc > 2) {
   //  ip = argv[2];
   //}
   Client client = Client();
-  std::string pseudo = dbh.getPlayerName();
+  std::string pseudo = "Hatapon";
   client.run(pseudo, ip.c_str(), port);
   return 0;
 }
