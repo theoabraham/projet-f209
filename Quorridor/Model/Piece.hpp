@@ -34,6 +34,7 @@ public:
     
     int getID() override {return 7;}
     bool isHWall() override {return direction=="H";}
+    virtual ~Wall() {}
 
 }; 
 

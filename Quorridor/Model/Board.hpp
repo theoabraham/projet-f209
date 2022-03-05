@@ -14,9 +14,7 @@
 class Board{
     private:
         int START_WALL;
-
         int nplayer;
-
         bool end = false;
 
     protected:
@@ -51,12 +49,14 @@ class Board{
         std::vector<int> sidesP(Position& target_pos, int currentP);
 
         /**
-         * @brief cas de mouvement diagonal si il y a un mur derrière lors du face2face 
+         * @brief cas de mouvement diagonal si il y a un mur derrière lors du face2face
+         * @return True si le mouvement est effectué avec succès, false sinon
         */
         bool DiagonalMove(Position& target_pos, int currentP);
 
         /**
-         *@brief cas de mouvement linéaire si il n'y a pas de mur derrière lors du face2face 
+         * @brief cas de mouvement linéaire si il n'y a pas de mur derrière lors du face2face
+         * @return True si le mouvement est effectué avec succès, false sinon
         */
         bool JumpOver(Position& target_pos, int currentP);
 

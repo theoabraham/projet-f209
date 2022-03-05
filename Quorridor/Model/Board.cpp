@@ -86,7 +86,7 @@ bool Board::JumpOver(Position &target_pos, int currentP) {
     if (matrix[player_pos.getY() - diff.getY() * 2][player_pos.getX() - diff.getX() * 2]->occupied()) {
         //Si la case voisine est bien occupée
         if (not matrix[player_pos.getY() - diff.getY() * 3][player_pos.getX() - diff.getX() * 3]->occupied()) {
-            //Si il n'y a pas de murs entre
+            //Si il n'y a pas de murs entre les pions
             if (not matrix[player_pos.getY() - diff.getY() * 4][player_pos.getX() - diff.getX() * 4]->occupied())
                 //Si la case voisine suivante est libre
                 return true;
@@ -134,14 +134,14 @@ bool Board::Face2Face(Position &target_pos, int currentP) {
 
 void Board::placeWall(std::string &direction, Position &pos) {
     int posX, posY;
-    if (direction == "H") {
-        for (int i = 0; i < 3; i++) {
+    if (direction == "H") { // Placement d'un mur horizontal
+        for (int i = 0; i < 3; i++) { // Décalage sur les case de Murs
             posY = pos.getY() - 1;
             posX = pos.getX() + i;
             matrix[posY][posX]->setPiece(std::shared_ptr<Wall>(new Wall(Position{posX, posY}, direction)));
         }
-    } else if (direction == "V") {
-        for (int i = 0; i < 3; i++) {
+    } else if (direction == "V") { // Placement d'un mur vertical
+        for (int i = 0; i < 3; i++) { // Décalage sur les case de Murs
             posY = pos.getY() - i;
             posX = pos.getX() + 1;
             matrix[posY][posX]->setPiece(std::shared_ptr<Wall>(new Wall(Position{posX, posY}, direction)));
@@ -156,10 +156,10 @@ void Board::executeMove(std::string &typeOfMove, Position &pos, int currentP) {
         Position playerPos = players[currentP]->getPawnPos();
         players[currentP]->setPawnPos(pos);
 
-        matrix[pos.getY()][pos.getX()]->setPiece(players[currentP]->getPawn());
-        matrix[playerPos.getY()][playerPos.getX()]->setPiece(nullptr);
+        matrix[pos.getY()][pos.getX()]->setPiece(players[currentP]->getPawn()); // Bouger le Pion sur la prochaine case
+        matrix[playerPos.getY()][playerPos.getX()]->setPiece(nullptr); // le supprimer de la case précédente
 
-        //On vérifie si un des joueurs a gagné:
+        // On vérifie si un des joueurs a gagné:
         switch (currentP) {
             case 0:
                 if (players[currentP]->getPawnPos().getY() == boardSize - 1) end = true;
@@ -197,8 +197,8 @@ bool Board::checkWall(std::string &direction, Position &target_pos) {
         Position wallPos{target_pos.getX() + 1, target_pos.getY()}; // Case cible (voir srd)
         if (wallPos.getY() > 0 && (wallPos.getX() + 2 <= boardSize)) {
             for (int i = 0; i < 3; i++) {
-                posY = target_pos.getY() - i;
-                posX = target_pos.getX() + 1;
+                posY = target_pos.getY() - i; // décalage vers les WallCell
+                posX = target_pos.getX() + 1; // longueur du mur
                 if (matrix[posY][posX]->occupied()) return false;
 
             }
@@ -212,7 +212,7 @@ bool Board::isValid(std::string &typeOfMove, Position &next_pos, int currentP) {
     bool res = false;
 
     Position playerPos = players[currentP]->getPawnPos();
-    if (typeOfMove == "P") {
+    if (typeOfMove == "P") { // mouvement de Pion
 
         Position next_cell = (playerPos - next_pos) / 2;
         next_cell.setX(-next_cell.getX()); 
@@ -222,16 +222,16 @@ bool Board::isValid(std::string &typeOfMove, Position &next_pos, int currentP) {
             if (not matrix[playerPos.getY()][playerPos.getX()]->getNeighbour(next_cell)->occupied()) {
                 //Si la prochaine case voisine est libre
                 if (not matrix[playerPos.getY() - next_cell.getY()][playerPos.getX() + next_cell.getX()]->occupied()){
-                    //Si il n'y a pas de mur entre
+                    //Si il n'y a pas de mur bloquant le déplacement
                     res = true;
                 }
             }
 
         } else
-            return Face2Face(next_pos, currentP);
+            return Face2Face(next_pos, currentP); // on vérifie si le joueur souhaite sauter au dessus du joueur adverse
 
 
-    } else if (typeOfMove == "H" || typeOfMove == "V") {
+    } else if (typeOfMove == "H" || typeOfMove == "V") { // placer un mur
 
         if (players[currentP]->hasWalls()) {
 
@@ -246,7 +246,7 @@ bool Board::isValid(std::string &typeOfMove, Position &next_pos, int currentP) {
 
 bool Board::checkInput(std::string &input, int currentP) {
     int len;
-    if (size >= 10) {
+    if (size >= 10) { // on verifie la taille du message en fonction de la taille du plateau
         if (input.size() != 5) return false;
         len = 4;
     } else {
