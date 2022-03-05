@@ -47,7 +47,7 @@ void DestruQtionBoard::placeWall(std::string &direction, Position &pos) {
     players[currentPlayer]->useWall();
 }
 
-void DestruQtionBoard::destroyWall(std::shared_ptr<DestruQtionWall> wall) {
+void DestruQtionBoard::destroyWall(std::shared_ptr<Piece> wall) {
     int posY, posX;
     for (auto w: wall->getTriplet()) {
         posY = w->getPos().getY();
