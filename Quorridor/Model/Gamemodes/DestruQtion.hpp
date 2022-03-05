@@ -2,11 +2,11 @@
 #include "../Piece.hpp"
 
 class DestruQtionWall: public Wall {
-        std::vector<std::shared_ptr<DestruQtionWall>> triplet;
+        std::vector<std::shared_ptr<Piece>> triplet;
     public:
         explicit DestruQtionWall(Position position, std::string direction): Wall(position, direction) {}
         void setTriplet(std::shared_ptr<DestruQtionWall> otherWall) {triplet.push_back(otherWall);}
-        std::vector<std::shared_ptr<DestruQtionWall>> getTriplet() {return triplet;}
+        std::vector<std::shared_ptr<Piece>> getTriplet() override {return triplet;}
         ~DestruQtionWall();
 };
 
@@ -16,6 +16,6 @@ class DestruQtionBoard: Board {
 
         void placeWall(std::string &direction, Position &pos) override;
         bool checkWall(std::string &direction, Position &target_pos) override;
-        void destroyWall(std::shared_ptr<DestruQtionWall> wall);
+        void destroyWall(std::shared_ptr<Piece> wall);
 
 }; 
