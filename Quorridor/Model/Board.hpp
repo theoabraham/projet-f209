@@ -51,12 +51,12 @@ class Board{
         std::vector<int> sidesP(Position& target_pos, int currentP);
 
         /**
-         * @brief cas si il y a un mur derrière lors du face2face 
+         * @brief cas de mouvement diagonal si il y a un mur derrière lors du face2face 
         */
         bool DiagonalMove(Position& target_pos, int currentP);
 
         /**
-         *@brief cas si il n'y a pas de mur derrière lors du face2face 
+         *@brief cas de mouvement linéaire si il n'y a pas de mur derrière lors du face2face 
         */
         bool JumpOver(Position& target_pos, int currentP);
 
@@ -126,6 +126,8 @@ class Board{
         bool possiblePaths();
 
         void removeWall(const std::string& direction, Position& pos);
+
+        virtual ~Board() {}
 };
 
 #endif

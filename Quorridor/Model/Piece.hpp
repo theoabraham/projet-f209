@@ -24,7 +24,9 @@ class Wall : public Piece{
 private:
     Position position; 
     std::string direction;
-    virtual std::vector<std::shared_ptr<Piece>> getTriplet() override {}; // Fausse virtuelle pour permettre la configuration OOP de la classe DestruQtionWall
+    // Fausse virtuelle pour permettre la configuration OOP de la classe DestruQtionWall
+    virtual std::vector<std::shared_ptr<Piece>> getTriplet() override {std::vector<std::shared_ptr<Piece>> empty_list; return empty_list;}; 
+    
 public:
     Wall(Position position, std::string direction): position(position), direction(std::move(direction)) {};
     Position getPos() override {return position;}
@@ -38,7 +40,8 @@ public:
 class Pawn : public Piece{
     Position position;
     int id; //Joueur auquel appartient le pion
-    virtual std::vector<std::shared_ptr<Piece>> getTriplet() override {}; // Fausse virtuelle pour permettre la configuration OOP de la classe DestruQtionWall
+    // Fausse virtuelle pour permettre la configuration OOP de la classe DestruQtionWall
+    virtual std::vector<std::shared_ptr<Piece>> getTriplet() override {std::vector<std::shared_ptr<Piece>> empty_list; return empty_list;}; 
 public: 
     Pawn(Position position, int id): position{position}, id{id} {}
     Position getPos() override {return position;}
@@ -46,7 +49,6 @@ public:
     
     int getID() override {return id;}
     bool isHWall() override {return false;}
-
 
 }; 
 
