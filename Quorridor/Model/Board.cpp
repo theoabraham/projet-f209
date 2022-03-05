@@ -1,7 +1,6 @@
 #include "Board.hpp"
 
-
-Board::Board(int nplayer, int size, const int START_WALL) : size{size}, START_WALL{START_WALL}, nplayer{nplayer} {
+Board::Board(int nplayer, int size, const int START_WALL): START_WALL{START_WALL}, nplayer{nplayer}, size{size} {
     newGame();
 }
 
@@ -43,7 +42,7 @@ std::vector<int> Board::sidesP(Position& target_pos, int currentP){
 
 bool Board::DiagonalMove(Position &target_pos, int currentP) {
     Position player_pos = players[currentP]->getPawnPos();
-    std::vector<int> sides = sidesP(target_pos, currentP); 
+    std::vector<int> sides = sidesP(target_pos, currentP);
     for (auto side: sides) {
         if (matrix[player_pos.getY()][player_pos.getX()]->getNeighbour(side)) {
             // Vérifie si pas de mur entre cases
@@ -213,19 +212,19 @@ bool Board::isValid(std::string &typeOfMove, Position &next_pos, int currentP) {
     bool res = false;
 
     Position playerPos = players[currentP]->getPawnPos();
-
     if (typeOfMove == "P") {
 
         Position next_cell = (playerPos - next_pos) / 2;
-
+        next_cell.setX(-next_cell.getX()); 
 
         if (matrix[playerPos.getY()][playerPos.getX()]->getNeighbour(next_cell)) {
-            //Si la prochaine case est une case voisine 
+            //Si la prochaine case est une case voisine
             if (not matrix[playerPos.getY()][playerPos.getX()]->getNeighbour(next_cell)->occupied()) {
                 //Si la prochaine case voisine est libre
-                if (not matrix[playerPos.getY() - next_cell.getY()][playerPos.getX() + next_cell.getX()]->occupied())
+                if (not matrix[playerPos.getY() - next_cell.getY()][playerPos.getX() + next_cell.getX()]->occupied()){
                     //Si il n'y a pas de mur entre
                     res = true;
+                }
             }
 
         } else
@@ -264,13 +263,6 @@ bool Board::checkInput(std::string &input, int currentP) {
     currentPlayer = currentP;
     if (isValid(typeOfMove, target_pos, currentP)) {
         executeMove(typeOfMove, target_pos, currentP);
-        if(typeOfMove=="H" or typeOfMove=="V"){
-            if(!possiblePaths()){
-                removeWall(typeOfMove, target_pos);
-                players[currentPlayer]->addWall();
-                return false;
-            }
-        }
         return true;
     }
     return false;
@@ -325,20 +317,20 @@ void Board::newGame() {
             }
 
             //Initialisation des pions et joueurs: 
-            if (i == 0 and j == 8) {
-                line[j]->setPiece(setPlayer(Position{j, i}, players.size()));
+            if (i == 0 and j == boardSize/2) {
+                line[j]->setPiece(setPlayer(Position{j,i}, players.size()));              
             }
-            if (i == 16 and j == 8) {
-                line[j]->setPiece(setPlayer(Position{j, i}, players.size()));
+            if (i == boardSize-1 and j == boardSize/2) {
+                line[j]->setPiece(setPlayer(Position{j,i}, players.size()));
             }
 
-            if (nplayer == 4) {
-                if (i == 8 and j == 0) {
-                    line[j]->setPiece(setPlayer(Position{j, i}, players.size()));
+            if (nplayer==4){
+                if (i == boardSize/2 and j == 0) {
+                line[j]->setPiece(setPlayer(Position{j,i}, players.size()));              
                 }
-                if (i == 8 and j == 16) {
-                    line[j]->setPiece(setPlayer(Position{j, i}, players.size()));
-                }
+                if (i == boardSize/2 and j == boardSize-1) {
+                    line[j]->setPiece(setPlayer(Position{j,i}, players.size()));
+                } 
             }
 
         }
