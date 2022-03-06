@@ -23,7 +23,6 @@ std::string DisplayBoard:: printBoard() const {
                       else currentLine+="\u25AE " ; //Mur vertical 
                   } else{
                       currentLine += "  ";
-                      //currentLine+=std::to_string(j)+" "; 
                   }
               } else{
                   if(matrix[i][j]->occupied()) {
