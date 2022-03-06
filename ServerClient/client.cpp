@@ -32,7 +32,7 @@ Client::Client() {
 }
 
 void Client::runMenu(string ip, int port){
-  
+  this->loginRoutine();
   this->runGame(pseudo, ip, port);
 }
 
