@@ -17,6 +17,7 @@ class Client {
   WINDOW * boardWindow;
   WINDOW * boardBoxWindow;
   WINDOW * chatWindow;
+  WINDOW * chatBoxWindow;
   WINDOW * inputWindow;
 
  private:

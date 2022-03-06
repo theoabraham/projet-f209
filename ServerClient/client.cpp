@@ -20,14 +20,15 @@ Client::Client() {
 
   boardBoxWindow = newwin(2*maxY/3, maxX/2, 0, 0);
   boardWindow = newwin(2*maxY/3 - 2, maxX/2 - 2, 1, 1);
-  chatWindow = newwin(2*maxY/3, maxX/2, 0, maxX/2 + 1);
+  chatBoxWindow = newwin(2*maxY/3, maxX/2, 0, maxX/2 + 1);
+  chatWindow = newwin(2*maxY/3 - 2, maxX/2 - 2, 1, maxX/2 + 2);
   inputWindow = newwin(maxY/3, maxX, 2*maxY/3, 0);
   refresh();
   box(boardBoxWindow, 0, 0);
-  box(chatWindow, 0, 0);
+  box(chatBoxWindow, 0, 0);
   box(inputWindow, 0, 0);
   wrefresh(boardBoxWindow);
-  wrefresh(chatWindow);
+  wrefresh(chatBoxWindow);
   wrefresh(inputWindow);
 }
 
@@ -56,7 +57,6 @@ void Client::runMenu(string ip, int port){
 void Client::displayMenu(std::vector<const char*> options){
   werase(chatWindow);
   wrefresh(chatWindow);
-  box(chatWindow, 0, 0);
   wrefresh(chatWindow);
   int y = 0;
   for(const char* option: options){
@@ -166,7 +166,6 @@ void Client::connectRoutine(DatabaseHandler *dbh) {
 void Client::runGame(string pseudo, string ip, int port) {
   //Le client se connecte au serveur, et créé un thread pour gérer la reception de messages.
   werase(chatWindow);
-  box(chatWindow, 0, 0);
   wrefresh(chatWindow);
   this->socket = this->handshake(ip, port, pseudo);
   pthread_t tid;
