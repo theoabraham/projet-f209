@@ -5,6 +5,10 @@
 #include "View/DisplayBoard.hpp"
 #include "Controller/Game.hpp"
 
+/*
+Fichier de Testing des différents jeu Quorridor
+*/
+
 int main(){
     int input;
     bool res = false;
