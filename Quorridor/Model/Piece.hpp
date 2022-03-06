@@ -8,12 +8,15 @@
 #include <iostream>
 #include <string>
 
-struct Piece {
+class Piece {
+protected:
+    Position position; 
+public: 
+    Piece(Position position ): position{position} {}
+    Position getPos() {return position;}
+    void setPos(Position pos) {position = pos;}
 
     virtual std::vector<std::shared_ptr<Piece>> getTriplet()=0;
-
-    virtual Position getPos()=0;  
-    virtual void setPos(Position pos)=0; 
     virtual int getID() =0;     
 
     virtual std::string wallD()=0;
@@ -25,34 +28,29 @@ struct Piece {
 
 class Wall : public Piece{
 private:
-    Position position; 
+    //Position position; 
     std::string direction;
     // Fausse virtuelle pour permettre la configuration OOP de la classe DestruQtionWall
     virtual std::vector<std::shared_ptr<Piece>> getTriplet() override {std::vector<std::shared_ptr<Piece>> empty_list; return empty_list;}; 
     
 public:
-    Wall(Position position, std::string direction): position(position), direction(std::move(direction)) {};
-    Position getPos() override {return position;}
-    void setPos(Position pos) override {position = pos;}
+    Wall(Position position, std::string direction): Piece(position), direction(std::move(direction)) {};
     
-    int getID() override {return 7;}
+    int getID() override {return 10;}
 
     std::string wallD() override {return direction;}
     bool isWall() override {return true;} 
 
     virtual ~Wall() {}
-
 }; 
 
 class Pawn : public Piece{
-    Position position;
+    //Position position;
     int id; //Joueur auquel appartient le pion
     // Fausse virtuelle pour permettre la configuration OOP de la classe DestruQtionWall
     virtual std::vector<std::shared_ptr<Piece>> getTriplet() override {std::vector<std::shared_ptr<Piece>> empty_list; return empty_list;}; 
 public: 
-    Pawn(Position position, int id): position{position}, id{id} {}
-    Position getPos() override {return position;}
-    void setPos(Position pos) override {position = pos;}
+    Pawn(Position position, int id): Piece(position), id(id) {}
     
     int getID() override {return id;}
     
