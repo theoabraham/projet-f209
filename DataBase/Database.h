@@ -32,6 +32,9 @@ public:
     int getTotalGames()const{return getWinGames()+getLoseGames();}
     std::vector<std::string> getToAddFriendList() const{return toAddList;}
     std::vector<std::string>  getFriendList() const {return friendList;}
+    void setRegisteredBoard(const std::string &boardstr){string_arr[1]=boardstr;}
+    void hasWin(){string_arr[2] = std::to_string(getWinGames()+1);}
+    void hasLose(){string_arr[3] =std::to_string(getLoseGames()+1);}
     void setFriendsList(const std::string &fstr);
     void setToaddList(const std::string &fstr);
 
@@ -42,8 +45,8 @@ public:
     // Méthodes
     void parse(const std::string& file_path, std::array<std::string, 6> * arr_addr);
     static std::string createPsw();
-    static std::string createFile(const std::string& filename);
-    void writeFriends(const std::string& filename,const std::string &friends_str);
+    static std::string createFile(const std::string& filename,const std::string &inputpsw);
+    void writeFriends(const std::string &friends_str);
     void writeFriendstoAdd(const std::string &friends_name);
     void transferFriend();
     void listFriends();
