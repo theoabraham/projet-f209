@@ -297,12 +297,3 @@ DatabaseHandler::DatabaseHandler(const std::string &inputFile) {
     std::cout << "Ajouts d'amis:" << std::endl;
     askFriends();
 }
-
-/*
-int main(){
-    std::string inputFile = DatabaseHandler::askFile();
-    if (inputFile!= "") DatabaseHandler dbh(inputFile);
-
-    return 0;
-
-}*/
