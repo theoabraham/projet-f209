@@ -138,13 +138,18 @@ void Board::placeWall(std::string &direction, Position &pos) {
         for (int i = 0; i < 3; i++) { // Décalage sur les case de Murs
             posY = pos.getY() - 1;
             posX = pos.getX() + i;
-            matrix[posY][posX]->setPiece(std::shared_ptr<Wall>(new Wall(Position{posX, posY}, direction)));
+            std::shared_ptr<Wall> wall = std::shared_ptr<Wall>(new Wall(Position{posX, posY}, direction)); 
+            matrix[posY][posX]->setPiece(wall);            
+            updateNeighbours(wall, Position{posX, posY}, direction);
+
         }
     } else if (direction == "V") { // Placement d'un mur vertical
         for (int i = 0; i < 3; i++) { // Décalage sur les case de Murs
             posY = pos.getY() - i;
             posX = pos.getX() + 1;
-            matrix[posY][posX]->setPiece(std::shared_ptr<Wall>(new Wall(Position{posX, posY}, direction)));
+            std::shared_ptr<Wall> wall = std::shared_ptr<Wall>(new Wall(Position{posX, posY}, direction)); 
+            matrix[posY][posX]->setPiece(wall);            
+            updateNeighbours(wall, Position{posX, posY}, direction);
         }
     }
     players[currentPlayer]->useWall();
@@ -183,8 +188,7 @@ void Board::executeMove(std::string &typeOfMove, Position &pos, int currentP) {
 bool Board::checkWall(std::string &direction, Position &target_pos) {
     int posX, posY;
     if (direction == "H") {
-        Position wallPos{target_pos.getX(), target_pos.getY() - 1}; // Case cible (voir srd)
-        if (wallPos.getY() > 0 && (wallPos.getX() + 2 < boardSize)) {
+        if (target_pos.getX()<boardSize-2 && target_pos.getY()>0){ 
 
             for (int i = 0; i < 3; i++) {
                 posY = target_pos.getY() - 1; // décalage vers les WallCell
@@ -194,8 +198,7 @@ bool Board::checkWall(std::string &direction, Position &target_pos) {
 
         } else return false;
     } else {
-        Position wallPos{target_pos.getX() + 1, target_pos.getY()}; // Case cible (voir srd)
-        if (wallPos.getY() > 0 && (wallPos.getX() + 2 <= boardSize)) {
+        if (target_pos.getX()<boardSize-2 && target_pos.getY()>0){ 
             for (int i = 0; i < 3; i++) {
                 posY = target_pos.getY() - i; // décalage vers les WallCell
                 posX = target_pos.getX() + 1; // longueur du mur
@@ -218,25 +221,18 @@ bool Board::isValid(std::string &typeOfMove, Position &next_pos, int currentP) {
         next_cell.setX(-next_cell.getX()); 
 
         if (matrix[playerPos.getY()][playerPos.getX()]->getNeighbour(next_cell)) {
-            //Si la prochaine case est une case voisine
+            //Si la prochaine case est une case voisine et Si il n'y a pas de mur bloquant le déplacement
             if (not matrix[playerPos.getY()][playerPos.getX()]->getNeighbour(next_cell)->occupied()) {
                 //Si la prochaine case voisine est libre
-                if (not matrix[playerPos.getY() - next_cell.getY()][playerPos.getX() + next_cell.getX()]->occupied()){
-                    //Si il n'y a pas de mur bloquant le déplacement
                     res = true;
-                }
             }
-
         } else
             return Face2Face(next_pos, currentP); // on vérifie si le joueur souhaite sauter au dessus du joueur adverse
-
 
     } else if (typeOfMove == "H" || typeOfMove == "V") { // placer un mur
 
         if (players[currentP]->hasWalls()) {
-
             res = checkWall(typeOfMove, next_pos);
-
         }
     }
 
@@ -275,6 +271,32 @@ bool Board::checkInput(std::string &input, int currentP) {
     return false;
 }
 
+void Board::updateNeighbours(std::shared_ptr<Piece> piece, Position pos, std::string direction){
+
+    if (piece == nullptr){
+        std::shared_ptr<MotherCell> neighbour = matrix[pos.getY()][pos.getX()]; 
+        if (direction=="H"){
+            matrix[pos.getY() + 1][pos.getX()]->setNeighbour(neighbour, 0); 
+            matrix[pos.getY() - 1][pos.getX()]->setNeighbour(neighbour, 2); 
+        }
+        else {
+            matrix[pos.getY()][pos.getX() - 1]->setNeighbour(neighbour, 1);             
+            matrix[pos.getY()][pos.getX() + 1]->setNeighbour(neighbour, 3); 
+        }
+    }
+    else {
+        //On met a jour les voisins puisque du coté où est posé le mur le pion ne peut plus bouger --> nullptr
+        if (piece->wallD()=="H"){
+            matrix[pos.getY() + 1][pos.getX()]->setNeighbour(nullptr, 0); 
+            matrix[pos.getY() - 1][pos.getX()]->setNeighbour(nullptr, 2); 
+        }      
+        else {
+            matrix[pos.getY()][pos.getX() - 1]->setNeighbour(nullptr, 1);             
+            matrix[pos.getY()][pos.getX() + 1]->setNeighbour(nullptr, 3);             
+        }
+    }
+}
+
 void Board::bindCells() {
     for (int i = 0; i < boardSize; i += 2) {
         for (int j = 0; j < boardSize; j += 2) {
@@ -283,11 +305,11 @@ void Board::bindCells() {
                 //Lie case haut
                 neighbours[0] = matrix[i - 2][j];
             }
-            if (j < boardSize - 3 ) { 
+            if (j < boardSize - 2 ) { 
                 //Lie case droite
                 neighbours [1] = matrix[i][j + 2]; 
             }
-            if (i < boardSize - 3) {
+            if (i < boardSize - 2) {
                 //Lie case bas
                 neighbours[2] = matrix[i + 2][j];
             }
@@ -445,11 +467,14 @@ void Board::removeWall(const std::string &direction, Position &pos) {
             posY = pos.getY() - 1;
             posX = pos.getX() + i;
             matrix[posY][posX]->setPiece(nullptr);
+            updateNeighbours(nullptr, Position{posX, posY}, direction);
+
         }
     } else if (direction == "V") {
         for (int i = 0; i < 3; i++) {
             posY = pos.getY() - i;
             posX = pos.getX() + 1;
+            updateNeighbours(nullptr, Position{posX, posY}, direction);
             matrix[posY][posX]->setPiece(nullptr);
         }
     }

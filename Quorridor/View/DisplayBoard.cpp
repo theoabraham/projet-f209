@@ -18,9 +18,9 @@ std::string DisplayBoard:: printBoard() const {
                 
               if((i%2==1 and i<boardSize) || (j%2==1 and j<boardSize)){
                   if(matrix[i][j]->occupied()) {
-                      if (matrix[i][j]->getPiece()->isHWall())
+                      if (matrix[i][j]->getPiece()->wallD() == "H")
                         currentLine += "\u25AC "; //Mur horizontal 
-                      else currentLine+= "\u25AE " ; //Mur vertical 
+                      else currentLine+="\u25AE " ; //Mur vertical 
                   } else{
                       currentLine += "  ";
                       //currentLine+=std::to_string(j)+" "; 
