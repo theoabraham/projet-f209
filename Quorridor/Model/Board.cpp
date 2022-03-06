@@ -308,11 +308,11 @@ void Board::bindCells() {
                 //Lie case haut
                 neighbours[0] = matrix[i - 2][j];
             }
-            if (j < boardSize - 3 ) { 
+            if (j < boardSize - 2 ) { 
                 //Lie case droite
                 neighbours [1] = matrix[i][j + 2]; 
             }
-            if (i < boardSize - 3) {
+            if (i < boardSize - 2) {
                 //Lie case bas
                 neighbours[2] = matrix[i + 2][j];
             }
