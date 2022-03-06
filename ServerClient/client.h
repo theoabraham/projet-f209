@@ -1,6 +1,7 @@
 #include <queue>
 #include <string>
 #include <ncurses.h>
+#include <locale.h>
 
 #include "../DataBase/Database.h"
 
@@ -12,6 +13,7 @@ class Client {
   int socket;
   std::string pseudo;
   WINDOW * boardWindow;
+  WINDOW * boardBoxWindow;
   WINDOW * chatWindow;
   WINDOW * inputWindow;
   bool menuActive = true;

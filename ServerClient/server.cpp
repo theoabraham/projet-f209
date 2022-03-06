@@ -76,10 +76,10 @@ void Server::handleSocketReadActivity(fd_set* in_set, int& nactivities) {
         // message_buffer[nbytes] = '\0';
         bool enoughPlayers = (this->registeredPlayers >= this->neededPlayers);
         //Si le message commence par un point ET provient du joueur actif ET que la partie est en cour :
-        if((msg.message.substr(0,1) == (string)"/") && socket == this->users[activePlayer]->socket && enoughPlayers){
+        if((msg.message.substr(0,1) == (string)"/") && enoughPlayers){
           std::string command = msg.message.substr(msg.message.length() - 4, 4);
           //Si le coup demandé est valide, on le joue et on affiche le plateau
-          this->handleCommand(command);
+          this->handleCommand(command, socket);
         } else {
         //Si de base ce n'était pas une commande (ou que ce n'était pas le tour du joueur expediteur)
         //C'est un message, qui est renvoyé a tout le monde
@@ -95,9 +95,9 @@ void Server::handleSocketReadActivity(fd_set* in_set, int& nactivities) {
   }
 }
 
-void Server::handleCommand(string command){
-  //gestion d'une commande (.Message) d'un utilisateur
-  if(this->game.checkInput(command, this->activePlayer)){
+void Server::handleCommand(string command, int clientSocket){
+  //gestion d'une commande (/Message) d'un utilisateur
+  if(clientSocket == this->users[activePlayer]->socket && this->game.checkInput(command, this->activePlayer)){
     message_t strBoard;
     strBoard.message = this->displayBoard->printBoard();
     this->forward(&strBoard);
@@ -167,7 +167,7 @@ void Server::handleNewConnection() {
   //On envoit le plateau actuel au nouvel arrivant
   message_t strBoard;
   strBoard.message = this->displayBoard->printBoard();
-  ssend(socket, &strBoard);
+  this->forward(&strBoard);
   if (socket > this->max_fd) {
     this->max_fd = socket;
   }

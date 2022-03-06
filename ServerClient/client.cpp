@@ -5,12 +5,12 @@
 #include <string.h>
 #include <unistd.h>
 
-
 #include "socketlib.h"
 
 //using namespace std;
 
 Client::Client() {
+  setlocale(LC_ALL, "");
   initscr();
   cbreak();
 
@@ -18,14 +18,15 @@ Client::Client() {
   getmaxyx(stdscr, maxY, maxX);
   clear();
 
-  boardWindow = newwin(2*maxY/3, maxX/2, 0, 0);
+  boardBoxWindow = newwin(2*maxY/3, maxX/2, 0, 0);
+  boardWindow = newwin(2*maxY/3 - 2, maxX/2 - 2, 1, 1);
   chatWindow = newwin(2*maxY/3, maxX/2, 0, maxX/2 + 1);
   inputWindow = newwin(maxY/3, maxX, 2*maxY/3, 0);
   refresh();
-  box(boardWindow, 0, 0);
+  box(boardBoxWindow, 0, 0);
   box(chatWindow, 0, 0);
   box(inputWindow, 0, 0);
-  wrefresh(boardWindow);
+  wrefresh(boardBoxWindow);
   wrefresh(chatWindow);
   wrefresh(inputWindow);
 }
@@ -49,17 +50,16 @@ void *Client::manageInputs(void *instance) {
 void Client::manageInputs() {
   // Le client peut ecrire et envoyer ses messages
   char buffer[1024];
-  write(STDOUT_FILENO, ">> ", 3);
-  while (mvwgetstr(inputWindow, 1, 1, buffer) == 0) {
+  while (true) {
+    mvwgetstr(inputWindow, 1, 1, buffer);
     buffer[strlen(buffer)] = '\0';
     message_t msg = {.timestamp = time(NULL), .message = string(buffer)};
     werase(inputWindow);
     box(inputWindow, 0, 0);
     wrefresh(inputWindow);
-    if (ssend(this->socket, &msg) <= 0) {
+    if (ssend(this->socket, &msg) <0) {
       exit(0);
     }
-    write(STDOUT_FILENO, ">> ", 3);
   }
   close(this->socket);
   exit(0);
@@ -79,11 +79,9 @@ void Client::manageSocketTraffic() {
       mvwprintw(chatWindow, y+1, 1, msg.message.c_str());
       getyx(chatWindow, y, x);
       wrefresh(chatWindow);
-      y += 1;
     } else {
-      werase(boardWindow);
-      box(boardWindow, 0, 0);
-      mvwprintw(boardWindow, 1, 1, msg.message.c_str());
+      mvwprintw(boardWindow, 0, 0, msg.message.c_str());
+      wrefresh(boardWindow);
     }
   }
 }
