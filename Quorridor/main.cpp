@@ -1,6 +1,7 @@
 #include <iostream>
 #include "Model/Board.hpp"
 #include "Model/Gamemodes/DestruQtion.hpp"
+#include "Model/Gamemodes/QQQuoridor.hpp"
 #include "View/DisplayBoard.hpp"
 #include "Controller/Game.hpp"
 

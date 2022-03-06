@@ -16,9 +16,12 @@ public:
     std::shared_ptr<Pawn> getPawn(){return pawn;}
     Position getPawnPos() {return pawn->getPos();}
     void setPawnPos(Position pos) {pawn->setPos(pos);}
+    int getWalls() {return walls;}
+
+    int getId() const{return id;};
+
     void useWall(){walls--;};
     bool hasWalls() const{return walls;};
-    int getId() const{return id;};
     void addWall(){walls++;};
 };
 

@@ -32,7 +32,6 @@ void DestruQtionBoard::placeWall(std::string &direction, Position &pos) {
                 triplets.push_back(std::shared_ptr<DestruQtionWall>(new DestruQtionWall(Position{posX, posY}, direction)));    
                 matrix[posY][posX]->setPiece(triplets[i]);
                 updateNeighbours(triplets[i],Position{posX, posY}, direction); 
-                std::cout<<posX<<" "<<posY<<std::endl;
             }
         } else if (direction == "V") { // Mur vertical
             for (int i = 0; i < 3; i++) {
@@ -47,6 +46,7 @@ void DestruQtionBoard::placeWall(std::string &direction, Position &pos) {
             triplets[i]->setTriplet(triplets[(i+1) % 3]);
             triplets[i]->setTriplet(triplets[(i+2) % 3]);
         }
+    std::cout << "Mur placé! Il reste : " << players[currentPlayer]->getWalls() - 1 << " mur(s) au joueur " << currentPlayer +1<< std::endl;
     }
     players[currentPlayer]->useWall();
 }
@@ -64,4 +64,5 @@ void DestruQtionBoard::destroyWall(std::shared_ptr<Piece> wall) {
     posX = wall->getPos().getX();
     matrix[posY][posX]->setPiece(nullptr); // Comme les murs sont réferencé par shared_ptr, a la fin de cette fonction il n'existera plus de ptr vers l'objet ce qui l'efface
     updateNeighbours(nullptr, Position{posX, posY}, wall->wallD());  
+    std::cout << "BOOM! mur détruit! Il reste : " << players[currentPlayer]->getWalls() - 1 << " mur(s) au joueur " << currentPlayer +1<< std::endl;
 }

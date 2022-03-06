@@ -131,7 +131,7 @@ class Board{
         bool possiblePaths();
 
         /**
-         * @brief supprime le mur à la position pos 
+         * @brief supprime le mur débutant à la position pos 
          * @param direction : mur horizontal ou vertical
          *        pos : la position du mur
          *  

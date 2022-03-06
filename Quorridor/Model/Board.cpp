@@ -51,24 +51,27 @@ bool Board::DiagonalMove(Position &target_pos, int currentP) {
                     case 0:
                         if (matrix[player_pos.getY() - 3][player_pos.getX()]->occupied() and
                             not matrix[target_pos.getY()][target_pos.getX()]->occupied()) {
-                            return true; //Mur derrière pion voisin et case cible pas occupée
+                                std::cout << "Esquive! (en Diagonale)" << std::endl;
+                                return true; //Mur derrière pion voisin et case cible pas occupée
                         }
                     case 2:
 
                         if (matrix[player_pos.getY() + 3][player_pos.getX()]->occupied() and
                             not matrix[target_pos.getY()][target_pos.getX()]->occupied()) {
-                            return true;
+                                std::cout << "Esquive! (en Diagonale)" << std::endl;
+                                return true;
                         }
                     case 1:
                         if (matrix[player_pos.getY()][player_pos.getX() + 3]->occupied() and
                             not matrix[target_pos.getY()][target_pos.getX()]->occupied()) {
-                            return true; //Mur derrière pion voisin et case cible pas occupée
+                                std::cout << "Esquive! (en Diagonale)" << std::endl;
+                                return true; //Mur derrière pion voisin et case cible pas occupée
                         }
                     case 3:
                         if (matrix[player_pos.getY()][player_pos.getX() - 3]->occupied() and
                             not matrix[target_pos.getY()][target_pos.getX()]->occupied()) {
-
-                            return true; //Mur derrière pion voisin et case cible pas occupée
+                                std::cout << "Esquive! (en Diagonale)" << std::endl;
+                                return true; //Mur derrière pion voisin et case cible pas occupée
                         }
                 }
             }
@@ -87,9 +90,11 @@ bool Board::JumpOver(Position &target_pos, int currentP) {
         //Si la case voisine est bien occupée
         if (not matrix[player_pos.getY() - diff.getY() * 3][player_pos.getX() - diff.getX() * 3]->occupied()) {
             //Si il n'y a pas de murs entre les pions
-            if (not matrix[player_pos.getY() - diff.getY() * 4][player_pos.getX() - diff.getX() * 4]->occupied())
-                //Si la case voisine suivante est libre
-                return true;
+            if (not matrix[player_pos.getY() - diff.getY() * 4][player_pos.getX() - diff.getX() * 4]->occupied())  {
+            //Si la case voisine suivante est libre
+            std::cout<< "Saute-Mouton!" << std::endl;
+            return true;
+            }
         }
     }
     return false;
@@ -152,6 +157,7 @@ void Board::placeWall(std::string &direction, Position &pos) {
             updateNeighbours(wall, Position{posX, posY}, direction);
         }
     }
+    std::cout << "Mur placé! Il reste : " << players[currentPlayer]->getWalls() << " mur(s) au joueur " << currentPlayer +1 << std::endl;
     players[currentPlayer]->useWall();
 }
 
@@ -168,15 +174,19 @@ void Board::executeMove(std::string &typeOfMove, Position &pos, int currentP) {
         switch (currentP) {
             case 0:
                 if (players[currentP]->getPawnPos().getY() == boardSize - 1) end = true;
+                std::cout << "Victoire du joueur " << currentPlayer << " !" << std::endl;
                 break;
             case 1:
                 if (players[currentP]->getPawnPos().getY() == 0) end = true;
+                std::cout << "Victoire du joueur " << currentPlayer << " !" << std::endl;
                 break;
             case 2:
                 if (players[currentP]->getPawnPos().getX() == 0) end = true;
+                std::cout << "Victoire du joueur " << currentPlayer << " !" << std::endl;
                 break;
             case 3:
                 if (players[currentP]->getPawnPos().getX() == boardSize - 1) end = true;
+                std::cout << "Victoire du joueur " << currentPlayer << " !" << std::endl;
                 break;
         }
     } else {
