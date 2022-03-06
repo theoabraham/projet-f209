@@ -76,10 +76,18 @@ void Server::handleSocketReadActivity(fd_set* in_set, int& nactivities) {
         // message_buffer[nbytes] = '\0';
         bool enoughPlayers = (this->registeredPlayers >= this->neededPlayers);
         //Si le message commence par un point ET provient du joueur actif ET que la partie est en cour :
-        if((msg.message.substr(0,1) == (string)"/") && enoughPlayers && !this->board->isEnd()){
-          std::string command = msg.message.substr(msg.message.length() - 4, 4);
-          //Si le coup demandé est valide, on le joue et on affiche le plateau
-          this->handleCommand(command, socket);
+        if((msg.message.substr(0,1) == (string)"/")){
+          if (enoughPlayers){
+            std::string command = msg.message.substr(msg.message.length() - 4, 4);
+            //Si le coup demandé est valide, on le joue et on affiche le plateau
+            this->handleMove(command, socket);
+          } else if (msg.message.substr(1, 6) == "leave"){
+            this->disconnectUser(i);
+          } else if (msg.message.substr(1, 5) == "help"){
+            message_t helpMessage;
+            helpMessage.message = "[system] : " + this->game.inputFormat() + " (/leave pour quitter.)";
+            ssend(users[i]->socket, &helpMessage);
+          }
         } else {
         //Si de base ce n'était pas une commande (ou que ce n'était pas le tour du joueur expediteur)
         //C'est un message, qui est renvoyé a tout le monde
@@ -95,7 +103,7 @@ void Server::handleSocketReadActivity(fd_set* in_set, int& nactivities) {
   }
 }
 
-void Server::handleCommand(string command, int clientSocket){
+void Server::handleMove(string command, int clientSocket){
   //gestion d'une commande (/Message) d'un utilisateur
   if(clientSocket == this->users[activePlayer]->socket && this->game.checkInput(command, this->activePlayer)){
     message_t strBoard;
@@ -175,7 +183,7 @@ void Server::handleNewConnection() {
   registeredPlayers++;
   if (this->registeredPlayers == this->neededPlayers){
     message_t startingMsg;
-    startingMsg.message = "[system] : C'est a " + users[this->activePlayer]->name + " de jouer!";
+    startingMsg.message = "[system] : C'est a " + users[this->activePlayer]->name + " de jouer! (/help pour les coups)";
     this->forward(&startingMsg);
   }
 }

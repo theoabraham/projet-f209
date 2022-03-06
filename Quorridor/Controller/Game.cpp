@@ -12,7 +12,7 @@ std::string Game::getInput() {
 }
 
 std::string Game::inputFormat(){
-    std::string format = "Format: (ex: P e1) \n 1.Type of move: P (pawn), H (horizontal Wall), V (vertical wall) \n 2.move: cell number" ;
+    std::string format = "Format: (ex: P e1)\n 1.Type of move: P (pawn), H (horizontal Wall), V (vertical wall)\n 2.move: cell number\n" ;
     std::cout<<format<<std::endl; 
     //std::cout<<"Format: (ex: P e1) " <<std::endl<< "1.Type of move: P (pawn), H (horizontal Wall), V (vertical wall)" <<std::endl<< "2.move: cell number" <<std::endl;
     return format; 
