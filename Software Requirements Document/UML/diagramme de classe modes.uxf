@@ -1,0 +1,24 @@
+<diagram program="umletino" version="14.4.0-SNAPSHOT"><zoom_level>10</zoom_level><element><id>UMLClass</id><coordinates><x>770</x><y>70</y><w>100</w><h>30</h></coordinates><panel_attributes>Board</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>440</x><y>150</y><w>360</w><h>100</h></coordinates><panel_attributes>DestrucQtionBoard
+--
++ DestruQtionBoard(int nplayer, int size=9, const int startWall=99)
++ placeWAll(string &amp;direction, Position &amp;pos) : void
++ checkWall(string &amp;direction, Position &amp;targetPos) : bool
++ destroyWall(shared_ptr&lt;Piece&gt; wall) : void
++ ~DestruQtionBoard()</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>840</x><y>150</y><w>350</w><h>70</h></coordinates><panel_attributes>QQQuoridorBoard
+--
++ QQQuoridorBoard(int nplayer, size=15, const int startWall=20)
++ divideInput(string &amp;input) : vector&lt;string&gt;
++ checkInput(string &amp;input, int currentP) : bool
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>900</x><y>370</y><w>250</w><h>60</h></coordinates><panel_attributes>QQQuoridorPosition
+--
++ QQQuoridorPosition(string pos)
++ operator=(const Position &amp;other) : Position
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>450</x><y>340</y><w>320</w><h>90</h></coordinates><panel_attributes>DestruQtionWall
+--
+- triplet : vector&lt;shared_ptr&lt;Piece&gt; &gt;
+--
++ DestruQtionWall(Position position, string direction)
++ setTriplet(shared_ptr&lt;DestruQtionWall&gt; otherWall) : void
++ getTriplet() : vector&lt;shared_ptr&lt;Piece&gt; &gt;</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>560</x><y>270</y><w>100</w><h>30</h></coordinates><panel_attributes>Wall
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>970</x><y>240</y><w>100</w><h>30</h></coordinates><panel_attributes>Position
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>610</x><y>90</y><w>230</w><h>80</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>210;10;210;40;10;40;10;60</additional_attributes></element><element><id>Relation</id><coordinates><x>810</x><y>90</y><w>220</w><h>80</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;40;200;40;200;60</additional_attributes></element><element><id>Relation</id><coordinates><x>600</x><y>290</y><w>30</w><h>70</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;50</additional_attributes></element><element><id>Relation</id><coordinates><x>1010</x><y>260</y><w>30</w><h>130</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;110</additional_attributes></element></diagram>

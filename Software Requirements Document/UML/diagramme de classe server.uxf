@@ -1,0 +1,63 @@
+<diagram program="umletino" version="14.4.0-SNAPSHOT"><zoom_level>10</zoom_level><element><id>UMLClass</id><coordinates><x>380</x><y>250</y><w>360</w><h>300</h></coordinates><panel_attributes>Server
+--
+- max_fd : int
+- master_socket : int
+- users : vector&lt;user_t*&gt;
+- board : shared_ptr&lt;Board&gt;
+- displayBoard : shared_ptr&lt;DisplayBoard&gt;
+- game : Game
+- activePlayer : int = 0
+- registeredPlayers : int = 0
+- neededPlayers : int = 2
+- prepateFDSet(fd_set* read_set) : void
+- handleSocketReadActivity(fd_set* in_set, int&amp; nactivities) : void
+- handleNewConnection() : void
+- disconnectUser(unsigned user_num) : void
+- forward(string command) : void
+- handleCommand(string command, int clientSocket) : void
+--
++ Server()
++ run(int port = 8080) : void
++ shutDown() : void</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>890</x><y>250</y><w>320</w><h>290</h></coordinates><panel_attributes>Client
+--
+- socket : int
+- pseudo : char[80]
+- boardWindow : WINDOW* 
+- boardBoxWindow : WINDOW* 
+- chatWindow : WINDOW* 
+- inputWindow : WINDOW* 
+- handshake(string ip, int port, string pseudo) : int
+- manageInputs(void* instance) : static void*
+- manageInputs() : void
+- manageSocketTraffic() : void
+- fetchInput(char &amp;buffer) : void
+- loginRoutine() : void
+- connectRoutine(DtabaseHandler *dbh) : void
+- displayMenu(vector&lt;const char*&gt; options
+--
++ Client()
++ runGame(string pseudo, string ip, int port = 8080) : void
++ runMenu(string ip, int port) : void</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>990</x><y>660</y><w>100</w><h>30</h></coordinates><panel_attributes>Database</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>360</x><y>660</y><w>100</w><h>30</h></coordinates><panel_attributes>Game</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>510</x><y>660</y><w>100</w><h>30</h></coordinates><panel_attributes>Board</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>660</x><y>660</y><w>100</w><h>30</h></coordinates><panel_attributes>DisplayBoard</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>730</x><y>390</y><w>180</w><h>50</h></coordinates><panel_attributes>lt=-
+m1=1
+m2=0..n
+handles &gt;</panel_attributes><additional_attributes>10;20;160;20</additional_attributes></element><element><id>Relation</id><coordinates><x>1030</x><y>530</y><w>120</w><h>150</h></coordinates><panel_attributes>lt=-
+m1=1..n
+m2=1
+gets infos from &gt;</panel_attributes><additional_attributes>10;10;10;130</additional_attributes></element><element><id>Relation</id><coordinates><x>550</x><y>540</y><w>90</w><h>140</h></coordinates><panel_attributes>lt=-
+m1=1
+m2=1
+handles &gt;</panel_attributes><additional_attributes>10;10;10;120</additional_attributes></element><element><id>Relation</id><coordinates><x>550</x><y>540</y><w>190</w><h>140</h></coordinates><panel_attributes>lt=-
+m1=1
+m2=1
+handles &gt;</panel_attributes><additional_attributes>10;10;10;50;160;50;160;120</additional_attributes></element><element><id>Relation</id><coordinates><x>400</x><y>540</y><w>190</w><h>140</h></coordinates><panel_attributes>lt=-
+m1=1
+m2=1
+&lt; handles </panel_attributes><additional_attributes>160;10;160;50;10;50;10;120</additional_attributes></element><element><id>UMLClass</id><coordinates><x>810</x><y>600</y><w>130</w><h>90</h></coordinates><panel_attributes>&lt;&lt;struct&gt;&gt;
+user_t
+--
++ name : string
++ socket : int
++ version : unsigned</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>730</x><y>520</y><w>180</w><h>100</h></coordinates><panel_attributes>lt=-
+m1=1
+m2=0..n
+has &gt;</panel_attributes><additional_attributes>10;20;140;20;140;80</additional_attributes></element></diagram>
