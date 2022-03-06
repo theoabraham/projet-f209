@@ -32,7 +32,7 @@ void Game::start() {
         std::cout<<"Player " + std::to_string(player+1) + "'s moves : "<<std::endl;
         std::string input = getInput();
         
-        if(model->checkInput(input, player)){
+        if(checkInput(input, player)){
             player=(player+1)%nplayer;
         }
         else inputFormat(); 
