@@ -81,9 +81,11 @@ void Server::handleSocketReadActivity(fd_set* in_set, int& nactivities) {
             std::string command = msg.message.substr(msg.message.length() - 4, 4);
             //Si le coup demandé est valide, on le joue et on affiche le plateau
             this->handleMove(command, socket);
-          } else if (msg.message.substr(1, 6) == "leave"){
+          } 
+          if (msg.message.substr(1, 6) == "leave"){
             this->disconnectUser(i);
-          } else if (msg.message.substr(1, 5) == "help"){
+          }
+          if (msg.message.substr(1, 5) == "help"){
             message_t helpMessage;
             helpMessage.message = "[system] : " + this->game.inputFormat() + " (/leave pour quitter.)";
             ssend(users[i]->socket, &helpMessage);
