@@ -19,7 +19,6 @@ class Client {
   WINDOW * chatWindow;
   WINDOW * chatBoxWindow;
   WINDOW * inputWindow;
-  WINDOW * chatBoxWindow;
 
  private:
   int handshake(string ip, int port, string pseudo);
