@@ -5,14 +5,62 @@
 #include <string.h>
 #include <unistd.h>
 
-
 #include "socketlib.h"
 
 //using namespace std;
 
-Client::Client() {}
+Client::Client() {
+  setlocale(LC_ALL, "");
+  initscr();
+  cbreak();
 
-void Client::run(string pseudo, string ip, int port) {
+  int maxX, maxY;
+  getmaxyx(stdscr, maxY, maxX);
+  clear();
+
+  boardBoxWindow = newwin(2*maxY/3, maxX/2, 0, 0);
+  boardWindow = newwin(2*maxY/3 - 2, maxX/2 - 2, 1, 1);
+  chatWindow = newwin(2*maxY/3, maxX/2, 0, maxX/2 + 1);
+  inputWindow = newwin(maxY/3, maxX, 2*maxY/3, 0);
+  refresh();
+  box(boardBoxWindow, 0, 0);
+  box(chatWindow, 0, 0);
+  box(inputWindow, 0, 0);
+  wrefresh(boardBoxWindow);
+  wrefresh(chatWindow);
+  wrefresh(inputWindow);
+}
+
+void Client::runMenu(string ip, int port){
+  this->loginRoutine();
+  this->runGame(pseudo, ip, port);
+}
+
+void Client::loginRoutine(){
+  int y = 1;
+  char Mdp;
+  char answer;
+  const char *askFileMsg = "Entrez un pseudo";
+  const char *askFileCreation = "Vouslez vous creer un compte?";
+  mvwprintw(chatWindow, y, 1, askFileMsg); //Print dans la fenetre chatwindow en position y=1, x=1, le message askFileMsg
+  wrefresh(chatWindow);
+  this->fetchInput(*pseudo);
+  this->pseudo[strlen(pseudo)] = '\0';
+  if (DatabaseHandler::isStringValid(pseudo)){
+    if (!DatabaseHandler::does_file_exist(pseudo)){
+      y++;
+      mvwprintw(chatWindow, y, 1, askFileCreation);
+      wrefresh(chatWindow);
+      this->fetchInput(answer);
+      } else {
+        DatabaseHandler dbh = DatabaseHandler(&pseudo);
+      }
+    }
+    this->fetchInput(Mdp);
+    if (dbh.checkPswd(&Mdp))
+  }
+
+void Client::runGame(string pseudo, string ip, int port) {
   //Le client se connecte au serveur, et créé un thread pour gérer la reception de messages.
   this->socket = this->handshake(ip, port, pseudo);
   pthread_t tid;
@@ -31,29 +79,46 @@ void *Client::manageInputs(void *instance) {
 void Client::manageInputs() {
   // Le client peut ecrire et envoyer ses messages
   char buffer[1024];
-  write(STDOUT_FILENO, ">> ", 3);
-  while (fgets(buffer, 1024, stdin) != NULL) {
-    buffer[strlen(buffer) - 1] = '\0';
+  while (true) {
+    mvwgetstr(inputWindow, 1, 1, buffer);
+    buffer[strlen(buffer)] = '\0';
     message_t msg = {.timestamp = time(NULL), .message = string(buffer)};
-    if (ssend(this->socket, &msg) <= 0) {
+    werase(inputWindow);
+    box(inputWindow, 0, 0);
+    wrefresh(inputWindow);
+    if (ssend(this->socket, &msg) <0) {
       exit(0);
     }
-    write(STDOUT_FILENO, ">> ", 3);
-    printf("\033[A\33[2KT\r");
   }
   close(this->socket);
   exit(0);
 }
 
+void Client::fetchInput(char &buffer){ //Passage par reference pour que le contenu de buffer soit accessible dans d'autres fonctions.
+  mvwgetstr(inputWindow, 1, 1, &buffer); //Récupère l'input dans inputWindow et stocke le contenu dans buffer
+  werase(inputWindow);
+  box(inputWindow, 0, 0);
+  wrefresh(inputWindow);
+}
+
 void Client::manageSocketTraffic() {
   //Reception des messages via le serveur
+  int x = 1;
+  int y = 0;
   while (true) {
     message_t msg;
     size_t nbytes = receive(this->socket, &msg);
     if (nbytes <= 0) {
       exit(0);
     }
-    printf("%s\n", msg.message.c_str());
+    if (msg.message.substr(0,1) == (string)"["){
+      mvwprintw(chatWindow, y+1, 1, msg.message.c_str());
+      getyx(chatWindow, y, x);
+      wrefresh(chatWindow);
+    } else {
+      mvwprintw(boardWindow, 0, 0, msg.message.c_str());
+      wrefresh(boardWindow);
+    }
   }
 }
 
@@ -79,9 +144,6 @@ int Client::handshake(string ip, int port, string pseudo) {
 }
 
 int main(int argc, char const *argv[]) {
- std::string inputFile = DatabaseHandler::askFile();
- if (inputFile=="")exit(0);
- DatabaseHandler dbh(inputFile);
   if (argc < 2) {
     fprintf(stderr, "Utilisation: ./client <port> [<ip>]\n");
     exit(0);
@@ -96,8 +158,7 @@ int main(int argc, char const *argv[]) {
     ip = argv[2];
   }
   Client client = Client();
-  std::string pseudo = dbh.getPlayerName();
-  client.run(pseudo, ip.c_str(), port);
+  client.runMenu(ip.c_str(), port);
   return 0;
 
 }
