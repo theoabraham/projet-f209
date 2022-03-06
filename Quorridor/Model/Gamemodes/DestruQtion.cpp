@@ -30,6 +30,7 @@ void DestruQtionBoard::placeWall(std::string &direction, Position &pos) {
                 posX = pos.getX() + i;
                 triplets.push_back(std::shared_ptr<DestruQtionWall>(new DestruQtionWall(Position{posX, posY}, direction)));
                 matrix[posY][posX]->setPiece(triplets[i]);
+                updateNeighbours(triplets[i], pos, direction); 
             }
         } else if (direction == "V") { // Mur vertical
             for (int i = 0; i < 3; i++) {
@@ -37,6 +38,7 @@ void DestruQtionBoard::placeWall(std::string &direction, Position &pos) {
                 posX = pos.getX() + 1;
                 triplets.push_back(std::shared_ptr<DestruQtionWall>(new DestruQtionWall(Position{posX, posY}, direction)));
                 matrix[posY][posX]->setPiece(triplets[i]);
+                updateNeighbours(triplets[i], pos, direction); 
             }
         }
         for (int i = 0; i < 3; i++) {
@@ -52,9 +54,11 @@ void DestruQtionBoard::destroyWall(std::shared_ptr<Piece> wall) {
     for (auto w: wall->getTriplet()) { // On détruit les triplets de wall
         posY = w->getPos().getY();
         posX = w->getPos().getX();
-        matrix[posY][posX]->setPiece(nullptr); 
+        matrix[posY][posX]->setPiece(nullptr);
+        updateNeighbours(nullptr, Position{posX, posY}, wall->wallD());  
     }
     posY = wall->getPos().getY();
     posX = wall->getPos().getX();
     matrix[posY][posX]->setPiece(nullptr); // Comme les murs sont réferencé par shared_ptr, a la fin de cette fonction il n'existera plus de ptr vers l'objet ce qui l'efface
+    updateNeighbours(nullptr, Position{posX, posY}, wall->wallD());  
 }
