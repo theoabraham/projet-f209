@@ -274,6 +274,7 @@ bool Board::checkInput(std::string &input, int currentP) {
 void Board::updateNeighbours(std::shared_ptr<Piece> piece, Position pos, std::string direction){
 
     if (piece == nullptr){
+        //Lorsque le mur est retiré les cases adjacentes retrouvent leurs voisins
         std::shared_ptr<MotherCell> neighbour = matrix[pos.getY()][pos.getX()]; 
         if (direction=="H"){
             matrix[pos.getY() + 1][pos.getX()]->setNeighbour(neighbour, 0); 
