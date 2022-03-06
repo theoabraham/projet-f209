@@ -32,10 +32,38 @@ Client::Client() {
 }
 
 void Client::runMenu(string ip, int port){
-  this->loginRoutine();
-  DatabaseHandler dbh(pseudo);
-  this->connectRoutine(&dbh);
-  this->runGame(pseudo, ip, port);
+  std::vector<const char*> basicOptions = {"Option :", "(L)ogin and Play", "Chose (G)amemode"};
+  std::vector<const char*> gameModeOptions = {"(C)lassique", "(D)estruQtion", "(Q)QQuorridor"};
+  while(true){
+    cout<<"ok";
+    char menuChoice;
+    this->displayMenu(basicOptions);
+    this->fetchInput(menuChoice);
+    if (menuChoice == 'L'){
+      this->loginRoutine();
+      DatabaseHandler dbh(pseudo);
+      this->connectRoutine(&dbh);
+      this->runGame(pseudo, ip, port);
+    } else if (menuChoice == 'G'){
+      this->displayMenu(gameModeOptions);
+      this->fetchInput(*gameMode);
+      this->gameMode[strlen(gameMode)]='\0';
+      this->displayMenu(basicOptions);
+    }
+  }
+}
+
+void Client::displayMenu(std::vector<const char*> options){
+  werase(chatWindow);
+  wrefresh(chatWindow);
+  box(chatWindow, 0, 0);
+  wrefresh(chatWindow);
+  int y = 0;
+  for(const char* option: options){
+    y++;
+    mvwprintw(chatWindow, y, 1, option);
+  }
+  wrefresh(chatWindow);
 }
 
 void Client::loginRoutine() {
@@ -137,6 +165,9 @@ void Client::connectRoutine(DatabaseHandler *dbh) {
 
 void Client::runGame(string pseudo, string ip, int port) {
   //Le client se connecte au serveur, et créé un thread pour gérer la reception de messages.
+  werase(chatWindow);
+  box(chatWindow, 0, 0);
+  wrefresh(chatWindow);
   this->socket = this->handshake(ip, port, pseudo);
   pthread_t tid;
   pthread_create(&tid, nullptr, Client::manageInputs, this);
