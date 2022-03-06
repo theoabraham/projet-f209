@@ -261,7 +261,7 @@ bool Board::checkInput(std::string &input, int currentP) {
         executeMove(typeOfMove, target_pos, currentP);
         if(typeOfMove=="H" or typeOfMove=="V"){
             if(!possiblePaths()){
-                removeWall(typeOfMove, target_pos);
+                destroyWall(typeOfMove, target_pos);
         players[currentPlayer]->addWall();
             return false;
             }
@@ -374,7 +374,6 @@ bool Board::possiblePaths() {
     int player_id = 0;
     for (const auto &player: players) {
         endOfSearch = false;
-        std::cout<<player->getId()<<std::endl;
         std::vector<std::vector<bool>> visited(size, std::vector<bool>(size, false));
         std::list<Position> queue;
         Position pawn = player->getPawnPos();
@@ -382,7 +381,6 @@ bool Board::possiblePaths() {
         queue.push_back(pawn);
         while (!queue.empty() and not endOfSearch) {
             Position s = queue.front();
-            std::cout << "(" << s.getX()/2 << ", " << s.getY()/2<<")" << std::endl;
             queue.pop_front();
             for (int i = 0; i < 4; i++) {
                 if (matrix[s.getY()][s.getX()]->getNeighbour(i)) {
@@ -456,7 +454,7 @@ bool Board::possiblePaths() {
     return endOfSearch;
 }
 
-void Board::removeWall(const std::string &direction, Position &pos) {
+void Board::destroyWall(const std::string &direction, Position &pos) {
     int posX, posY;
     if (direction == "H") {
         for (int i = 0; i < 3; i++) {

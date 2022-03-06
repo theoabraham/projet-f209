@@ -126,7 +126,7 @@ class Board{
         */
         bool possiblePaths();
 
-        void removeWall(const std::string& direction, Position& pos);
+        virtual void destroyWall(const std::string& direction, Position& pos);
 
         virtual ~Board() {}
 };
