@@ -17,6 +17,7 @@ class Client {
   WINDOW * boardWindow;
   WINDOW * boardBoxWindow;
   WINDOW * chatWindow;
+  WINDOW * chatBoxWindow;
   WINDOW * inputWindow;
 
  private:
@@ -28,6 +29,7 @@ class Client {
   void loginRoutine();
   void connectRoutine(DatabaseHandler *dbh);
   void displayMenu(std::vector<const char*> options);
+  void clearWindow(WINDOW * window);
 
  public:
   Client();

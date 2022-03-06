@@ -18,7 +18,7 @@ public:
     /**
      * @brief cout avec les explication de comment un coup doit être entré 
     */
-    void inputFormat();
+    std::string inputFormat();
 
     /**
      * @brief Appelle board.checkinput (inaccessible depuis le serveur)

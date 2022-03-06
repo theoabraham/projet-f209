@@ -9,7 +9,6 @@ class DestruQtionWall: public Wall {
         // Setter/Getter des autres triplets du mur
         void setTriplet(std::shared_ptr<DestruQtionWall> otherWall) {triplet.push_back(otherWall);}
         std::vector<std::shared_ptr<Piece>> getTriplet() override {return triplet;}
-
 };
 
 class DestruQtionBoard: public Board {

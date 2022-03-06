@@ -20,24 +20,25 @@ Client::Client() {
 
   boardBoxWindow = newwin(2*maxY/3, maxX/2, 0, 0);
   boardWindow = newwin(2*maxY/3 - 2, maxX/2 - 2, 1, 1);
-  chatWindow = newwin(2*maxY/3, maxX/2, 0, maxX/2 + 1);
+  chatWindow = newwin(2*maxY/3 - 2, maxX/2 - 2, 1, maxX/2 + 2);
+  chatBoxWindow = newwin(2*maxY/3, maxX/2, 0, maxX/2 + 1);
   inputWindow = newwin(maxY/3, maxX, 2*maxY/3, 0);
   refresh();
   box(boardBoxWindow, 0, 0);
-  box(chatWindow, 0, 0);
+  box(chatBoxWindow, 0, 0);
   box(inputWindow, 0, 0);
   wrefresh(boardBoxWindow);
-  wrefresh(chatWindow);
+  wrefresh(chatBoxWindow);
   wrefresh(inputWindow);
 }
 
 void Client::runMenu(string ip, int port){
-  std::vector<const char*> basicOptions = {"Option :", "(L)ogin and Play", "Chose (G)amemode"};
-  std::vector<const char*> gameModeOptions = {"(C)lassique", "(D)estruQtion", "(Q)QQuorridor"};
+  keypad(inputWindow, TRUE);
+  // std::vector<const char*> basicOptions = {"Option :", "(L)ogin and Play", "Choose (G)amemode"};
+  std::vector<const char*> gameModeOptions = {"(C)lassic", "(D)estruQtion", "(Q)QQuorridor"};
   while(true){
-    cout<<"ok";
     char menuChoice;
-    this->displayMenu(basicOptions);
+    this->displayMenu({"Option :", "(L)ogin and Play", "Chose (G)amemode"});
     this->fetchInput(menuChoice);
     if (menuChoice == 'L'){
       this->loginRoutine();
@@ -48,16 +49,18 @@ void Client::runMenu(string ip, int port){
       this->displayMenu(gameModeOptions);
       this->fetchInput(*gameMode);
       this->gameMode[strlen(gameMode)]='\0';
-      this->displayMenu(basicOptions);
+      while (strcmp(gameMode, "C\0") != 0 && strcmp(gameMode, "D\0") != 0 && strcmp(gameMode, "Q\0") != 0) {
+        mvwprintw(chatWindow, 4, 1, "Wrong input, please enter C, D or Q.");
+        wrefresh(chatWindow);
+        this->fetchInput(*gameMode);
+        this->gameMode[strlen(gameMode)]='\0';
+      }
     }
   }
 }
 
 void Client::displayMenu(std::vector<const char*> options){
-  werase(chatWindow);
-  wrefresh(chatWindow);
-  box(chatWindow, 0, 0);
-  wrefresh(chatWindow);
+  clearWindow(chatWindow);
   int y = 0;
   for(const char* option: options){
     y++;
@@ -66,8 +69,15 @@ void Client::displayMenu(std::vector<const char*> options){
   wrefresh(chatWindow);
 }
 
+void Client::clearWindow(WINDOW * window) {
+  werase(window);
+  box(window, 0, 0);
+  wrefresh(window);
+}
+
 void Client::loginRoutine() {
     //Print dans la fenetre chatwindow en position y=1, x=1,
+    clearWindow(chatWindow);
     mvwprintw(chatWindow, ++line_counter, 1,"Entrez un pseudo pour vous connecter: ");
     wrefresh(chatWindow);
     this->fetchInput(*pseudo);
@@ -121,10 +131,11 @@ void Client::connectRoutine(DatabaseHandler *dbh) {
     this->fetchInput(*Password);
     Password[strlen(Password)] = '\0';
     // vérifie le password
-    if (!dbh->checkPswd(Password)){
-        mvwprintw(chatWindow, ++line_counter, 1, "Mot de passe invalide");
-        wrefresh(chatWindow);
-        exit(0);
+    while (!dbh->checkPswd(Password)) {
+      mvwprintw(chatWindow, ++line_counter, 1, "Mot de passe invalide. Réessayez");
+      wrefresh(chatWindow);
+      this->fetchInput(*Password);
+      Password[strlen(Password)] = '\0';
     }
     // liste d'amis
     std::vector<std::string> toaddVect= dbh->getToAddFriendList();
@@ -148,7 +159,7 @@ void Client::connectRoutine(DatabaseHandler *dbh) {
     // ajout d'amis
     char friend_pseudo[80];
     while (strcmp(friend_pseudo, "n")){
-        mvwprintw(chatWindow, ++line_counter, 1, "Entrez un amis à ajouter (n pour annuler):");
+        mvwprintw(chatWindow, ++line_counter, 1, "Entrez un ami à ajouter (n pour annuler):");
         wrefresh(chatWindow);
         this->fetchInput(*friend_pseudo);
         friend_pseudo[strlen(friend_pseudo)] = '\0';
@@ -166,7 +177,6 @@ void Client::connectRoutine(DatabaseHandler *dbh) {
 void Client::runGame(string pseudo, string ip, int port) {
   //Le client se connecte au serveur, et créé un thread pour gérer la reception de messages.
   werase(chatWindow);
-  box(chatWindow, 0, 0);
   wrefresh(chatWindow);
   this->socket = this->handshake(ip, port, pseudo);
   pthread_t tid;

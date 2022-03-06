@@ -21,7 +21,7 @@ void DatabaseHandler::parse(const std::string& file_path, std::array<std::string
     unsigned int num_of_line=0;
 
     // ouvre le fichier
-    file.open("../DataBase/Data/"+file_path);
+    file.open("DataBase/Data/"+file_path);
 
     // pour chaque line du fichier place le dans la liste
     while (num_of_line < string_arr.size()){
@@ -89,7 +89,7 @@ int DatabaseHandler::isStringValid(const std::string &filepath) {
  * @return (bool) int
  */
 bool DatabaseHandler::does_file_exist(const std::string &filename) {
-    std::ifstream ifile("../DataBase/Data/"+filename);
+    std::ifstream ifile("DataBase/Data/"+filename);
     if (ifile.is_open()){
         return 1;
     }else{
@@ -106,7 +106,7 @@ std::string DatabaseHandler::createFile(const std::string& filename,const std::s
     const std::string board="/////\n"; const std::string win="0\n"; const std::string loosed="0\n";
     const std::string none1="\n"; const std::string none2="";
     std::string psw =  std::to_string(h(inputpsw)) + '\n' ;
-    FILE *o_file = fopen(("../DataBase/Data/"+filename).c_str(), "w");
+    FILE *o_file = fopen(("DataBase/Data/"+filename).c_str(), "w");
     if (o_file){
         fwrite(psw.c_str(), 1, psw.size(), o_file);
         fwrite(board.c_str(), 1, board.size(), o_file);
@@ -134,7 +134,7 @@ void DatabaseHandler::writeFriends() {
     const std::string loosed = string_arr[3] + "\n";
     const std::string none = "\n";
     std::string psw = string_arr[0] + "\n";
-    FILE *o_file = fopen(("../DataBase/Data/" + username).c_str(), "w");
+    FILE *o_file = fopen(("DataBase/Data/" + username).c_str(), "w");
     if (o_file) {
         fwrite(psw.c_str(), 1, psw.size(), o_file);
         fwrite(board.c_str(), 1, board.size(), o_file);
@@ -187,7 +187,7 @@ void DatabaseHandler::writeFriendstoAdd(const std::string &friends_name) {
     std::string friends;
     temp[4]=="" ? friends = username + "\n" : friends = temp[4] + " " + username + "\n";
     std::string psw = temp[0]+"\n";
-    FILE *o_file = fopen(("../DataBase/Data/"+friends_name).c_str(), "w");
+    FILE *o_file = fopen(("DataBase/Data/"+friends_name).c_str(), "w");
     if (o_file){
         fwrite(psw.c_str(), 1, psw.size(), o_file);
         fwrite(board.c_str(), 1, board.size(), o_file);
