@@ -2,14 +2,17 @@
 
 bool DestruQtionBoard::checkWall(std::string &direction, Position &target_pos){
     //si l'emplacement du mur horizontal est occupé, on détruit le mur ciblé
-    if (direction == "H" && matrix[target_pos.getY() - 1][target_pos.getX()]->occupied()) {
-        return true;
+    if (target_pos.getX()<boardSize-2 && target_pos.getY()>0) {
+        if (direction == "H" && matrix[target_pos.getY() - 1][target_pos.getX()]->occupied()) {
+            return true;
+        }
+        //Pareil à la verticale
+        if (direction == "V" && matrix[target_pos.getY()][target_pos.getX() + 1]->occupied()) {
+            return true;
+        }
+        return Board::checkWall(direction, target_pos);
     }
-    //Pareil à la verticale
-    if (direction == "V" && matrix[target_pos.getY()][target_pos.getX() + 1]->occupied()) {
-        return true;
-    }
-    return Board::checkWall(direction, target_pos);
+    return false;
 }
 
 
