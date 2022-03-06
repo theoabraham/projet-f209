@@ -20,6 +20,7 @@ private:
     std::vector<std::string> friendList;   // sous liste d'amis du fichier
     std::vector<std::string> toAddList;    // amis à rajouter
     std::string username;
+    std::vector<std::string> tempVect;
 public:
     // Constructeurs
     DatabaseHandler(const std::string &inputFile);
@@ -39,14 +40,15 @@ public:
     void setToaddList(const std::string &fstr);
 
     // Méthode "bool"
-    int checkPswd(const std::string& input_psw, const std::string& stocked_hash);
+    int checkPswd(const std::string& input_psw);
     static int isStringValid(const std::string &filepath);
     static bool does_file_exist(const std::string &filename);
     // Méthodes
     void parse(const std::string& file_path, std::array<std::string, 6> * arr_addr);
     static std::string createPsw();
     static std::string createFile(const std::string& filename,const std::string &inputpsw);
-    void writeFriends(const std::string &friends_str);
+    void tempVectadd(const std::string &friendname){tempVect.push_back(friendname);};
+    void writeFriends();
     void writeFriendstoAdd(const std::string &friends_name);
     void transferFriend();
     void listFriends();

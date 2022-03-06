@@ -33,32 +33,107 @@ Client::Client() {
 
 void Client::runMenu(string ip, int port){
   this->loginRoutine();
+  DatabaseHandler dbh(pseudo);
+  this->connectRoutine(&dbh);
   this->runGame(pseudo, ip, port);
 }
 
-void Client::loginRoutine(){
-  int y = 1;
-  char Mdp;
-  char answer;
-  const char *askFileMsg = "Entrez un pseudo";
-  const char *askFileCreation = "Vouslez vous creer un compte?";
-  mvwprintw(chatWindow, y, 1, askFileMsg); //Print dans la fenetre chatwindow en position y=1, x=1, le message askFileMsg
-  wrefresh(chatWindow);
-  this->fetchInput(*pseudo);
-  this->pseudo[strlen(pseudo)] = '\0';
-  if (DatabaseHandler::isStringValid(pseudo)){
-    if (!DatabaseHandler::does_file_exist(pseudo)){
-      y++;
-      mvwprintw(chatWindow, y, 1, askFileCreation);
-      wrefresh(chatWindow);
-      this->fetchInput(answer);
-      } else {
-        DatabaseHandler dbh = DatabaseHandler(&pseudo);
-      }
+void Client::loginRoutine() {
+    //Print dans la fenetre chatwindow en position y=1, x=1,
+    mvwprintw(chatWindow, ++line_counter, 1,"Entrez un pseudo pour vous connecter: ");
+    wrefresh(chatWindow);
+    this->fetchInput(*pseudo);
+    this->pseudo[strlen(pseudo)]='\0';
+
+    // si fichier comporte caractère invalide
+    if (!DatabaseHandler::isStringValid(pseudo)){
+        mvwprintw(chatWindow, ++line_counter, 1,"Le pseudo entré comporte un caractère interdi.");
+        wrefresh(chatWindow);
+        exit(0);
     }
-    this->fetchInput(Mdp);
-    if (dbh.checkPswd(&Mdp))
-  }
+    // si fichier existe pas
+    if (!DatabaseHandler::does_file_exist(pseudo)){
+        char answer;
+        while (!(answer=='Y' or answer=='y' or answer=='N' or answer=='n')) {
+            mvwprintw(chatWindow, ++line_counter, 1, "Fichier inexistant. Voulez vous creer un compte? (Y/n) :");
+            wrefresh(chatWindow);
+            this->fetchInput(answer);
+        }
+        if (answer=='y' or answer=='Y'){
+            //deux mdp
+            char Password[80];char checkPassword[80];
+
+            //premier mdp
+            mvwprintw(chatWindow, ++line_counter, 1, "Entrez un mot de passe (attention il est visible de tous) :");
+            wrefresh(chatWindow);
+            this->fetchInput(*Password);
+            Password[strlen(Password)] = '\0';
+
+            //confirmation
+            mvwprintw(chatWindow, ++line_counter, 1, "Confirmez votre mot de passe :");
+            wrefresh(chatWindow);
+            this->fetchInput(*checkPassword);
+            checkPassword[strlen(checkPassword)] = '\0';
+
+            //si deux psw egaux
+            if(!strcmp(Password, checkPassword)){
+                DatabaseHandler::createFile(pseudo, Password);
+            }
+        }
+    }
+}
+
+void Client::connectRoutine(DatabaseHandler *dbh) {
+    mvwprintw(chatWindow, ++line_counter, 1, "Utilisateur trouvé.");
+    wrefresh(chatWindow);
+
+    char Password[80];
+    mvwprintw(chatWindow, ++line_counter, 1, "Entrez votre mot de passe:");
+    wrefresh(chatWindow);
+    this->fetchInput(*Password);
+    Password[strlen(Password)] = '\0';
+    // vérifie le password
+    if (!dbh->checkPswd(Password)){
+        mvwprintw(chatWindow, ++line_counter, 1, "Mot de passe invalide");
+        wrefresh(chatWindow);
+        exit(0);
+    }
+    // liste d'amis
+    std::vector<std::string> toaddVect= dbh->getToAddFriendList();
+    mvwprintw(chatWindow, ++line_counter, 1, "Voulez vous ajouter ces amis ?(Y/other)");
+    wrefresh(chatWindow);
+    char answer[80];
+    if (toaddVect.size()) { // si le vecteur est non vide
+        for (auto s: toaddVect) {
+            mvwprintw(chatWindow, ++line_counter, 1, s.c_str());
+            wrefresh(chatWindow);
+            this->fetchInput(*answer);
+            answer[strlen(answer)] = '\0';
+            if (!strcmp(answer, "Y")) {
+                mvwprintw(chatWindow, ++line_counter, 1, "Amis ajouté");
+                wrefresh(chatWindow);
+                dbh->tempVectadd(s);
+            }
+        }
+    }
+    dbh->writeFriends();
+    // ajout d'amis
+    char friend_pseudo[80];
+    while (strcmp(friend_pseudo, "n")){
+        mvwprintw(chatWindow, ++line_counter, 1, "Entrez un amis à ajouter (n pour annuler):");
+        wrefresh(chatWindow);
+        this->fetchInput(*friend_pseudo);
+        friend_pseudo[strlen(friend_pseudo)] = '\0';
+        if (strcmp(friend_pseudo, "n") and !DatabaseHandler::does_file_exist(friend_pseudo)){
+            mvwprintw(chatWindow, ++line_counter, 1, "Ami innexistant.");
+            wrefresh(chatWindow);
+        }else if(strcmp(friend_pseudo, "n")){
+            dbh->writeFriendstoAdd(friend_pseudo);
+            mvwprintw(chatWindow, ++line_counter, 1, "Demande d'amis envoyée.");
+            wrefresh(chatWindow);
+        }
+    }
+}
 
 void Client::runGame(string pseudo, string ip, int port) {
   //Le client se connecte au serveur, et créé un thread pour gérer la reception de messages.
@@ -160,5 +235,4 @@ int main(int argc, char const *argv[]) {
   Client client = Client();
   client.runMenu(ip.c_str(), port);
   return 0;
-
 }
