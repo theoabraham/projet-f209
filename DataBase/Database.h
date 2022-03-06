@@ -45,8 +45,8 @@ public:
     // Méthodes
     void parse(const std::string& file_path, std::array<std::string, 6> * arr_addr);
     static std::string createPsw();
-    static std::string createFile(const std::string& filename);
-    void writeFriends(const std::string& filename,const std::string &friends_str);
+    static std::string createFile(const std::string& filename,const std::string &inputpsw);
+    void writeFriends(const std::string &friends_str);
     void writeFriendstoAdd(const std::string &friends_name);
     void transferFriend();
     void listFriends();

@@ -9,7 +9,7 @@ server: server.cpp $(MODEL) ${GAMEMODES} $(VIEW) $(CONTROLLER) socketlib.o serve
 	g++ $(MODEL) $(VIEW) $(CONTROLLER) -g -o server server.cpp socketlib.o socketlib.h ${FLAGS}
 
 socketlib.o: socketlib.cpp socketlib.h
-	g++ -c socketlib.c ${FLAGS}
+	g++ -c socketlib.cpp ${FLAGS}
 
 MODEL = ../Quorridor/Model/Board.cpp ../Quorridor/Model/Board.hpp ../Quorridor/Model/MotherCell.hpp ../Quorridor/Model/MotherCell.cpp ../Quorridor/Model/Piece.hpp ../Quorridor/Model/Player.hpp ../Quorridor/Model/Position.hpp ../Quorridor/Model/Position.cpp
 
