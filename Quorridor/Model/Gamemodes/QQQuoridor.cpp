@@ -29,13 +29,14 @@ std::vector<std::string> QQQuoridorBoard::divideInput(std::string &input) {
 }
 
 bool QQQuoridorBoard::checkInput(std::string &input, int currentP) {
+    bool res = false;
     std::vector<std::string> sepInput = divideInput(input);
     if (!sepInput.empty()) {
         // Si l'input n'est pas vide
         for (long unsigned int i = 0; i < sepInput.size(); i++) {
             if (sepInput[i] != "") {
                 // Si le string n'est pas vide. Exemple: si le joueur n'entre qu'un coup, le deuxième string est vide
-                if (sepInput[i].size() != 5) return false;
+                if (sepInput[i].size() != 5) res = false;
                 int len = 4;
                 std::string typeOfMove{sepInput[i].substr(0, 1)};
 
@@ -48,18 +49,18 @@ bool QQQuoridorBoard::checkInput(std::string &input, int currentP) {
                     executeMove(typeOfMove, target_pos, currentP);
                     if(typeOfMove=="H" or typeOfMove=="V"){
                         if(!possiblePaths()){
-                            removeWall(typeOfMove, target_pos);
+                            destroyWall(typeOfMove, target_pos);
                             players[currentPlayer]->addWall();
-                            return false;
+                            res = false;
                         }
                     }
-                    return true;
+                    else res = true;
                 }
-                return false;
+                else res = false;
             }
         }
     }
-    return false;
+    return res;
 }
 
 // Prend un y composé de deux chiffres. Exemple: g12, pos[1]=1 et pos[2]=2

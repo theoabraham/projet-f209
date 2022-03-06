@@ -13,24 +13,26 @@ class DestruQtionWall: public Wall {
 };
 
 class DestruQtionBoard: public Board {
-        public:
-    DestruQtionBoard(int nplayer, int size=9, const int START_WALL=99): Board(nplayer, size, START_WALL) {}
+    public:
+        DestruQtionBoard(int nplayer, int size=9, const int START_WALL=15): Board(nplayer, size, START_WALL) {}
 
-    /**
-     * @brief Détruit un mur a la position pos ou place un mur de type DestruQtionWall
-    */ 
-    void placeWall(std::string &direction, Position &pos) override;
+        bool checkInput(std::string &input, int currentP) override {return Board::checkInput(input, currentP);}
 
-    /**
-     * @brief Effectue un Board::checkWall à moins que la position exact choisi par le joueur est occupé par un mur
-     * @return True si espace libre pour le mur à placer ou si exactement l'espace choisi est occupé par un mur, sinon false
-    */ 
-    bool checkWall(std::string &direction, Position &target_pos) override;
+        /**
+         * @brief Détruit un mur a la position pos ou place un mur de type DestruQtionWall
+        */ 
+        void placeWall(std::string &direction, Position &pos) override;
 
-    /**
-     * @brief Détruit le mur à la position donné dans DestruQtionBoard::placeWall
-    */
-    void destroyWall(std::shared_ptr<Piece> wall);
+        /**
+         * @brief Effectue un Board::checkWall à moins que la position exact choisi par le joueur est occupé par un mur
+         * @return True si espace libre pour le mur à placer ou si exactement l'espace choisi est occupé par un mur, sinon false
+        */ 
+        bool checkWall(std::string &direction, Position &target_pos) override;
+
+        /**
+         * @brief Détruit le mur à la position donné dans DestruQtionBoard::placeWall
+        */
+        void destroyWall(std::shared_ptr<Piece> wall);
 
     ~DestruQtionBoard() {};
 

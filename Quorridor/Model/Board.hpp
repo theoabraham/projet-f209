@@ -102,6 +102,10 @@ class Board{
         */ 
         virtual bool checkInput(std::string &input, int currentP);
 
+        /**
+         * @brief lorsqu'un mur est posé ou retiré les voisins des cases adjacentes sont mis à jours  
+         * @param piece
+        */
         void updateNeighbours(std::shared_ptr<Piece> piece, Position pos, std::string direction); 
 
         /**
@@ -126,7 +130,13 @@ class Board{
         */
         bool possiblePaths();
 
-        void removeWall(const std::string& direction, Position& pos);
+        /**
+         * @brief supprime le mur débutant à la position pos 
+         * @param direction : mur horizontal ou vertical
+         *        pos : la position du mur
+         *  
+        */ 
+        virtual void destroyWall(const std::string& direction, Position& pos);
 
         virtual ~Board() {}
 };

@@ -15,12 +15,18 @@ public:
     */
     std::vector<std::string> divideInput(std::string &input);
     bool checkInput(std::string &input, int currentP) override;
+
+    void placeWall(std::string &direction, Position &pos) override {Board::placeWall(direction, pos);}
+    bool checkWall(std::string &direction, Position &pos) override {return Board::checkWall(direction, pos);}
+    void destroyWall(const std::string& direction, Position& pos) override {Board::destroyWall(direction, pos);}
 };
 
 class QQQuoridorPosition: public Position {
 public:
     QQQuoridorPosition(std::string pos);
     Position operator=(const Position& other) override;
+
+    
 };
 
 #endif

@@ -2,7 +2,7 @@
 
 std::string DisplayBoard:: printBoard() const {
       int boardSize = board->getBoardSize(); 
-      std::vector<std::vector< std::shared_ptr<MotherCell> > > matrix = board->getMatrix(); 
+      std::vector<std::vector< std::shared_ptr<MotherCell> > > matrix = board->getMatrix();
 
       std::string stringBoard;
 
@@ -23,7 +23,6 @@ std::string DisplayBoard:: printBoard() const {
                       else currentLine+="\u25AE " ; //Mur vertical 
                   } else{
                       currentLine += "  ";
-                      //currentLine+=std::to_string(j)+" "; 
                   }
               } else{
                   if(matrix[i][j]->occupied()) {
