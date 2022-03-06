@@ -15,7 +15,7 @@ class DisplayBoard {
  public:
 
   DisplayBoard(const std::shared_ptr< Board> board): board{board} {};
-
+  DisplayBoard(){};
   /**
    *Imprime le plateau de jeux avec ces pions et murs sur le terminal 
   */ 

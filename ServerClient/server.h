@@ -37,7 +37,7 @@ class Server {
   void handleNewConnection();
   void disconnectUser(unsigned user_num);
   void forward(message_t* msg);
-  void handleCommand(string command);
+  void handleCommand(string command, int clientSocket);
 
  public:
   Server();
