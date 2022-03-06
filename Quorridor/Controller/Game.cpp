@@ -20,8 +20,8 @@ bool Game::checkInput(std::string input, int player){
 }
 
 void Game::start() {
-    int player = 0;
-    int nplayer = model->getNplayer(); 
+    int player = 0; // joueur auqel c'est le tour de jouer
+    int nplayer = model->getNplayer(); // nombre de joueurs
     
     view->printBoard();
     inputFormat();

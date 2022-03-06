@@ -52,7 +52,7 @@ void DestruQtionBoard::destroyWall(std::shared_ptr<Piece> wall) {
     for (auto w: wall->getTriplet()) { // On détruit les triplets de wall
         posY = w->getPos().getY();
         posX = w->getPos().getX();
-        matrix[posY][posX]->setPiece(nullptr); 
+        matrix[posY][posX]->setPiece(nullptr);
     }
     posY = wall->getPos().getY();
     posX = wall->getPos().getX();
