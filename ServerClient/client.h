@@ -19,6 +19,7 @@ class Client {
   WINDOW * chatWindow;
   WINDOW * chatBoxWindow;
   WINDOW * inputWindow;
+  WINDOW * chatBoxWindow;
 
  private:
   int handshake(string ip, int port, string pseudo);
@@ -29,6 +30,7 @@ class Client {
   void loginRoutine();
   void connectRoutine(DatabaseHandler *dbh);
   void displayMenu(std::vector<const char*> options);
+  void clearWindow(WINDOW * window);
 
  public:
   Client();
