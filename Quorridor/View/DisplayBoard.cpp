@@ -19,7 +19,7 @@ std::string DisplayBoard:: printBoard() const {
               if((i%2==1 and i<boardSize) || (j%2==1 and j<boardSize)){
                   if(matrix[i][j]->occupied()) {
                       if (matrix[i][j]->getPiece()->isHWall())
-                        currentLine += "\u25AC "; //Mur horizontal 
+                          currentLine += "\u25AC ";
                       else currentLine+="\u25AE " ; //Mur vertical 
                   } else{
                       currentLine += "  ";

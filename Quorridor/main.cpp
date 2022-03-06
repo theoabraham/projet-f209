@@ -6,7 +6,7 @@
 #include "Model/Board.hpp"
 #include "View/DisplayBoard.hpp"
 #include "Controller/Game.hpp"
-
+/*
 int main(){
     int input;
     bool res = false;
@@ -23,4 +23,4 @@ int main(){
     game.start();
 
     return 0;
-}
+}*/
