@@ -242,9 +242,9 @@ bool Board::checkWall(std::string &direction, Position &target_pos) {
 bool Board::isValid(std::string &typeOfMove, Position &next_pos, int currentP) {
     bool res = false;
 
-    Position playerPos = players[currentP]->getPawnPos();
     if (typeOfMove == "P") { // mouvement de Pion
 
+        Position playerPos = players[currentP]->getPawnPos();
         Position next_cell = (playerPos - next_pos) / 2;
         next_cell.setX(-next_cell.getX());
 
