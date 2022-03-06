@@ -76,7 +76,7 @@ void Server::handleSocketReadActivity(fd_set* in_set, int& nactivities) {
         // message_buffer[nbytes] = '\0';
         bool enoughPlayers = (this->registeredPlayers >= this->neededPlayers);
         //Si le message commence par un point ET provient du joueur actif ET que la partie est en cour :
-        if((msg.message.substr(0,1) == (string)"/") && enoughPlayers){
+        if((msg.message.substr(0,1) == (string)"/") && enoughPlayers && !this->board->isEnd()){
           std::string command = msg.message.substr(msg.message.length() - 4, 4);
           //Si le coup demandé est valide, on le joue et on affiche le plateau
           this->handleCommand(command, socket);
