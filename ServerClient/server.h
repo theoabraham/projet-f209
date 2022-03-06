@@ -1,4 +1,5 @@
 #include <pthread.h>
+#include "../Quorridor/Model/Gamemodes/DestruQtion.hpp"
 #include "../Quorridor/Controller/Game.hpp"
 #include "../Quorridor/Model/Board.hpp"
 #include "../Quorridor/View/DisplayBoard.hpp"
@@ -24,7 +25,7 @@ class Server {
   int max_fd;
   int master_socket;
   vector<user_t*> users;
-  shared_ptr<Board> board = shared_ptr<Board>(new Board(2));
+  shared_ptr<Board> board = shared_ptr<Board>(new DestruQtionBoard(2));
   shared_ptr<DisplayBoard> displayBoard = shared_ptr<DisplayBoard>(new DisplayBoard(board));  
   Game game = Game(board, displayBoard);
   int activePlayer = 0;
