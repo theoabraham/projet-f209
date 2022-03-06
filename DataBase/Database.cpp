@@ -55,7 +55,6 @@ int DatabaseHandler::checkPswd(const std::string& input_psw, const std::string& 
  * @return string du psw une fois hashé
  */
 std::string DatabaseHandler::createPsw() {
-    std::hash<std::string> hashed;
     std::string psw;std::string pswv;
     do{
         std::cout<< "Entrez votre mot de passe: ";
@@ -65,7 +64,7 @@ std::string DatabaseHandler::createPsw() {
         //std::cin >> pswv;
         getline(std::cin,pswv);
     }while (psw != pswv);
-    return std::to_string(hashed(psw));
+    return psw;
 }
 
 /**
@@ -102,10 +101,11 @@ bool DatabaseHandler::does_file_exist(const std::string &filename) {
  * @param filename nom du fichier à créé
  * @return le nom du fichier crée
  */
-std::string DatabaseHandler::createFile(const std::string& filename){
+std::string DatabaseHandler::createFile(const std::string& filename,const std::string& inputpsw){
+    std::hash<std::string> h;
     const std::string board="/////\n"; const std::string win="0\n"; const std::string loosed="0\n";
     const std::string none1="\n"; const std::string none2="";
-    std::string psw = createPsw() + '\n' ;
+    std::string psw =  std::to_string(h(inputpsw)) + '\n' ;
     FILE *o_file = fopen(("../DataBase/Data/"+filename).c_str(), "w");
     if (o_file){
         fwrite(psw.c_str(), 1, psw.size(), o_file);
@@ -123,11 +123,11 @@ std::string DatabaseHandler::createFile(const std::string& filename){
  * @param filename
  * @param friends_str
  */
-void DatabaseHandler::writeFriends(const std::string &filename, const std::string &friends_str) {
+void DatabaseHandler::writeFriends(const std::string &friends_str) {
     const std::string board=string_arr[1]+"\n"; const std::string win=string_arr[2]+"\n";
     const std::string loosed=string_arr[3]+"\n";const std::string none="\n";
     std::string psw = string_arr[0]+"\n";
-    FILE *o_file = fopen(("../DataBase/Data/"+filename).c_str(), "w");
+    FILE *o_file = fopen(("../DataBase/Data/"+username).c_str(), "w");
     if (o_file){
         fwrite(psw.c_str(), 1, psw.size(), o_file);
         fwrite(board.c_str(), 1, board.size(), o_file);
@@ -163,7 +163,7 @@ void DatabaseHandler::transferFriend() {
     for (std::string s:friendList){
         if (s!="") friends_str += (s + " ");
     }
-    writeFriends(username, friends_str);
+    writeFriends(friends_str);
 }
 /**
  * @brief écrit les amis à ajouter dans la ligne 5 du fichier texte
@@ -225,7 +225,8 @@ std::string DatabaseHandler::askFile() {
             return "";
         }
         // crée le fichier
-        createFile(input_file);
+        std::string psw= createPsw();
+        createFile(input_file, psw);
     }
     return input_file;
 }
