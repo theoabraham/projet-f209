@@ -2,7 +2,7 @@
 
 std::string DisplayBoard:: printBoard() const {
       int boardSize = board->getBoardSize(); 
-      std::vector<std::vector< std::shared_ptr<MotherCell> > > matrix = board->getMatrix(); 
+      std::vector<std::vector< std::shared_ptr<MotherCell> > > matrix = board->getMatrix();
 
       std::string stringBoard;
 

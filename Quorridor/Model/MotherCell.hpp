@@ -11,11 +11,11 @@ protected:
     std::shared_ptr<Piece> cellPiece;
     std::vector<std::shared_ptr<MotherCell>> neighbours{nullptr, nullptr, nullptr, nullptr};
 public:
-        std::shared_ptr<Piece> getPiece() {return cellPiece;} 
+        std::shared_ptr<Piece> getPiece() {return cellPiece;}
         void setPiece(std::shared_ptr<Piece> piece) {cellPiece = std::move(piece);}
         bool occupied();
 
-        void setNeighbours(std::vector<std::shared_ptr<MotherCell>> &neighboursVector) {neighbours = neighboursVector;}          
+        void setNeighbours(std::vector<std::shared_ptr<MotherCell>> &neighboursVector) {neighbours = neighboursVector;}
 
         /**
          *@brief s'occupe d'obtenir le case voisine   
