@@ -16,6 +16,8 @@ class DestruQtionBoard: public Board {
     public:
         DestruQtionBoard(int nplayer, int size=9, const int START_WALL=99): Board(nplayer, size, START_WALL) {}
 
+        bool checkInput(std::string &input, int currentP) override {return Board::checkInput(input, currentP);}
+
         /**
          * @brief Détruit un mur a la position pos ou place un mur de type DestruQtionWall
         */ 
