@@ -260,11 +260,11 @@ bool Board::checkInput(std::string &input, int currentP) {
     if (isValid(typeOfMove, target_pos, currentP)) {
         executeMove(typeOfMove, target_pos, currentP);
         if(typeOfMove=="H" or typeOfMove=="V"){
-            //if(!possiblePaths()){
-                //removeWall(typeOfMove, target_pos);
+            if(!possiblePaths()){
+                removeWall(typeOfMove, target_pos);
         players[currentPlayer]->addWall();
-            //return false;
-            //}
+            return false;
+            }
         }
         return true;
     }
@@ -402,17 +402,13 @@ bool Board::possiblePaths() {
                             break;
                     }
                     if (!visited[(s.getY() + difference.getY())/2][(s.getX() + difference.getX())/2]) {
-                        std::cout << "okkkkk"<<std::endl;
                         visited[(s.getY() + difference.getY())/2][(s.getX() + difference.getX())/2] = true;
-                        queue.emplace_back(s.getY() + difference.getY(), s.getX() + difference.getX());
+                        queue.emplace_back(s.getX() + difference.getX(), s.getY() + difference.getY());
                         switch (nb_players) {
                             case 2:
                                 switch (player_id) {
                                     case 0:
-                                        std::cout<<"case 0"<<std::endl;
-                                        std::cout<< (s.getY())<<" "<< difference.getY() << "  " << boardSize-1<<std::endl;
                                         if ((s.getY() + difference.getY()) == boardSize-1) {
-                                            std::cout<<"ok"<<std::endl;
                                             endOfSearch = true;
                                         }
                                         break;
