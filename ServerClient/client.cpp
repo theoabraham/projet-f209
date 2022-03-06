@@ -31,7 +31,35 @@ Client::Client() {
   wrefresh(inputWindow);
 }
 
-void Client::run(string pseudo, string ip, int port) {
+void Client::runMenu(string ip, int port){
+  int y = 1;
+  char pseudo;
+  char Mdp;
+  char answer;
+  const char *askFileMsg = "Entrez un pseudo";
+  const char *askFileCreation = "Vouslez vous creer un compte?";
+  mvwprintw(chatWindow, y, 1, askFileMsg);
+  wrefresh(chatWindow);
+  this->fetchInput(pseudo);
+  if (DatabaseHandler::isStringValid(&pseudo)){
+    if (!DatabaseHandler::does_file_exist(&pseudo)){
+      y++;
+      mvwprintw(chatWindow, y, 1, askFileCreation);
+      wrefresh(chatWindow);
+      this->fetchInput(answer);
+      if(&answer != "Y"){
+        exit(0);
+      } else {
+        DatabaseHandler dbh = DatabaseHandler(&pseudo);
+      }
+    }
+  }
+  this->fetchInput(Mdp);
+  //if (dbh.checkPswd(&Mdp))
+  this->runGame(&pseudo, ip, port);
+}
+
+void Client::runGame(string pseudo, string ip, int port) {
   //Le client se connecte au serveur, et créé un thread pour gérer la reception de messages.
   this->socket = this->handshake(ip, port, pseudo);
   pthread_t tid;
@@ -63,6 +91,13 @@ void Client::manageInputs() {
   }
   close(this->socket);
   exit(0);
+}
+
+void Client::fetchInput(char &buffer){
+  mvwgetstr(inputWindow, 1, 1, &buffer);
+  werase(inputWindow);
+  box(inputWindow, 0, 0);
+  wrefresh(inputWindow);
 }
 
 void Client::manageSocketTraffic() {
@@ -124,7 +159,6 @@ int main(int argc, char const *argv[]) {
   //  ip = argv[2];
   //}
   Client client = Client();
-  std::string pseudo = "Hatapon";
-  client.run(pseudo, ip.c_str(), port);
+  client.runMenu(ip.c_str(), port);
   return 0;
 }

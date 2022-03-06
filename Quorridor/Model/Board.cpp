@@ -265,11 +265,11 @@ bool Board::checkInput(std::string &input, int currentP) {
     if (isValid(typeOfMove, target_pos, currentP)) {
         executeMove(typeOfMove, target_pos, currentP);
         if(typeOfMove=="H" or typeOfMove=="V"){
-            if(!possiblePaths()){
-                removeWall(typeOfMove, target_pos);
-                players[currentPlayer]->addWall();
-                return false;
-            }
+            //if(!possiblePaths()){
+                //removeWall(typeOfMove, target_pos);
+        players[currentPlayer]->addWall();
+            //return false;
+            //}
         }
         return true;
     }

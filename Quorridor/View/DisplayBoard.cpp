@@ -19,8 +19,8 @@ std::string DisplayBoard:: printBoard() const {
               if((i%2==1 and i<boardSize) || (j%2==1 and j<boardSize)){
                   if(matrix[i][j]->occupied()) {
                       if (matrix[i][j]->getPiece()->isHWall())
-                        currentLine += "| "; //Mur horizontal 
-                      else currentLine+="~ " ; //Mur vertical 
+                        currentLine += "\u25AC "; //Mur horizontal 
+                      else currentLine+= "\u25AE " ; //Mur vertical 
                   } else{
                       currentLine += "  ";
                       //currentLine+=std::to_string(j)+" "; 
@@ -29,8 +29,8 @@ std::string DisplayBoard:: printBoard() const {
                   if(matrix[i][j]->occupied()) {
                       if (board->getNplayer()==2){
                         if (matrix[i][j]->getPiece()->getID() == 0)
-                            currentLine += "W "; //Caractère du pion noir 
-                        else currentLine += "B "; //Caractère du pion blanc
+                            currentLine += "\u265F "; //Caractère du pion noir 
+                        else currentLine += "\u2659 "; //Caractère du pion blanc
                       }
                       else {
                           currentLine+= std::to_string(matrix[i][j]->getPiece()->getID()+1);
@@ -38,7 +38,7 @@ std::string DisplayBoard:: printBoard() const {
                       }
  
                   } else{
-                      currentLine += "- "; //Caractère de la Case 
+                      currentLine += "\u2610 "; //Caractère de la Case 
                   }
               }
           }
