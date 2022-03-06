@@ -12,6 +12,7 @@ bool DestruQtionBoard::checkWall(std::string &direction, Position &target_pos){
     return Board::checkWall(direction, target_pos);
 }
 
+
 void DestruQtionBoard::placeWall(std::string &direction, Position &pos) {
     int posX = pos.getX(), posY = pos.getY();
     //Destruction de mur
@@ -28,9 +29,10 @@ void DestruQtionBoard::placeWall(std::string &direction, Position &pos) {
             for (int i = 0; i < 3; i++) {
                 posY = pos.getY() - 1;
                 posX = pos.getX() + i;
-                triplets.push_back(std::shared_ptr<DestruQtionWall>(new DestruQtionWall(Position{posX, posY}, direction)));
+                triplets.push_back(std::shared_ptr<DestruQtionWall>(new DestruQtionWall(Position{posX, posY}, direction)));    
                 matrix[posY][posX]->setPiece(triplets[i]);
-                updateNeighbours(triplets[i], pos, direction); 
+                updateNeighbours(triplets[i],Position{posX, posY}, direction); 
+                std::cout<<posX<<" "<<posY<<std::endl;
             }
         } else if (direction == "V") { // Mur vertical
             for (int i = 0; i < 3; i++) {
@@ -38,7 +40,7 @@ void DestruQtionBoard::placeWall(std::string &direction, Position &pos) {
                 posX = pos.getX() + 1;
                 triplets.push_back(std::shared_ptr<DestruQtionWall>(new DestruQtionWall(Position{posX, posY}, direction)));
                 matrix[posY][posX]->setPiece(triplets[i]);
-                updateNeighbours(triplets[i], pos, direction); 
+                updateNeighbours(triplets[i],Position{posX, posY}, direction); 
             }
         }
         for (int i = 0; i < 3; i++) {
@@ -48,6 +50,7 @@ void DestruQtionBoard::placeWall(std::string &direction, Position &pos) {
     }
     players[currentPlayer]->useWall();
 }
+
 
 void DestruQtionBoard::destroyWall(std::shared_ptr<Piece> wall) {
     int posY, posX;
