@@ -49,7 +49,7 @@ bool QQQuoridorBoard::checkInput(std::string &input, int currentP) {
                     executeMove(typeOfMove, target_pos, currentP);
                     if(typeOfMove=="H" or typeOfMove=="V"){
                         if(!possiblePaths()){
-                            removeWall(typeOfMove, target_pos);
+                            destroyWall(typeOfMove, target_pos);
                             players[currentPlayer]->addWall();
                             res = false;
                         }
