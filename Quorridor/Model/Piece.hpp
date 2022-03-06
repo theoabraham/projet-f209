@@ -14,8 +14,11 @@ struct Piece {
 
     virtual Position getPos()=0;  
     virtual void setPos(Position pos)=0; 
-    virtual bool isHWall()=0; 
-    virtual int getID() =0; 
+    virtual int getID() =0;     
+
+    virtual std::string wallD()=0;
+    virtual bool isWall() =0; 
+
     virtual ~Piece(){} 
 };
 
@@ -33,7 +36,10 @@ public:
     void setPos(Position pos) override {position = pos;}
     
     int getID() override {return 7;}
-    bool isHWall() override {return direction=="H";}
+
+    std::string wallD() override {return direction;}
+    bool isWall() override {return true;} 
+
     virtual ~Wall() {}
 
 }; 
@@ -49,8 +55,9 @@ public:
     void setPos(Position pos) override {position = pos;}
     
     int getID() override {return id;}
-    bool isHWall() override {return false;}
-
+    
+    std::string wallD() override {return nullptr;}
+    bool isWall() override {return false;} 
 }; 
 
 #endif 

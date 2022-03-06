@@ -25,6 +25,7 @@ public:
         */
         std::shared_ptr<MotherCell> getNeighbour(Position &neighbourPos);
         std::shared_ptr<MotherCell> getNeighbour(int side){return neighbours[side];}
+        void setNeighbour(std::shared_ptr<MotherCell> neighbour, int side){neighbours[side] = neighbour;}
 };
 
 #endif
