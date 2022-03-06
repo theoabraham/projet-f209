@@ -82,8 +82,7 @@ bool Board::JumpOver(Position &target_pos, int currentP) {
     Position player_pos = players[currentP]->getPawnPos();
 
     Position diff = (player_pos - target_pos) / 4;
-
-
+    //diff.setX(-diff.setX)?? 
     if (matrix[player_pos.getY() - diff.getY() * 2][player_pos.getX() - diff.getX() * 2]->occupied()) {
         //Si la case voisine est bien occupée
         if (not matrix[player_pos.getY() - diff.getY() * 3][player_pos.getX() - diff.getX() * 3]->occupied()) {
@@ -102,6 +101,7 @@ bool Board::Face2Face(Position &target_pos, int currentP) {
     Position difference = player_pos - target_pos;
        
     switch (difference.getX()) {
+        //Si le joueur veut avancer de 2 cases 
         case 4:
             if (difference.getY() == 0) {
                 return JumpOver(target_pos, currentP);
@@ -119,6 +119,7 @@ bool Board::Face2Face(Position &target_pos, int currentP) {
 
                     return JumpOver(target_pos, currentP);
             }
+        //Si le joueur veut avancer diagonalement
         case 2:
             if (difference.getY() == 2 or difference.getY() == -2) {
                 return DiagonalMove(target_pos, currentP);
@@ -139,13 +140,18 @@ void Board::placeWall(std::string &direction, Position &pos) {
         for (int i = 0; i < 3; i++) {
             posY = pos.getY() - 1;
             posX = pos.getX() + i;
-            matrix[posY][posX]->setPiece(std::shared_ptr<Wall>(new Wall(Position{posX, posY}, direction)));
+            std::shared_ptr<Wall> wall = std::shared_ptr<Wall>(new Wall(Position{posX, posY}, direction)); 
+            matrix[posY][posX]->setPiece(wall);            
+            updateNeighbours(wall, Position{posX, posY}, direction);
+
         }
     } else if (direction == "V") {
         for (int i = 0; i < 3; i++) {
             posY = pos.getY() - i;
             posX = pos.getX() + 1;
-            matrix[posY][posX]->setPiece(std::shared_ptr<Wall>(new Wall(Position{posX, posY}, direction)));
+            std::shared_ptr<Wall> wall = std::shared_ptr<Wall>(new Wall(Position{posX, posY}, direction)); 
+            matrix[posY][posX]->setPiece(wall);            
+            updateNeighbours(wall, Position{posX, posY}, direction);
         }
     }
     players[currentPlayer]->useWall();
@@ -156,6 +162,7 @@ void Board::executeMove(std::string &typeOfMove, Position &pos, int currentP) {
     if (typeOfMove == "P") {
         Position playerPos = players[currentP]->getPawnPos();
         players[currentP]->setPawnPos(pos);
+
 
         matrix[pos.getY()][pos.getX()]->setPiece(players[currentP]->getPawn());
         matrix[playerPos.getY()][playerPos.getX()]->setPiece(nullptr);
@@ -184,9 +191,7 @@ void Board::executeMove(std::string &typeOfMove, Position &pos, int currentP) {
 bool Board::checkWall(std::string &direction, Position &target_pos) {
     int posX, posY;
     if (direction == "H") {
-        Position wallPos{target_pos.getX(), target_pos.getY() - 1}; // Case cible (voir srd)
-        if (wallPos.getY() > 0 && (wallPos.getX() + 2 < boardSize)) {
-
+        if (target_pos.getX()<boardSize-2 && target_pos.getY()>0){ 
             for (int i = 0; i < 3; i++) {
                 posY = target_pos.getY() - 1; // décalage vers les WallCell
                 posX = target_pos.getX() + i; // longueur du mur
@@ -195,8 +200,7 @@ bool Board::checkWall(std::string &direction, Position &target_pos) {
 
         } else return false;
     } else {
-        Position wallPos{target_pos.getX() + 1, target_pos.getY()}; // Case cible (voir srd)
-        if (wallPos.getY() > 0 && (wallPos.getX() + 2 <= boardSize)) {
+        if (target_pos.getX()<boardSize-2 && target_pos.getY()>0){ 
             for (int i = 0; i < 3; i++) {
                 posY = target_pos.getY() - i;
                 posX = target_pos.getX() + 1;
@@ -220,27 +224,20 @@ bool Board::isValid(std::string &typeOfMove, Position &next_pos, int currentP) {
         next_cell.setX(-next_cell.getX()); 
 
         if (matrix[playerPos.getY()][playerPos.getX()]->getNeighbour(next_cell)) {
-            //Si la prochaine case est une case voisine 
+            //Si la prochaine case est une case voisine et qu'il n'y a pas de mur entre 
             if (not matrix[playerPos.getY()][playerPos.getX()]->getNeighbour(next_cell)->occupied()) {
                 //Si la prochaine case voisine est libre
-                if (not matrix[playerPos.getY() - next_cell.getY()][playerPos.getX() + next_cell.getX()]->occupied())
-                    //Si il n'y a pas de mur entre
                     res = true;
             }
-
         } else
             return Face2Face(next_pos, currentP);
 
-
     } else if (typeOfMove == "H" || typeOfMove == "V") {
-
         if (players[currentP]->hasWalls()) {
-
+            //Si le joueur peut encore poser des murs
             res = checkWall(typeOfMove, next_pos);
-
         }
     }
-
     return res;
 }
 
@@ -265,15 +262,42 @@ bool Board::checkInput(std::string &input, int currentP) {
     if (isValid(typeOfMove, target_pos, currentP)) {
         executeMove(typeOfMove, target_pos, currentP);
         if(typeOfMove=="H" or typeOfMove=="V"){
-            if(!possiblePaths()){
-                removeWall(typeOfMove, target_pos);
-                players[currentPlayer]->addWall();
+            //if(!possiblePaths()){
+            //    removeWall(typeOfMove, target_pos);
+            //    players[currentPlayer]->addWall();
                 return false;
-            }
+            //}
         }
         return true;
     }
     return false;
+}
+
+
+void Board::updateNeighbours(std::shared_ptr<Piece> piece, Position pos, std::string direction){
+
+    if (piece == nullptr){
+        std::shared_ptr<MotherCell> neighbour = matrix[pos.getY()][pos.getX()]; 
+        if (direction=="H"){
+            matrix[pos.getY() + 1][pos.getX()]->setNeighbour(neighbour, 0); 
+            matrix[pos.getY() - 1][pos.getX()]->setNeighbour(neighbour, 2); 
+        }
+        else {
+            matrix[pos.getY()][pos.getX() - 1]->setNeighbour(neighbour, 1);             
+            matrix[pos.getY()][pos.getX() + 1]->setNeighbour(neighbour, 3); 
+        }
+    }
+    else {
+        //On met a jour les voisins puisque du coté où est posé le mur le pion ne peut plus bouger --> nullptr
+        if (piece->wallD()=="H"){
+            matrix[pos.getY() + 1][pos.getX()]->setNeighbour(nullptr, 0); 
+            matrix[pos.getY() - 1][pos.getX()]->setNeighbour(nullptr, 2); 
+        }      
+        else {
+            matrix[pos.getY()][pos.getX() - 1]->setNeighbour(nullptr, 1);             
+            matrix[pos.getY()][pos.getX() + 1]->setNeighbour(nullptr, 3);             
+        }
+    }
 }
 
 void Board::bindCells() {
@@ -317,11 +341,10 @@ void Board::newGame() {
 
             //Initialisation des cases: 
 
-            if ((i % 2 != 0 and i < boardSize) or (j % 2 != 0 and j < boardSize)) {
+            if ((i % 2 != 0 and i < boardSize) or (j % 2 != 0 and j < boardSize)) { 
                 line.push_back(std::shared_ptr<MotherCell>(new MotherCell()));
-            } else {
+            } else { 
                 line.push_back(std::shared_ptr<MotherCell>(new MotherCell()));
-
             }
 
             //Initialisation des pions et joueurs: 
@@ -446,11 +469,14 @@ void Board::removeWall(const std::string &direction, Position &pos) {
             posY = pos.getY() - 1;
             posX = pos.getX() + i;
             matrix[posY][posX]->setPiece(nullptr);
+            updateNeighbours(nullptr, Position{posX, posY}, direction);
+
         }
     } else if (direction == "V") {
         for (int i = 0; i < 3; i++) {
             posY = pos.getY() - i;
             posX = pos.getX() + 1;
+            updateNeighbours(nullptr, Position{posX, posY}, direction);
             matrix[posY][posX]->setPiece(nullptr);
         }
     }

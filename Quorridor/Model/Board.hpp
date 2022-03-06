@@ -15,9 +15,7 @@ class Board{
     private:
         int size;
         const int START_WALL;
-        
-        int nplayer;
-
+        const int nplayer;
         bool end = false;
 
     protected:
@@ -56,7 +54,7 @@ class Board{
         bool DiagonalMove(Position& target_pos, int currentP);
 
         /**
-         *@brief cas si il n'y a pas de mur derrière lors du face2face 
+         * @brief cas si il n'y a pas de mur derrière lors du face2face 
         */
         bool JumpOver(Position& target_pos, int currentP);       
 
@@ -103,6 +101,9 @@ class Board{
         bool checkInput(std::string &input, int currentP);
 
 
+
+        void updateNeighbours(std::shared_ptr<Piece> piece, Position pos, std::string direction); 
+
         /**
          * @brief Lie les cases avec les cases de type PawnCell voisines
         */
@@ -120,12 +121,14 @@ class Board{
         void newGame();
 
         /**
-         * @brief Algorithme qui vérfie si il y a encore un chemin possible pour le joueur de gagner 
+         * @brief Algorithme qui vérifie s'il y a encore un chemin possible pour le joueur de gagner 
          * @return true si chemin possible, false sinon  
         */
         bool possiblePaths();
 
         void removeWall(const std::string& direction, Position& pos);
+
+
 };
 
 #endif
