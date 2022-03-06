@@ -11,6 +11,7 @@ using namespace std;
 class Client {
  private:
   int socket;
+  int line_counter=0;
   char pseudo[80];
   WINDOW * boardWindow;
   WINDOW * boardBoxWindow;
@@ -24,6 +25,7 @@ class Client {
   void manageSocketTraffic();
   void fetchInput(char &buffer);
   void loginRoutine();
+  void connectRoutine(DatabaseHandler *dbh);
 
  public:
   Client();

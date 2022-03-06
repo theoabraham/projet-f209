@@ -41,12 +41,12 @@ void DatabaseHandler::parse(const std::string& file_path, std::array<std::string
  * @param stocked_hash le hash stocké dans son fichier (string_arr[0])
  * @return bool(int)
  */
-int DatabaseHandler::checkPswd(const std::string& input_psw, const std::string& stocked_hash){
+int DatabaseHandler::checkPswd(const std::string& input_psw){
     std::hash<std::string> h;
-    if (!(std::to_string(h(input_psw)) == stocked_hash)){ // si hash(psw) != hash_stocké
+    if (!(std::to_string(h(input_psw)) == string_arr[0])){ // si hash(psw) != hash_stocké
         return 0;
     }
-    std::cout << "Mot de passe valide" << std::endl;
+    //std::cout << "Mot de passe valide" << std::endl;
     return 1;
 }
 
@@ -76,7 +76,7 @@ int DatabaseHandler::isStringValid(const std::string &filepath) {
     if (filepath =="") return 0;
     for (auto &c: filepath){
         if (c=='/' or c=='.' or c==' ') {
-            std::cout << "Le fichier entré comporte un caractère interdit..." << std::endl;
+            //std::cout << "Le fichier entré comporte un caractère interdit..." << std::endl;
             return 0;
         }
     }
@@ -118,17 +118,24 @@ std::string DatabaseHandler::createFile(const std::string& filename,const std::s
     fclose(o_file);
     return filename;
 }
+
 /**
  * @brief Ecrit dans un fichier donnéé une liste d'amis
  * @param filename
  * @param friends_str
  */
-void DatabaseHandler::writeFriends(const std::string &friends_str) {
-    const std::string board=string_arr[1]+"\n"; const std::string win=string_arr[2]+"\n";
-    const std::string loosed=string_arr[3]+"\n";const std::string none="\n";
-    std::string psw = string_arr[0]+"\n";
-    FILE *o_file = fopen(("../DataBase/Data/"+username).c_str(), "w");
-    if (o_file){
+void DatabaseHandler::writeFriends() {
+    std::string friends_str=string_arr[5];
+    for (auto &s: tempVect){
+        friends_str += s + ' ';
+    }
+    const std::string board = string_arr[1] + "\n";
+    const std::string win = string_arr[2] + "\n";
+    const std::string loosed = string_arr[3] + "\n";
+    const std::string none = "\n";
+    std::string psw = string_arr[0] + "\n";
+    FILE *o_file = fopen(("../DataBase/Data/" + username).c_str(), "w");
+    if (o_file) {
         fwrite(psw.c_str(), 1, psw.size(), o_file);
         fwrite(board.c_str(), 1, board.size(), o_file);
         fwrite(win.c_str(), 1, win.size(), o_file);
@@ -137,6 +144,7 @@ void DatabaseHandler::writeFriends(const std::string &friends_str) {
         fwrite(friends_str.c_str(), 1, friends_str.size(), o_file);
     }
     fclose(o_file);
+    tempVect.clear();
 }
 /**
  * @brief Transfer les amis de la liste toAdd à FriendList en demandant à l'utilsateur
@@ -163,7 +171,7 @@ void DatabaseHandler::transferFriend() {
     for (std::string s:friendList){
         if (s!="") friends_str += (s + " ");
     }
-    writeFriends(friends_str);
+    //writeFriends(friends_str);
 }
 /**
  * @brief écrit les amis à ajouter dans la ligne 5 du fichier texte
@@ -270,8 +278,9 @@ DatabaseHandler::DatabaseHandler(const std::string &inputFile) {
 
     //met a jout le nom
     username=inputFile;
-    std::cout << "Fichier " << username << " trouvé." << std::endl;
-    std::cout << "______________________________" << std::endl;
+    /*
+    //std::cout << "Fichier " << username << " trouvé." << std::endl;
+    //std::cout << "______________________________" << std::endl;
 
 
     //demande + vérification du mdp
@@ -297,4 +306,5 @@ DatabaseHandler::DatabaseHandler(const std::string &inputFile) {
     //ajout d'amis
     std::cout << "Ajouts d'amis:" << std::endl;
     askFriends();
+     */
 }
