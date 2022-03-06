@@ -11,7 +11,7 @@ using namespace std;
 class Client {
  private:
   int socket;
-  char pseudo;
+  char pseudo[80];
   WINDOW * boardWindow;
   WINDOW * boardBoxWindow;
   WINDOW * chatWindow;

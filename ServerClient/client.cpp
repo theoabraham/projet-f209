@@ -32,32 +32,33 @@ Client::Client() {
 }
 
 void Client::runMenu(string ip, int port){
+  
+  this->runGame(pseudo, ip, port);
+}
+
+void Client::loginRoutine(){
   int y = 1;
-  char pseudo;
   char Mdp;
   char answer;
   const char *askFileMsg = "Entrez un pseudo";
   const char *askFileCreation = "Vouslez vous creer un compte?";
-  mvwprintw(chatWindow, y, 1, askFileMsg);
+  mvwprintw(chatWindow, y, 1, askFileMsg); //Print dans la fenetre chatwindow en position y=1, x=1, le message askFileMsg
   wrefresh(chatWindow);
-  this->fetchInput(pseudo);
-  if (DatabaseHandler::isStringValid(&pseudo)){
-    if (!DatabaseHandler::does_file_exist(&pseudo)){
+  this->fetchInput(*pseudo);
+  this->pseudo[strlen(pseudo)] = '\0';
+  if (DatabaseHandler::isStringValid(pseudo)){
+    if (!DatabaseHandler::does_file_exist(pseudo)){
       y++;
       mvwprintw(chatWindow, y, 1, askFileCreation);
       wrefresh(chatWindow);
       this->fetchInput(answer);
-      if(&answer != "Y"){
-        exit(0);
       } else {
         DatabaseHandler dbh = DatabaseHandler(&pseudo);
       }
     }
+    this->fetchInput(Mdp);
+    if (dbh.checkPswd(&Mdp))
   }
-  this->fetchInput(Mdp);
-  //if (dbh.checkPswd(&Mdp))
-  this->runGame(&pseudo, ip, port);
-}
 
 void Client::runGame(string pseudo, string ip, int port) {
   //Le client se connecte au serveur, et créé un thread pour gérer la reception de messages.
@@ -93,8 +94,8 @@ void Client::manageInputs() {
   exit(0);
 }
 
-void Client::fetchInput(char &buffer){
-  mvwgetstr(inputWindow, 1, 1, &buffer);
+void Client::fetchInput(char &buffer){ //Passage par reference pour que le contenu de buffer soit accessible dans d'autres fonctions.
+  mvwgetstr(inputWindow, 1, 1, &buffer); //Récupère l'input dans inputWindow et stocke le contenu dans buffer
   werase(inputWindow);
   box(inputWindow, 0, 0);
   wrefresh(inputWindow);
