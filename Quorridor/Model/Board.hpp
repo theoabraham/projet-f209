@@ -106,7 +106,7 @@ class Board{
          * @brief lorsqu'un mur est posé ou retiré les voisins des cases adjacentes sont mis à jours  
          * @param piece
         */
-        void updateNeighbours(std::shared_ptr<Piece> piece, Position pos, std::string direction); 
+        void updateNeighbours(const std::shared_ptr<Piece>& piece, const Position& pos, const std::string& direction);
 
         /**
          * @brief Lie les cases avec les cases de type PawnCell voisines
@@ -117,7 +117,7 @@ class Board{
          * @brief initialise le joueur et son pion 
          * @returns le pion initialisé  
         */
-        std::shared_ptr<Pawn> setPlayer(Position pos, int id); 
+        std::shared_ptr<Pawn> setPlayer(const Position& pos, int id);
 
         /** 
          * @brief Initialise le plateau, ses pions et ses joueurs

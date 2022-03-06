@@ -299,7 +299,7 @@ bool Board::checkInput(std::string &input, int currentP) {
     return false;
 }
 
-void Board::updateNeighbours(std::shared_ptr<Piece> piece, Position pos, std::string direction) {
+void Board::updateNeighbours(const std::shared_ptr<Piece>& piece, const Position& pos, const std::string& direction) {
 
     if (piece == nullptr) {
         //Lorsque le mur est retiré les cases adjacentes retrouvent leurs voisins
@@ -348,7 +348,7 @@ void Board::bindCells() {
     }
 }
 
-std::shared_ptr<Pawn> Board::setPlayer(Position pos, int id) {
+std::shared_ptr<Pawn> Board::setPlayer(const Position& pos, int id) {
     std::shared_ptr<Pawn> pawn = std::shared_ptr<Pawn>(new Pawn(pos, id));
 
     std::shared_ptr<Player> player = std::shared_ptr<Player>(new Player(id, pawn, START_WALL));
