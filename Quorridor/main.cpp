@@ -14,7 +14,7 @@ int main(){
         if (input==2 || input==4) res= true;  
     }
         
-    std::shared_ptr<Board> board = std::shared_ptr<Board>(new QQQuoridorBoard(input));
+    std::shared_ptr<Board> board = std::shared_ptr<Board>(new DestruQtionBoard(input));
     auto displayBoard = std::shared_ptr<DisplayBoard>(new DisplayBoard(board));
     
     Game game(board, displayBoard);

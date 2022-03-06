@@ -14,7 +14,7 @@ class DestruQtionWall: public Wall {
 
 class DestruQtionBoard: public Board {
     public:
-        DestruQtionBoard(int nplayer, int size=9, const int START_WALL=99): Board(nplayer, size, START_WALL) {}
+        DestruQtionBoard(int nplayer, int size=9, const int START_WALL=15): Board(nplayer, size, START_WALL) {}
 
         bool checkInput(std::string &input, int currentP) override {return Board::checkInput(input, currentP);}
 
