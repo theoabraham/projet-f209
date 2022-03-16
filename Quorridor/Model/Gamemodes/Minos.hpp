@@ -19,15 +19,15 @@ class MinosBoard: public Board {
 class MinosGame: public Game {
     private:
         int wallsToPlace = 10;
-        const int WallstoDestroy = wallsToPlace;
+        const int wallsToDestroy = wallsToPlace;
         int count = 0;
         std::stack<Position> placedWalls;
-        std::stack<char> placedWallsDirections;
+        std::stack<std::string> placedWallsDirections;
     public:
         explicit MinosGame(std::shared_ptr<Board> model, std::shared_ptr<DisplayBoard> view): Game(model, view) {}
 
         void createLabyrinth();
         void destroyLabyrinth();
 
-        void start() override; 
+        void start() override;
 };

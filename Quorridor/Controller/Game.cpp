@@ -26,7 +26,7 @@ void Game::start() {
     int player = 0;
     int nplayer = model->getNplayer(); 
     inputFormat();
-    while(not model->isEnd()){
+    while(!model->isEnd()){
         std::cout<<"Player " + std::to_string(player+1) + "'s moves : "<<std::endl;
         std::string input = getInput();
         
