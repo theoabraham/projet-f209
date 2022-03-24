@@ -1,17 +1,23 @@
+#include <iostream>
 #include <QtWidgets>
 #include "window.h"
 
 
 Window::Window(QWidget *parent): QWidget(parent){
-    setWindowTitle("Coucou");
+    setWindowTitle("Quoridor");
+    mainLayout = new QVBoxLayout(this);
+
     boardGame();
+    wallSelection();
+    mainLayout->addLayout(boardGUI);
+    mainLayout->addLayout(wallsPlacement);
 }
 
 void Window::resetVar(){
     //Cases pions:
     label = new QLabel(this);
     label->setStyleSheet("QLabel { background-color : brown; color : brown; }");
-    label->setMaximumSize(QSize(50,50));
+    label->setFixedSize(QSize(50,50));
 
     //Cases murs horizontales:
     label2 = new QLabel(this);
@@ -26,7 +32,7 @@ void Window::resetVar(){
 
 
 void Window::boardGame(){
-    boardGUI = new QGridLayout(this);
+    boardGUI = new QGridLayout();
     boardGUI->setVerticalSpacing(0);
     boardGUI->setHorizontalSpacing(0);
 
@@ -37,7 +43,32 @@ void Window::boardGame(){
             if (i%2==1) boardGUI->addWidget(label2,i,j);
             else if (j%2==1) boardGUI->addWidget(label3, i,j);
             else boardGUI->addWidget(label,i,j);
+
+            if ((i==0) && (j==8)){
+                label->setPixmap(QPixmap(":/images/pion_blanc.png"));
+            }
+            if ((i==16) && (j==8)){
+                label->setPixmap(QPixmap(":/images/pion_noir.png"));
+            }
         }
     }
 
 }
+
+void Window::wallSelection(){
+    wallsPlacement = new QHBoxLayout();
+    QLabel *text = new QLabel("Murs: ");
+
+    murH = new QLabel(this);
+    murH->setStyleSheet("QLabel { background-color : black; color : black; }");
+    murH->setFixedSize(QSize(100,5));
+
+    murV = new QLabel(this);
+    murV->setStyleSheet("QLabel { background-color : black; color : black; }");
+    murV->setFixedSize(QSize(5,100));
+
+    wallsPlacement->addWidget(text);
+    wallsPlacement->addWidget(murH);
+    wallsPlacement->addWidget(murV);
+}
+

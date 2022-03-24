@@ -22,9 +22,6 @@ SOURCES += \
 HEADERS += \
     window.h
 
-FORMS += \
-    mainwindow.ui
-
 TRANSLATIONS += \
     Quorridor_fr_BE.ts
 
@@ -32,3 +29,10 @@ TRANSLATIONS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+DISTFILES += \
+    ../images/527-5278263_pawn-black-chess-figure-game-play-piece-black.jpeg \
+    ../images/pion_blanc.jpg
+
+RESOURCES += \
+    images.qrc

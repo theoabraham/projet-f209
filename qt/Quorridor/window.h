@@ -5,11 +5,15 @@
 
 class Window : public QWidget
 {
+    QVBoxLayout *mainLayout;
     QGridLayout *boardGUI;
+    QHBoxLayout *wallsPlacement;
 
     QLabel *label;
     QLabel *label2;
     QLabel *label3;
+    QLabel *murH;
+    QLabel *murV;
 
 public:
     Window(QWidget *parent=0);
@@ -17,6 +21,8 @@ public:
     void resetVar();
 
     void boardGame();
+
+    void wallSelection();
 };
 
 
