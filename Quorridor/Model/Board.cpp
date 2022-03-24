@@ -171,9 +171,6 @@ void Board::placeWall(std::string &direction, Position &pos) {
             updateNeighbours(wall, Position{posX, posY}, direction);
         }
     }
-    std::cout << "Mur placé! Il reste : " << players[currentPlayer]->getWalls() << " mur(s) au joueur "
-              << currentPlayer + 1 << std::endl;
-    players[currentPlayer]->useWall();
 }
 
 
@@ -206,6 +203,9 @@ void Board::executeMove(std::string &typeOfMove, Position &pos, int currentP) {
         }
     } else {
         placeWall(typeOfMove, pos);
+        std::cout << "Mur placé! Il reste : " << players[currentPlayer]->getWalls() << " mur(s) au joueur "
+          << currentPlayer + 1 << std::endl;
+        players[currentPlayer]->useWall();
     }
 }
 

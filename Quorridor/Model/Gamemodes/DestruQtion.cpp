@@ -49,9 +49,7 @@ void DestruQtionBoard::placeWall(std::string &direction, Position &pos) {
             triplets[i]->setTriplet(triplets[(i+1) % 3]);
             triplets[i]->setTriplet(triplets[(i+2) % 3]);
         }
-    std::cout << "Mur placé! Il reste : " << players[currentPlayer]->getWalls() - 1 << " mur(s) au joueur " << currentPlayer +1<< std::endl;
     }
-    players[currentPlayer]->useWall();
 }
 
 
