@@ -31,7 +31,7 @@ void Client::runMenu(string ip, int port){
       this->fetchInput(*gameMode);
       this->gameMode[strlen(gameMode)]='\0';
       while (strcmp(gameMode, "C\0") != 0 && strcmp(gameMode, "D\0") != 0 && strcmp(gameMode, "Q\0") != 0) {
-        mvwprintw(chatWindow, 4, 1, "Wrong input, please enter C, D or Q.");
+        mvwprintw(chatWindow, 3, 0, "Wrong input, please enter C, D or Q.");
         wrefresh(chatWindow);
         this->fetchInput(*gameMode);
         this->gameMode[strlen(gameMode)]='\0';

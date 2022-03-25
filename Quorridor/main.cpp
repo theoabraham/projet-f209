@@ -2,8 +2,10 @@
 #include "Model/Board.hpp"
 #include "Model/Gamemodes/DestruQtion.hpp"
 #include "Model/Gamemodes/QQQuoridor.hpp"
+#include "Model/Gamemodes/Minos.hpp"
 #include "View/DisplayBoard.hpp"
 #include "Controller/Game.hpp"
+
 
 /*
 Fichier de Testing des différents jeu Quorridor
@@ -18,10 +20,10 @@ int main(){
         if (input==2 || input==4) res= true;  
     }
         
-    std::shared_ptr<Board> board = std::shared_ptr<Board>(new Board(input));
+    std::shared_ptr<Board> board = std::shared_ptr<Board>(new MinosBoard(input));
     auto displayBoard = std::shared_ptr<DisplayBoard>(new DisplayBoard(board));
     
-    Game game(board, displayBoard);
+    MinosGame game(board, displayBoard);
     game.start();
 
     return 0;
