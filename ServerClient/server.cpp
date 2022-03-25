@@ -102,20 +102,13 @@ void Server::handleSocketReadActivity(fd_set* in_set, int& nactivities) {
             strBoard.message = this->displayBoard->printBoard();
             this->forward(&strBoard, games[users[i]->activeGame]->players);
           }
-          if (msg.message.substr(1, 5) == "join"){
-            char _[2];
-            int nbytes = safe_read(socket, _, 64);
-            if (nbytes <= 0) {
-              return;
-            }
-            _[nbytes] = '\0';
-            const int ack = 0;
-            nbytes = safe_write(users[i]->socket, &ack, sizeof(int));
-            if (nbytes <= 0) {
-              return;
-            }
-            this->games[users[i]->activeGame]->players.push_back(users[i]);
-            users[i]->activeGame = atoi(_);
+          if (msg.message.substr(1, 4) == "join"){
+            string toJoin = msg.message.substr(6, 2);
+            this->games[atoi(toJoin.c_str())]->players.push_back(users[i]);
+            users[i]->activeGame = atoi(toJoin.c_str());
+            message_t strBoard;
+            strBoard.message = this->displayBoard->printBoard();
+            this->forward(&strBoard, games[users[i]->activeGame]->players);
           }
         } else {
           //Si de base ce n'était pas une commande (ou que ce n'était pas le tour du joueur expediteur)
