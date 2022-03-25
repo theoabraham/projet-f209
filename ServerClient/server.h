@@ -17,14 +17,24 @@ typedef struct {
   string name;
   int socket;
   unsigned version;
+  int activeGame = -1;
 
 } user_t;
+
+typedef struct {
+  shared_ptr<Board> board;
+  shared_ptr<DisplayBoard> displayBoard;
+  Game game;
+  vector<user_t*> players;
+
+} game_t;
 
 class Server {
  private:
   int max_fd;
   int master_socket;
   vector<user_t*> users;
+  vector<game_t*> games;
   shared_ptr<Board> board = shared_ptr<Board>(new DestruQtionBoard(2));
   shared_ptr<DisplayBoard> displayBoard = shared_ptr<DisplayBoard>(new DisplayBoard(board));  
   Game game = Game(board, displayBoard);
@@ -37,7 +47,7 @@ class Server {
   void handleSocketReadActivity(fd_set* in_set, int& nactivities);
   void handleNewConnection();
   void disconnectUser(unsigned user_num);
-  void forward(message_t* msg);
+  void forward(message_t* msg, vector<user_t*> receivers);
   void handleMove(string command, int clientSocket);
 
  public:

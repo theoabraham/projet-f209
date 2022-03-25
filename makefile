@@ -2,8 +2,8 @@ FLAGS=-Wall -Werror -std=c++17 -g
 
 all: client server
 
-client: ServerClient/client.cpp ServerClient/socketlib.o ServerClient/client.h
-	g++ $(DATABASE) -o client ServerClient/client.cpp ServerClient/socketlib.o ServerClient/socketlib.h ServerClient/client.h ${FLAGS} -pthread -lncursesw
+client: ServerClient/client.cpp ServerClient/socketlib.o ServerClient/client.h ServerClient/WindowNC.hpp
+	g++ $(DATABASE) -o client ServerClient/client.cpp ServerClient/socketlib.o ServerClient/socketlib.h ServerClient/client.h ServerClient/WindowNC.hpp ${FLAGS} -pthread -lncursesw
 
 server: ServerClient/server.cpp $(MODEL) $(GAMEMODES) $(VIEW) $(CONTROLLER) ServerClient/socketlib.o ServerClient/server.h
 	g++ $(MODEL) $(GAMEMODES) $(VIEW) $(CONTROLLER) -g -o server ServerClient/server.cpp ServerClient/socketlib.o ServerClient/socketlib.h ${FLAGS}
