@@ -1,12 +1,11 @@
 #include <QtWidgets>
 
-#include "window.h"
+#include "menuwindow.h"
 
 int main(int argv, char *args[])
 {
     QApplication app(argv, args);
-    Window window;
-    window.setFixedSize(500,700);
+    MenuWindow window;
     window.show();
     return app.exec();
 }

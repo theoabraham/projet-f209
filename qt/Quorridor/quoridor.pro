@@ -16,11 +16,20 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    main.cpp \
-    window.cpp
+    main.cpp \ 
+    rankwidget.cpp \
+    friendlistwidget.cpp \
+    gamewindow.cpp \
+    menuwindow.cpp \
+    dragwidget.cpp
 
 HEADERS += \
-    window.h
+    rankwidget.h \
+    friendlistwidget.h \
+    gamewindow.h \ 
+    menuwindow.h \
+    dragwidget.h
+    
 
 TRANSLATIONS += \
     Quorridor_fr_BE.ts
@@ -30,9 +39,6 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-DISTFILES += \
-    ../images/527-5278263_pawn-black-chess-figure-game-play-piece-black.jpeg \
-    ../images/pion_blanc.jpg
 
 RESOURCES += \
     images.qrc

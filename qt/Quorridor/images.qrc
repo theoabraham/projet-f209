@@ -1,7 +1,8 @@
-<RCC>
-    <qresource prefix="/images"/>
-    <qresource prefix="/">
-        <file>images/pion_blanc.png</file>
-        <file>images/pion_noir.png</file>
-    </qresource>
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource prefix="">
+   <file>images/pion_blanc.png</file>   
+   <file>images/pion_noir.png</file>
+   <file>images/murH.jpg</file>
+   <file>images/murV.jpg</file>
+</qresource>
 </RCC>
