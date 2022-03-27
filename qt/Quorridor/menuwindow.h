@@ -13,19 +13,9 @@ class MenuWindow : public QMainWindow
 private:
     //MenuWindow widgets
     QTabWidget *menuSelection;
-    QWidget *login;
     QWidget *play;
     FriendListWidget *friends;
     RankWidget *ranking;
-
-    //Login widgets
-    QVBoxLayout *loginLayout;
-    QLabel *loginIntro;
-    QFormLayout *loginEntry;
-    QLineEdit *pseudoLine;
-    QLineEdit *passwordLine;
-    QPushButton *connection;
-
     //Play widgets
     QVBoxLayout *playLayout;
     QLabel *playIntro;
@@ -40,7 +30,7 @@ private:
 public:
     MenuWindow(QMainWindow *parent=0);
 
-    void setLogin();
+    ~MenuWindow();
 
     void setStart();
 

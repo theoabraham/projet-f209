@@ -4,12 +4,9 @@
 MenuWindow::MenuWindow(QMainWindow *parent): QMainWindow(parent)
 {
     setWindowTitle("Quoridor - Menu");
-    setFixedSize(500,200);
-    menuSelection = new QTabWidget(this);
+    setMinimumSize(500,200);
+    menuSelection = new QTabWidget();
     menuSelection->setMinimumSize(QSize(500,200));
-    login = new QWidget();
-    setLogin();
-    menuSelection->addTab(login, "Login");
     play = new QWidget();
     setStart();
     menuSelection->addTab(play, "Play");
@@ -17,25 +14,23 @@ MenuWindow::MenuWindow(QMainWindow *parent): QMainWindow(parent)
     menuSelection->addTab(friends, "Friends");
     ranking = new RankWidget();
     menuSelection->addTab(ranking, "Ranking");
+    setCentralWidget(menuSelection);
 }
 
-void MenuWindow::setLogin() {
-    loginLayout = new QVBoxLayout(login);
-
-    loginIntro = new QLabel("Welcome to Quoridor ! \nLogin to access the game");
-    loginIntro->setFont(QFont("Arial", 14, QFont::Bold));
-    loginLayout->addWidget(loginIntro);
-
-    loginEntry = new QFormLayout();
-    pseudoLine = new QLineEdit();
-    passwordLine = new QLineEdit();
-    passwordLine->setEchoMode(QLineEdit::Password);
-    loginEntry->addRow(new QLabel("Pseudo"), pseudoLine);
-    loginEntry->addRow(new QLabel("Password"), passwordLine);
-    loginLayout->addLayout(loginEntry);
-
-    connection = new QPushButton("LOGIN");
-    loginLayout->addWidget(connection);
+MenuWindow::~MenuWindow() {
+    delete menuSelection;
+    delete play;
+    delete friends;
+    delete ranking;
+    delete playLayout;
+    delete playIntro;
+    delete options;
+    delete modeTitle;
+    delete modeChoice;
+    delete playersTitle;
+    delete playersChoice;
+    delete startButton;
+    delete game;
 }
 
 void MenuWindow::setStart() {
@@ -61,8 +56,7 @@ void MenuWindow::setStart() {
     options->addWidget(playersChoice, 1, 1);
     playLayout->addLayout(options);
 
-    startButton = new QPushButton();
-    startButton->setText("START");
+    startButton = new QPushButton("START");
     connect(startButton, SIGNAL(clicked()), this, SLOT(startGame()));
     playLayout->addWidget(startButton);
 }
@@ -72,3 +66,4 @@ void MenuWindow::startGame() {
     game->show();
     hide();
 }
+

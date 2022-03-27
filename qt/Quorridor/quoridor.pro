@@ -21,14 +21,22 @@ SOURCES += \
     friendlistwidget.cpp \
     gamewindow.cpp \
     menuwindow.cpp \
-    dragwidget.cpp
+    chatroom.cpp \
+    friend.cpp \
+    login.cpp \
+    wallCell.cpp \
+    wallsBox.cpp
 
 HEADERS += \
     rankwidget.h \
     friendlistwidget.h \
     gamewindow.h \ 
     menuwindow.h \
-    dragwidget.h
+    chatroom.h \
+    friend.h \
+    login.h \
+    wallCell.h \
+    wallsBox.h 
     
 
 TRANSLATIONS += \

@@ -4,13 +4,16 @@
 #include <QtWidgets>
 #include "friendlistwidget.h"
 #include "rankwidget.h"
-#include "dragwidget.h"
+#include "chatroom.h"
+#include "wallsBox.h"
+#include "wallCell.h"
 
 class GameWindow : public QWidget
 {
     Q_OBJECT
 
 private:
+    QHBoxLayout *centralLayout;
     QTabWidget *gameViews;
     QWidget *game;
     FriendListWidget *friends;
@@ -18,17 +21,12 @@ private:
 
     QGridLayout *mainLayout;
     QGridLayout *boardGUI;
-    QHBoxLayout *wallsPlacement;
-    QVBoxLayout *chatroom;
+    WallsBox *wallsPlacement;
+    Chatroom *chatroom;
 
-    QLabel *label;
-    QLabel *label2;
-    QLabel *label3;
-    QLabel *murH;
-    QLabel *murV;
-    QLineEdit *chatEntry;
-    QTextEdit *chatDisplay;
-    QLabel *chatTitle;
+    QLabel *cell;
+    WallCell *wallCellH;
+    WallCell *wallCellV;
 
 public:
     GameWindow(QWidget *parent=0);
@@ -40,15 +38,6 @@ public:
     void resetVar();
 
     void boardGame();
-
-    void wallSelection();
-
-    void setChatroom();
-
-    QString getMessage();
-
-public slots:
-    void runChatroom();
 };
 
 
