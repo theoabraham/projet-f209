@@ -5,6 +5,8 @@
 #include "../Quorridor/View/DisplayBoard.hpp"
 #include "../DataBase/Database.h"
 
+#include "../DataBase/D"
+
 #include <queue>
 #include <string>
 #include <vector>
