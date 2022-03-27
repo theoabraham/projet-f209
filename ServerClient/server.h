@@ -3,6 +3,7 @@
 #include "../Quorridor/Controller/Game.hpp"
 #include "../Quorridor/Model/Board.hpp"
 #include "../Quorridor/View/DisplayBoard.hpp"
+#include "../DataBase/Database.h"
 
 #include <queue>
 #include <string>
