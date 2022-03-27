@@ -3,7 +3,6 @@
 #include "../Quorridor/Model/Board.hpp"
 #include "../Quorridor/View/DisplayBoard.hpp"
 
-
 #include <string.h>
 #include <sys/select.h>
 #include <unistd.h>
