@@ -192,11 +192,11 @@ void Server::handleNewConnection() {
     return;
   }
   username[nbytes] = '\0';
-  int nbytes = safe_read(socket, password, 16);
-  if (nbytes <= 0) {
+  int nbytes2 = safe_read(socket, password, 16);
+  if (nbytes2 <= 0) {
     return;
   }
-  password[nbytes] = '\0';
+  password[nbytes2] = '\0';
   const int ack = 0;
   nbytes = safe_write(socket, &ack, sizeof(int));
   if (nbytes <= 0) {
