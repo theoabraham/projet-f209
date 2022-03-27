@@ -1,11 +1,12 @@
 #include "chatroom.h"
 
-Chatroom::Chatroom(QWidget *parent) : QWidget(parent)
+Chatroom::Chatroom(QString friendName, QString windowTitle, QWidget *parent) : QWidget(parent)
 {
+    setWindowTitle(windowTitle);
     chatroom = new QVBoxLayout(this);
-    setTitle();
-    chatroom->addWidget(title);
+    setTitle(friendName);
     setDisplay();
+    chatroom->addWidget(title);
     chatroom->addWidget(display);
     setEntry();
     chatroom->addWidget(entry);
@@ -32,9 +33,9 @@ void Chatroom::setDisplay() {
     display->setStyleSheet("border: 1px solid black; background-color : white;");
 }
 
-void Chatroom::setTitle() {
-    title = new QLabel("Chatroom");
-    title->setIndent(80);
+void Chatroom::setTitle(QString friendName) {
+    title = new QLabel(friendName);
+    title->setIndent(90);
     title->setFont(QFont("Arial", 14, QFont::Bold));
 }
 

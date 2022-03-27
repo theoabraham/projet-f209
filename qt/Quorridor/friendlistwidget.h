@@ -6,9 +6,9 @@
 
 class FriendListWidget : public QWidget
 {
-    QHBoxLayout *friendLayout;
+    QVBoxLayout *friendLayout;
     QLabel *intro;
-    std::vector<Friend*> friendsList[3];
+    std::vector<Friend*> friendsList;
 public:
     FriendListWidget(QWidget *parent=0);
 
@@ -17,6 +17,8 @@ public:
     void setIntro();
 
     void setFriends();
+
+    void addFriend(QString name, QString rank);
 };
 
 #endif // FRIENDLISTWIDGET_H

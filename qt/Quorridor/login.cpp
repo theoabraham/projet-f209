@@ -3,6 +3,7 @@
 
 Login::Login(QWidget *parent) : QWidget(parent)
 {
+    setWindowTitle("Quoridor - Login");
     loginLayout = new QVBoxLayout(this);
     setIntro();
     loginLayout->addWidget(intro);
@@ -10,16 +11,6 @@ Login::Login(QWidget *parent) : QWidget(parent)
     loginLayout->addLayout(entry);
     setConnection();
     loginLayout->addWidget(connection);
-}
-
-Login::~Login() {
-    delete loginLayout;
-    delete intro;
-    delete entry;
-    delete pseudoLine;
-    delete passwordLine;
-    delete connection;
-    delete menu;
 }
 
 void Login::setIntro() {

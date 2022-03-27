@@ -19,8 +19,6 @@ private:
 public:
     Login(QWidget *parent=0);
 
-    ~Login();
-
     void setIntro();
 
     void setEntry();

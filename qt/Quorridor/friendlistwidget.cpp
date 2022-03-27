@@ -2,18 +2,18 @@
 
 FriendListWidget::FriendListWidget(QWidget *parent): QWidget(parent)
 {
-    friendLayout = new QHBoxLayout(this);
+    friendLayout = new QVBoxLayout(this);
     setIntro();
     friendLayout->addWidget(intro);
-    //setFriends();
+    setFriends();
 }
 
 FriendListWidget::~FriendListWidget() {
     delete intro;
     delete friendLayout;
-    /*for (int i=0; i<3;i++) {
+    for (int i=0; i<friendsList.size();i++) {
         delete friendsList[i];
-    }*/
+    }
 }
 
 void FriendListWidget::setIntro() {
@@ -23,9 +23,14 @@ void FriendListWidget::setIntro() {
 }
 
 void FriendListWidget::setFriends() {
-    /*for (long unsigned int i=0; i<3;i++) {
-        friendsList[i] = new Friend();
+    addFriend(QString("Jean"), QString("2"));
+    addFriend(QString("Charles"), QString("3"));
+    for (long unsigned int i=0; i<friendsList.size();i++) {
         friendLayout->addWidget(friendsList[i]);
-    }*/
-    return;
+    }
+}
+
+void FriendListWidget::addFriend(QString name, QString rank) {
+    Friend *newFriend = new Friend(name, rank);
+    friendsList.push_back(newFriend);
 }

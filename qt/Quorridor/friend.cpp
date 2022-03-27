@@ -1,12 +1,12 @@
 #include "friend.h"
 
-Friend::Friend(QWidget *parent) : QWidget(parent)
+Friend::Friend(QString name, QString rank, QWidget *parent) : QWidget(parent)
 {
-    actions = new QVBoxLayout(this);
-    name = new QLabel("Pseudo");
-    actions->addWidget(name);
-    rank = new QLabel("Rank #2");
-    actions->addWidget(rank);
+    actions = new QHBoxLayout(this);
+    nameLabel = new QLabel(name);
+    actions->addWidget(nameLabel);
+    rankLabel = new QLabel("Rank #"+rank);
+    actions->addWidget(rankLabel);
     messageButton = new QPushButton("Message");
     connect(messageButton, SIGNAL(clicked()), this, SLOT(openChat()));
     actions->addWidget(messageButton);
@@ -16,7 +16,7 @@ Friend::Friend(QWidget *parent) : QWidget(parent)
 }
 
 void Friend::openChat() {
-    privateChat = new Chatroom();
+    privateChat = new Chatroom(nameLabel->text());
     privateChat->show();
 }
 

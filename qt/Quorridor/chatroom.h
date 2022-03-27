@@ -13,7 +13,7 @@ private:
     QLabel *title;
 
 public:
-    Chatroom(QWidget *parent=0);
+    Chatroom(QString friendName="Chatroom",QString windowTitle="Quoridor - Private Chatroom", QWidget *parent=0);
 
     ~Chatroom();
 
@@ -21,7 +21,7 @@ public:
 
     void setDisplay();
 
-    void setTitle();
+    void setTitle(QString friendName);
 
     QString getMessage();
 

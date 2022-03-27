@@ -8,15 +8,15 @@ class Friend : public QWidget
 {
     Q_OBJECT
 private:
-    QVBoxLayout *actions;
-    QLabel *name;
-    QLabel *rank;
+    QHBoxLayout *actions;
+    QLabel *nameLabel;
+    QLabel *rankLabel;
     QPushButton *messageButton;
     QPushButton *unfriendButton;
     Chatroom *privateChat;
 
 public:
-    Friend(QWidget *parent=0);
+    Friend(QString name, QString rank, QWidget *parent=0);
 
 public slots:
     void openChat();
