@@ -42,11 +42,11 @@ void Client::runMenu(string ip, int port){
   std::cout<<"le menu tourne"<<std::endl;
 }
 
-void Client::runGame(string pseudo, string ip, int port) {
+void Client::runGame(string pseudo, string mdp, string ip, int port) {
   //Le client se connecte au serveur, et créé un thread pour gérer la reception de messages.
   werase(view.chatWindow);
   wrefresh(view.chatWindow);
-  this->socket = this->handshake(ip, port, pseudo);
+  this->socket = this->handshake(ip, port, pseudo, mdp);
   pthread_t tid;
   pthread_create(&tid, nullptr, Client::manageInputs, this);
   this->manageSocketTraffic();
@@ -99,13 +99,17 @@ void Client::manageSocketTraffic() {
   }
 }
 
-int Client::handshake(string ip, int port, string pseudo) {
+int Client::handshake(string ip, int port, string pseudo, string mdp) {
   int socket = checked(create_socket());
   if (connect_socket(socket, "127.0.0.1", port) < 0) {
     exit(1);
   }
   // Send username
   if (safe_write(socket, pseudo.c_str(), pseudo.length()) <= 0) {
+    exit(1);
+  }
+  // Send password
+  if (safe_write(socket, mdp.c_str(), mdp.length()) <= 0) {
     exit(1);
   }
   // Receive acknowledgement
@@ -134,7 +138,12 @@ int main(int argc, char const *argv[]) {
   if (argc > 2) {
     ip = argv[2];
   }
+
+  char pseudo[64];
+  cin.getline(pseudo, 64);
+  char mdp[16];
+  cin.getline(mdp, 16);
   Client client = Client();
-  client.runGame("test", ip.c_str(), port);
+  client.runGame(pseudo, mdp, ip.c_str(), port);
   return 0;
 }
