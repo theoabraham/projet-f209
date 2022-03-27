@@ -1,63 +1,78 @@
-//
-// Created by alex on 2/23/22.
-//
-
-#ifndef PROJET_F209_DATABASE_H
-#define PROJET_F209_DATABASE_H
+#ifndef DATABASEC_DATABASE_H
+#define DATABASEC_DATABASE_H
 
 #include <iostream>
-#include <fstream>
+#include <stdio.h>
 #include <string>
-#include <array>
-#include <vector>
 #include <sstream>
 #include <iterator>
+#include <sqlite3.h>
+#include <vector>
+#include <algorithm>
+#include <string>
+
+struct UserScore{
+    int GamesPlayed;
+    int GamesWon;
+    int GameLose = GamesPlayed-GamesWon;
+};
 
 
-class DatabaseHandler {
-private:
-    std::array<std::string, 6> string_arr; // permet le parsing du fichier principal
-    std::vector<std::string> friendList;   // sous liste d'amis du fichier
-    std::vector<std::string> toAddList;    // amis à rajouter
+struct UserInfo{
     std::string username;
-    std::vector<std::string> tempVect;
+    std::vector<std::string> FriendsList;
+    std::vector<std::string> FriendsToAddList;
+    UserScore score;
+};
+
+class Database {
+private:
+    sqlite3* DB;
+    UserInfo userInfo;
 public:
     // Constructeurs
-    DatabaseHandler(const std::string &inputFile);
-
-    // Getters Setters
-    std::string getPlayerBoard()const{return string_arr[1];}
-    std::string getPlayerName() const{return username;}
-    int getWinGames()const{return std::stoi(string_arr[2]);}
-    int getLoseGames()const{return std::stoi(string_arr[3]);}
-    int getTotalGames()const{return getWinGames()+getLoseGames();}
-    std::vector<std::string> getToAddFriendList() const{return toAddList;}
-    std::vector<std::string>  getFriendList() const {return friendList;}
-    void setRegisteredBoard(const std::string &boardstr){string_arr[1]=boardstr;}
-    void hasWin(){string_arr[2] = std::to_string(getWinGames()+1);}
-    void hasLose(){string_arr[3] =std::to_string(getLoseGames()+1);}
-    void setFriendsList(const std::string &fstr);
-    void setToaddList(const std::string &fstr);
-
-    // Méthode "bool"
-    int checkPswd(const std::string& input_psw);
-    static int isStringValid(const std::string &filepath);
-    static bool does_file_exist(const std::string &filename);
+    Database();
+    ~Database();
     // Méthodes
-    void parse(const std::string& file_path, std::array<std::string, 6> * arr_addr);
-    static std::string createPsw();
-    static std::string createFile(const std::string& filename,const std::string &inputpsw);
-    void tempVectadd(const std::string &friendname){tempVect.push_back(friendname);};
-    void writeFriends();
-    void writeFriendstoAdd(const std::string &friends_name);
-    void transferFriend();
-    void listFriends();
 
-    // Méthodes "ask"
-    static std::string askFile();
-    std::string askPswd();
-    void askFriends();
+    // initialisation obligatoire avant d'utiliser certaine méthode
+    bool connect(const std::string & username);
+
+    // write / read from database
+    bool createNewAccount(const std::string& username, const std::string& password);
+    std::string  getPassword(const std::string& username);
+    UserScore getScore(const std::string& username);
+    UserInfo getUserInfo(){return userInfo;}
+    void setUserFriendsList(const std::string& username);
+    void setUserFriendsToAddList(const std::string& username);
+    void writeFriendsList();
+    void writeFriendsToAddList();
+
+    //methodes statiques
+    static void stringToVect(const std::string& inputString, std::vector<std::string> &vectAddr);
+    static std::string VectTostring(std::vector<std::string> &vect);
+    static bool isStringinVect(const std::string& inputStr,std::vector<std::string> &vect);
+
+    //write
+
+    bool askFriend(const std::string& username);
+    bool transferFriend(const std::string& username);
+
+
+    //modify
+    void deleteFriendship(const std::string& username);
+    bool addGamePlayed(const std::string& username, bool win);
+    void resetTables();
+
+
+    //read
+    bool isUserinDB(const std::string& username);
+    bool doesFriendshipExists(const std::string& username2);
+    bool checkPassword(const std::string& username, const std::string& password);
+
 
 
 };
-#endif //PROJET_F209_DATABASE_H
+
+
+#endif //DATABASEC_DATABASE_H

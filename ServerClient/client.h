@@ -2,7 +2,7 @@
 #include <string>
 #include "WindowNC.hpp"
 
-#include "../DataBase/Database.h"
+#include "../DataBase/Database(old).h"
 
 
 using namespace std;

@@ -4,6 +4,8 @@
 #include "../Quorridor/Model/Board.hpp"
 #include "../Quorridor/View/DisplayBoard.hpp"
 
+#include "../DataBase/D"
+
 #include <queue>
 #include <string>
 #include <vector>

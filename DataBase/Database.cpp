@@ -1,310 +1,303 @@
 #include "Database.h"
 
-void DatabaseHandler::setFriendsList(const std::string &fstr){
-    std::istringstream friend_str(fstr);
-    friendList = std::vector<std::string>(std::istream_iterator<std::string>{friend_str},std::istream_iterator<std::string>());
+//constructeurs destructeur
+Database::Database() {
+    sqlite3_open("test.db", &this->DB);
+    char *messageError;
+
+    std::string sql1 = "CREATE TABLE IF NOT EXISTS UserData ("
+                       "Username TEXT NOT NULL UNIQUE,"
+                       "Password TEXT NOT NULL,"
+                       "PRIMARY KEY(Username))";
+    sqlite3_exec(this->DB, sql1.c_str(), NULL, 0, &messageError);
+
+
+    std::string sql2 = "CREATE TABLE IF NOT EXISTS GameScore ("
+                       "Username TEXT NOT NULL UNIQUE,"
+                       "GamesPlayed INTEGER DEFAULT 0,"
+                       "GamesWon INTEGER DEFAULT 0,"
+                       "PRIMARY KEY (Username)"
+                       "FOREIGN KEY (Username) REFERENCES UserData(Username))";
+    sqlite3_exec(this->DB, sql2.c_str(), NULL, 0, &messageError);
+
+    std::string sql3 = "CREATE TABLE IF NOT EXISTS FriendshipEntry ("
+                       "Username TEXT,"
+                       "FriendString TEXT,"
+                       "PRIMARY KEY (Username)"
+                       "FOREIGN KEY (Username) REFERENCES UserData(Username))";
+    sqlite3_exec(this->DB, sql3.c_str(), NULL, 0, &messageError);
+
+    std::string sql4 = "CREATE TABLE IF NOT EXISTS ToAddFriends("
+                       "Username TEXT,"
+                       "FriendToAddString TEXT,"
+                       "PRIMARY KEY (Username)"
+                       "FOREIGN KEY (Username) REFERENCES UserData(Username))";
+    sqlite3_exec(this->DB, sql4.c_str(), NULL, 0, &messageError);
 }
 
-void DatabaseHandler::setToaddList(const std::string &fstr) {
-    std::istringstream to_add_str(fstr);
-    toAddList = std::vector<std::string>(std::istream_iterator<std::string>{to_add_str},std::istream_iterator<std::string>());
+Database::~Database() {
+    sqlite3_close(this->DB);
 }
 
-/**
- * @brief Passe en revue uun fichier texte pour placer dans une liste différentes informations soit l une liste:
- *      l[0]=mot de passe, l[1]=plateau, l[2]=parties gagnées, l[3]=parties perdues, l[4]=amis a ajouter, l[5]=amis
- * @param file_path nom du fichier à parse, pas besoin de spécifier /Data
- * @param arr_addr addresse mémoire de l'array de taille 6
- */
-void DatabaseHandler::parse(const std::string& file_path, std::array<std::string, 6> * arr_addr){
-    std::ifstream file;
-    unsigned int num_of_line=0;
+//initialise
+bool Database::connect(const std::string& username) {
+    if (!isUserinDB(username))return false;
+    setUserFriendsList(username);
+    setUserFriendsToAddList(username);
+    userInfo.username = username;
+    userInfo.score = getScore(username);
+    return true;
+}
 
-    // ouvre le fichier
-    file.open("DataBase/Data/"+file_path);
-
-    // pour chaque line du fichier place le dans la liste
-    while (num_of_line < string_arr.size()){
-        std::string line;
-        getline(file, line);
-        (*arr_addr)[num_of_line] = line;
-        num_of_line++;
+//getter setter
+void Database::setUserFriendsList(const std::string& username) {
+    // récupere
+    std::string FriendsString;
+    sqlite3_stmt* stmt;
+    const std::string sqlRequest = "SELECT FriendString FROM FriendshipEntry WHERE (Username = '" + username + "')";
+    sqlite3_prepare_v2(this->DB, sqlRequest.c_str(), -1, &stmt, NULL);
+    int ret_code;
+    if ((ret_code = sqlite3_step(stmt)) == SQLITE_ROW){
+        FriendsString = std::string(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 0)));
     }
-    // mets à jours friendsList et toAddList
-    setToaddList(string_arr[4]);
-    setFriendsList(string_arr[5]);
-    file.close();
+    stringToVect(FriendsString,userInfo.FriendsList);
+}
+
+void Database::setUserFriendsToAddList(const std::string& username) {
+    // récupere
+    std::string FriendsToAddString;
+    sqlite3_stmt* stmt;
+    const std::string sqlRequest = "SELECT FriendToAddString FROM ToAddFriends WHERE (Username = '" + username + "')";
+    sqlite3_prepare_v2(this->DB, sqlRequest.c_str(), -1, &stmt, NULL);
+    int ret_code;
+    if ((ret_code = sqlite3_step(stmt)) == SQLITE_ROW){
+        FriendsToAddString = std::string(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 0)));
+    }
+    stringToVect(FriendsToAddString,userInfo.FriendsToAddList);
+}
+
+/**
+ * @brief retourne le score affilié à un username
+ * @param username : string du nom utilisateur
+ * @return struct Userscore permettant d'avoir les partie totale perdue et gagnée
+ */
+UserScore Database::getScore(const std::string& username) {
+
+    UserScore score{-1,-1};
+
+    sqlite3_stmt* stmt;
+    const std::string sqlRequest = "SELECT GamesPlayed, GamesWon FROM GameScore WHERE (Username = '" + username + "')";
+    sqlite3_prepare_v2(this->DB, sqlRequest.c_str(), -1, &stmt, NULL);
+    int ret_code;
+
+    if ((ret_code = sqlite3_step(stmt)) == SQLITE_ROW){
+        score.GamesPlayed = sqlite3_column_int(stmt, 0);
+        score.GamesWon = sqlite3_column_int(stmt, 1);
+    }
+    return score;
+}
+
+/**
+ * @brief retourne le hash du mot de passe associé à un utilisateur
+ * @param username : string du nom utilisateur
+ * @return hash du mot de passe
+ */
+std::string Database::getPassword(const std::string& username) {
+    std::string password;
+    sqlite3_stmt* stmt;
+    const std::string sqlRequest = "SELECT Password FROM UserData WHERE (Username = '" + username + "')";
+    sqlite3_prepare_v2(this->DB, sqlRequest.c_str(), -1, &stmt, NULL);
+    int ret_code;
+    if ((ret_code = sqlite3_step(stmt)) == SQLITE_ROW){
+        password =  std::string(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 0)));
+    }
+    return password;
+}
+
+void Database::writeFriendsList() {
+    std::string friendString = VectTostring(userInfo.FriendsList);
+    const std::string sqlRequest = "UPDATE FriendshipEntry SET FriendString = '" + friendString +"' WHERE Username = '" + userInfo.username + "'";
+    sqlite3_exec(this->DB, sqlRequest.c_str(), NULL, 0, NULL);
+}
+
+void Database::writeFriendsToAddList() {
+    std::string friendsToAddString = VectTostring(userInfo.FriendsToAddList);
+    const std::string sqlRequest = "UPDATE ToAddFriends SET FriendToAddString = '" + friendsToAddString +"' WHERE Username = '" + userInfo.username + "'";
+    sqlite3_exec(this->DB, sqlRequest.c_str(), NULL, 0, NULL);
+}
+
+// write
+/**
+ * Crée un compte dans la Base de donnée
+ * @param username : string du nom utilisateur
+ * @param password : string du mot de passe
+ * @return
+ */
+bool Database::createNewAccount(const std::string& username, const std::string& password) {
+    std::hash<std::string> hsh;
+    std::string NoneStr="";
+    if (isUserinDB(username)) return false;
+
+    // insert une entrée Username et psw dans la UserData
+    const std::string sqlRequest =
+            "INSERT INTO UserData(username,password) VALUES ('" + username + "', '" + std::to_string(hsh(password)) +
+            "')";
+    sqlite3_exec(this->DB, sqlRequest.c_str(), NULL, 0, NULL);
+    // insert une entrée Username dans la table Gamescore
+    const std::string sqlRequest2 = "INSERT INTO GameScore(Username) VALUES('"+username+"')";
+    sqlite3_exec(this->DB, sqlRequest2.c_str(), NULL, 0, NULL);
+    // insert une entrée Username et FriendStr dans la table FriendshipEntry
+    const std::string sqlRequest3 = "INSERT INTO FriendshipEntry(Username,FriendString) VALUES('"+username+"', '"+ NoneStr +"')";
+    sqlite3_exec(this->DB, sqlRequest3.c_str(), NULL, 0, NULL);
+    // insert une entrée Username et FriendStr dans la table ToAddFriends
+    const std::string sqlRequest4 = "INSERT INTO ToAddFriends(Username,FriendToAddString) VALUES('"+username+"', '"+ NoneStr +"')";
+    sqlite3_exec(this->DB, sqlRequest4.c_str(), NULL, 0, NULL);
+    return true;
+}
+
+/**
+ * @brief Username2 demande en ami Username1
+ * @param username1 : string du nom utilisateur
+ * @param username2 : string du nom utilisateur
+ * @return true si opération effectuée, false sinon
+ */
+bool Database::askFriend(const std::string& username){
+    // ! user2 demande user 1 en ami
+    if (doesFriendshipExists(username) or userInfo.username==username) return false;
+    userInfo.FriendsToAddList.push_back(username);
+    writeFriendsToAddList();
+    return true;
+}
+
+bool Database::transferFriend(const std::string& username) {
+    if (!isStringinVect(username,userInfo.FriendsToAddList)) return false;
+    userInfo.FriendsList.push_back(username);
+    std::remove(userInfo.FriendsToAddList.begin(),userInfo.FriendsToAddList.end(),username);
+    writeFriendsList();
+    writeFriendsToAddList();
+    return true;
+}
+
+
+// modify
+void Database::deleteFriendship(const std::string& username) {
+    std::remove(userInfo.FriendsList.begin(),userInfo.FriendsList.end(),username);
+    writeFriendsList();
+    writeFriendsToAddList();
 }
 /**
- * @brief Vérifie si le mot de passe entré une fois hashé équivaut au hash stocké dans le fichier texte
- * @param input_psw mot de passe de l'utilisateur
- * @param stocked_hash le hash stocké dans son fichier (string_arr[0])
- * @return bool(int)
+ * @brief met a jour le score de l'utilisateur
+ * @param username : string du nom utilisateur
+ * @param win : booléen si la partie a ete gagnée
+ * @return
  */
-int DatabaseHandler::checkPswd(const std::string& input_psw){
+bool Database::addGamePlayed(const std::string& username, bool win) {
+    if(!isUserinDB(username))
+        return false;
+    sqlite3_stmt* stmt;
+
+    const std::string sqlRequest = "SELECT GamesPlayed, GamesWon FROM GameScore WHERE (Username = '" + username + "')";
+    sqlite3_prepare_v2(this->DB, sqlRequest.c_str(), -1, &stmt, NULL);
+    int ret_code;
+
+    if ((ret_code = sqlite3_step(stmt)) == SQLITE_ROW){
+        int GamesPlayed = sqlite3_column_int(stmt, 0);
+        int GamesWon = sqlite3_column_int(stmt, 1);
+        GamesPlayed++;
+        if(win)
+            GamesWon++;
+        const std::string sqlRequest2 = "UPDATE GameScore SET GamesPlayed = '" + std::to_string(GamesPlayed) + "', GamesWon = '" + std::to_string(GamesWon) + "' WHERE Username = '" + username + "'";
+        sqlite3_exec(this->DB, sqlRequest2.c_str(), NULL, 0, NULL);
+    }
+    return true;
+}
+/**
+ * @brief Efface toute les tables
+ */
+void Database::resetTables(){
+    char* messageError;
+    std::string sqlRequest1 = "DELETE FROM GameScore;";
+    const std::string sqlRequest2 = "DELETE FROM FriendshipEntry;";
+    const std::string sqlRequest3 = "DELETE FROM UserData;";
+    const std::string sqlRequest4 = "DELETE FROM ToAddFriends;";
+    sqlite3_exec(this->DB, sqlRequest1.c_str(), NULL, 0, &messageError);
+    sqlite3_exec(this->DB, sqlRequest2.c_str(), NULL, 0, &messageError);
+    sqlite3_exec(this->DB, sqlRequest3.c_str(), NULL, 0, &messageError);
+    sqlite3_exec(this->DB, sqlRequest4.c_str(), NULL, 0, &messageError);
+}
+// read
+bool Database::isUserinDB(const std::string& username) {
+    sqlite3_stmt *stmt;
+    const std::string sqlRequest = "SELECT username FROM UserData WHERE Username = '" + username + "'";
+
+    sqlite3_prepare_v2(this->DB, sqlRequest.c_str(), -1, &stmt, NULL);
+    int ret_code;
+    if ((ret_code = sqlite3_step(stmt)) == SQLITE_ROW) {
+        if (username == std::string(reinterpret_cast<const char *>(sqlite3_column_text(stmt, 0)))) {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool Database::doesFriendshipExists(const std::string& username) {
+    return isStringinVect(username,userInfo.FriendsList);
+}
+
+bool Database::checkPassword(const std::string& username, const std::string& password) {
+    std::string hashedDBPassword = getPassword(username);
     std::hash<std::string> h;
-    if (!(std::to_string(h(input_psw)) == string_arr[0])){ // si hash(psw) != hash_stocké
-        return 0;
-    }
-    //std::cout << "Mot de passe valide" << std::endl;
-    return 1;
+    std::string hashedInputPsw = std::to_string(h(password));
+    return hashedDBPassword == hashedInputPsw;
 }
 
-/**
- * @brief Demande à l'utilisateur d'entrer deux fois son mdp sans espace !, une fois validé, le mdp est hashé et retourné
- * @return string du psw une fois hashé
- */
-std::string DatabaseHandler::createPsw() {
-    std::string psw;std::string pswv;
-    do{
-        std::cout<< "Entrez votre mot de passe: ";
-        //std::cin >> psw;
-        getline(std::cin,psw);
-        std::cout<< "Confirmez votre mot de passe: ";
-        //std::cin >> pswv;
-        getline(std::cin,pswv);
-    }while (psw != pswv);
-    return psw;
+void Database::stringToVect(const std::string& inputString, std::vector<std::string> &vectAddr) {
+    std::stringstream ss(inputString);
+    std::istream_iterator<std::string> begin(ss);
+    std::istream_iterator<std::string> end;
+    std::vector<std::string> vstrings(begin, end);
+    vectAddr =vstrings;
 }
 
-/**
- * @brief vérifier si un ficher donné en entrée est valide (ne correspond pas à un dossier , fichier caché, etc)
- * @param filepath chemin d'accès à un fichier
- * @return (bool) int
- */
-int DatabaseHandler::isStringValid(const std::string &filepath) {
-    if (filepath =="") return 0;
-    for (auto &c: filepath){
-        if (c=='/' or c=='.' or c==' ') {
-            //std::cout << "Le fichier entré comporte un caractère interdit..." << std::endl;
-            return 0;
-        }
+std::string Database::VectTostring(std::vector<std::string> &vect) {
+    std::string final;
+    for (auto &s:vect){
+        final += s +" ";
     }
-    return 1;
+    return final;
 }
 
-/**
- * @brief return vrai si le fichier donné en paramètre est existant
- * @param filename fichier dont l'existance doit être testée
- * @return (bool) int
- */
-bool DatabaseHandler::does_file_exist(const std::string &filename) {
-    std::ifstream ifile("DataBase/Data/"+filename);
-    if (ifile.is_open()){
-        return 1;
-    }else{
-        return 0;
+bool Database::isStringinVect(const std::string& inputStr, std::vector<std::string> &vect) {
+    for (std::string s: vect){
+        if (s == inputStr) return true;
     }
-}
-/**
- * @brief créé un fichier avec des valeures initiale
- * @param filename nom du fichier à créé
- * @return le nom du fichier crée
- */
-std::string DatabaseHandler::createFile(const std::string& filename,const std::string& inputpsw){
-    std::hash<std::string> h;
-    const std::string board="/////\n"; const std::string win="0\n"; const std::string loosed="0\n";
-    const std::string none1="\n"; const std::string none2="";
-    std::string psw =  std::to_string(h(inputpsw)) + '\n' ;
-    FILE *o_file = fopen(("DataBase/Data/"+filename).c_str(), "w");
-    if (o_file){
-        fwrite(psw.c_str(), 1, psw.size(), o_file);
-        fwrite(board.c_str(), 1, board.size(), o_file);
-        fwrite(win.c_str(), 1, win.size(), o_file);
-        fwrite(loosed.c_str(), 1, loosed.size(), o_file);
-        fwrite(none1.c_str(), 1, none1.size(), o_file);
-        fwrite(none2.c_str(), 1, none2.size(), o_file);
-    }
-    fclose(o_file);
-    return filename;
+    return false;
 }
 
-/**
- * @brief Ecrit dans un fichier donnéé une liste d'amis
- * @param filename
- * @param friends_str
- */
-void DatabaseHandler::writeFriends() {
-    std::string friends_str=string_arr[5];
-    for (auto &s: tempVect){
-        friends_str += s + ' ';
-    }
-    const std::string board = string_arr[1] + "\n";
-    const std::string win = string_arr[2] + "\n";
-    const std::string loosed = string_arr[3] + "\n";
-    const std::string none = "\n";
-    std::string psw = string_arr[0] + "\n";
-    FILE *o_file = fopen(("DataBase/Data/" + username).c_str(), "w");
-    if (o_file) {
-        fwrite(psw.c_str(), 1, psw.size(), o_file);
-        fwrite(board.c_str(), 1, board.size(), o_file);
-        fwrite(win.c_str(), 1, win.size(), o_file);
-        fwrite(loosed.c_str(), 1, loosed.size(), o_file);
-        fwrite(none.c_str(), 1, none.size(), o_file);
-        fwrite(friends_str.c_str(), 1, friends_str.size(), o_file);
-    }
-    fclose(o_file);
-    tempVect.clear();
-}
-/**
- * @brief Transfer les amis de la liste toAdd à FriendList en demandant à l'utilsateur
- */
-void DatabaseHandler::transferFriend() {
-    for (std::string s : toAddList){
-        std::string ans;
-        if (s==""){
-            std::cout << "Aucune demande en amis :weary:" << std::endl;
-            return;
-        }
-        while (ans != "n" and ans != "N" and ans !="Y" and ans !="y"){
-            std::cout << "Voulez vous ajoutez " << s << " en amis ? (Y/n) : ";
-            getline(std::cin,ans);
-            //std::cin >> ans;
-        }
-        if (ans == "Y" or ans == "y"){
-            friendList.push_back(s);
-        }
-    }
+int main() {
+    // création de la DB
+    Database DB;
 
-    //réécriture dans le fichier
-    std::string friends_str;
-    for (std::string s:friendList){
-        if (s!="") friends_str += (s + " ");
-    }
-    //writeFriends(friends_str);
-}
-/**
- * @brief écrit les amis à ajouter dans la ligne 5 du fichier texte
- * @param friends_name
- */
-void DatabaseHandler::writeFriendstoAdd(const std::string &friends_name) {
-    // recupération temporaire des données de temp;
-    std::array<std::string, 6> temp;
-    parse(friends_name, &temp);
-    //réécriture en fichier
-    const std::string board=temp[1]+"\n"; const std::string win=temp[2]+"\n";
-    const std::string loosed=temp[3]+"\n";const std::string none="";
-    std::string friends;
-    temp[4]=="" ? friends = username + "\n" : friends = temp[4] + " " + username + "\n";
-    std::string psw = temp[0]+"\n";
-    FILE *o_file = fopen(("DataBase/Data/"+friends_name).c_str(), "w");
-    if (o_file){
-        fwrite(psw.c_str(), 1, psw.size(), o_file);
-        fwrite(board.c_str(), 1, board.size(), o_file);
-        fwrite(win.c_str(), 1, win.size(), o_file);
-        fwrite(loosed.c_str(), 1, loosed.size(), o_file);
-        fwrite(friends.c_str(), 1, friends.size(), o_file);
-        fwrite(none.c_str(), 1, none.size(), o_file);
+    // efface les ancienne table pour le test
+    DB.resetTables();
 
-    }
-    fclose(o_file);
-}
+    // créé les Comptes
+    DB.createNewAccount("Alex","Alex");
+    DB.createNewAccount("Mark","Mark");
+    DB.createNewAccount("Theo","Theo");
 
-/**
- * @brief Affiche une liste des amis
- */
-void DatabaseHandler::listFriends() {
-    for (std::string s:friendList){
-        if (s!= "") std::cout << s << std::endl;
-    }
-}
-// Méthodes "ask"
-/**
- * @brief Demande à l'utilisateur d'entrer un fichier
- * @return nom du fichier
- */
-std::string DatabaseHandler::askFile() {
-    std::string input_file = "";
-    // vérification de la syntaxe
-    while(!isStringValid(input_file)){
-        std::cout << "Entrez un nom de fichier : " << std::endl;
-        std::getline(std::cin, input_file);
-    }
-    // si le fichier n'existe pas demande a l'utilisateur pour le crée
-    if (!does_file_exist(input_file)) {
-        std::cout << "Fichier non existant..." << std::endl;
-        std::string ans = "";
-        while (ans != "n" and ans != "N" and ans != "Y" and ans != "y") {
-            std::cout << "Voulez vous créé une nouvelle entrée (Y/n)? ";
-            getline(std::cin, ans);
-            //std::cin >> ans;
-        }
-        if (ans == "n") {
-            return "";
-        }
-        // crée le fichier
-        std::string psw= createPsw();
-        createFile(input_file, psw);
-    }
-    return input_file;
-}
+    // connecte l'utilisateur alex
+    DB.connect("Alex");
+    // theo demande en amis alex
+    DB.askFriend("Theo");
+    // alex accepte theo
+    DB.transferFriend("Theo");
+    // mark demande en amis alex
+    DB.askFriend("Mark");
+    // alex accepte mark
+    DB.transferFriend("Mark");
+    // theo est restiré de la liste d'amis :sad:
+    DB.deleteFriendship("Theo");
 
-/**
- * @brief Demande un mot de passe à l'utilisateur
- * @return mot de passe
- */
-std::string DatabaseHandler::askPswd() {
-    std::string psw;
-    std::cout << "Entrez votre mot de passe: ";
-    std::getline(std::cin,psw);
-    return psw;
-}
-
-/**
- * @brief Demande à l'utilisateur de rentrer en boucle des amis à ajouter
- */
-void DatabaseHandler::askFriends() {
-    std::string friends;
-    while (friends != "N" and friends != "n"){
-        std::cout << "Entrez un amis a ajouter (N/n pour annuler): ";
-        getline(std::cin,friends);
-        //std::cin >> friends;
-        if (friends != "N" and friends != "n") {
-            if (!does_file_exist(friends) or username == friends) {
-                std::cout << "Amis innexistant / impossible à ajouter" << std::endl;
-            } else {
-                writeFriendstoAdd(friends);
-            }
-        }
-    }
-}
-/**
- * @brief constructeur de l'objet databaseHandler
- * @param inputFile fichié donné en entrée, doit etre vérifié via DatabaseHandler::askFile()
- */
-DatabaseHandler::DatabaseHandler(const std::string &inputFile) {
-    // parse le fichier donné
-    parse(inputFile, &string_arr);
-
-    //met a jout le nom
-    username=inputFile;
-    /*
-    //std::cout << "Fichier " << username << " trouvé." << std::endl;
-    //std::cout << "______________________________" << std::endl;
-
-
-    //demande + vérification du mdp
-    std::cout << "Vérification du mdp:" << std::endl;
-
-    if(!checkPswd(askPswd(), string_arr[0])){
-        std::cerr << "Erreur, mauvais mot de passe." << std::endl;
-        exit(1);
-    }
-
-    //mise à jours des amis
-    std::cout << "______________________________" << std::endl;
-    std::cout << "Mise à jours des amis:" << std::endl;
-    transferFriend();
-
-    std::cout << "______________________________" << std::endl;
-
-    //liste d'amis
-    std::cout << "Voici votre liste d'amis:"<<std::endl;
-    listFriends();
-    std::cout << "______________________________" << std::endl;
-
-    //ajout d'amis
-    std::cout << "Ajouts d'amis:" << std::endl;
-    askFriends();
-     */
+    return 0;
 }
