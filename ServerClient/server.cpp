@@ -91,9 +91,9 @@ void Server::handleSocketReadActivity(fd_set* in_set, int& nactivities) {
           }
           if (msg.message.substr(1, 5) == "play"){
             game_t *newGame = new game_t{
-              shared_ptr<Board>(new DestruQtionBoard(2)),
-              shared_ptr<DisplayBoard>(new DisplayBoard(board)),
-              Game(board, displayBoard)
+              board = shared_ptr<Board>(new DestruQtionBoard(2)),
+              displayBoard = shared_ptr<DisplayBoard>(new DisplayBoard(board)),
+              game = Game(board, displayBoard)
             };
             newGame->players.push_back(users[i]);
             this->games.push_back(newGame);
@@ -184,6 +184,7 @@ void Server::handleNewConnection() {
   //Gestion d'une nouvelle connection
   struct sockaddr remote_host;
   char username[64];
+  char password[16];
 
   //On accepte la connection et on récupère le pseudo (envoyé depuis le client)
   int socket = accept_socket(this->master_socket, &remote_host);
@@ -192,6 +193,11 @@ void Server::handleNewConnection() {
     return;
   }
   username[nbytes] = '\0';
+  int nbytes = safe_read(socket, password, 16);
+  if (nbytes <= 0) {
+    return;
+  }
+  password[nbytes] = '\0';
   const int ack = 0;
   nbytes = safe_write(socket, &ack, sizeof(int));
   if (nbytes <= 0) {
