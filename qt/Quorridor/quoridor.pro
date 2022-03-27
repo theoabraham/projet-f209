@@ -16,6 +16,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    boardgui.cpp \
     main.cpp \ 
     rankwidget.cpp \
     friendlistwidget.cpp \
@@ -28,6 +29,7 @@ SOURCES += \
     wallsBox.cpp
 
 HEADERS += \
+    boardgui.h \
     rankwidget.h \
     friendlistwidget.h \
     gamewindow.h \ 

@@ -2,11 +2,11 @@
 #include <iostream>
 #include "wallCell.h"
 
-WallCell::WallCell(QWidget *parent)
-    : QWidget (parent)
+WallCell::WallCell(bool acceptDrop, QWidget *parent)
+    : QWidget (parent), acceptDrop(acceptDrop)
 {
-    //setMinimumSize(200, 200);
-    setAcceptDrops(true);
+    //setFrameStyle(QFrame::Sunken | QFrame::StyledPanel);
+    setAcceptDrops(acceptDrop);
 }
 
 void WallCell::dragEnterEvent(QDragEnterEvent *event)
@@ -25,25 +25,13 @@ void WallCell::dragEnterEvent(QDragEnterEvent *event)
 void WallCell::dropEvent(QDropEvent *event)
 {
     if ((event->mimeData()->hasFormat("application/x-dnditemdata")) && (not receivedItem)) {
-        QByteArray itemData = event->mimeData()->data("application/x-dnditemdata");
-        QDataStream dataStream(&itemData, QIODevice::ReadOnly);
 
-        QPixmap pixmap;
-        QPoint offset;
-        dataStream >> pixmap >> offset;
-
-        QLabel *newIcon = new QLabel(this);
-        newIcon->setPixmap(pixmap);
-        newIcon->move(10,10);
-        newIcon->show();
-        newIcon->setAttribute(Qt::WA_DeleteOnClose);
-
+        this->setStyleSheet("background-color: black;");
         event->acceptProposedAction();
-
         receivedItem = true;
-
     } else {
         event->ignore();
     }
 
 }
+

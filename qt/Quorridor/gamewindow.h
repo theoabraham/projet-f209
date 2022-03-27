@@ -7,6 +7,7 @@
 #include "chatroom.h"
 #include "wallsBox.h"
 #include "wallCell.h"
+#include "boardgui.h"
 
 class GameWindow : public QWidget
 {
@@ -18,15 +19,10 @@ private:
     QWidget *game;
     FriendListWidget *friends;
     RankWidget *ranking;
+    BoardGUI *boardgui;
 
     QGridLayout *mainLayout;
-    QGridLayout *boardGUI;
-    WallsBox *wallsPlacement;
     Chatroom *chatroom;
-
-    QLabel *cell;
-    WallCell *wallCellH;
-    WallCell *wallCellV;
 
 public:
     GameWindow(QWidget *parent=0);
@@ -34,10 +30,6 @@ public:
     ~GameWindow();
 
     void setGame();
-
-    void resetVar();
-
-    void boardGame();
 };
 
 

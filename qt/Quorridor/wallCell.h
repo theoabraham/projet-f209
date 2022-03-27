@@ -12,14 +12,24 @@ QT_END_NAMESPACE
 //! [0]
 class WallCell : public QWidget
 {
+    bool acceptDrop;
     bool receivedItem = false;
+
+
 public:
-    explicit WallCell(QWidget *parent = nullptr);
+    explicit WallCell(bool acceptDrop, QWidget *parent = nullptr);
+
+    bool hasItem() {return receivedItem;}
+    void setItem() {receivedItem = true;}
+
+    void setWall() {
+        this->setStyleSheet("background-color: black;");
+}
 
 protected:
-    //S'occupe de reconnaitre l'item qui rentre dans son widget
     void dragEnterEvent(QDragEnterEvent *event) override;
     void dropEvent(QDropEvent *event) override;
+
 };
 
 #endif // WALLCELL_H
