@@ -197,7 +197,8 @@ void Server::handleNewConnection() {
     return;
   }
   password[nbytes2] = '\0';
-  const int ack = 0;
+  const int ack = !(DB.isUserinDB(username));
+  std::cout << ack << std::endl;
   nbytes = safe_write(socket, &ack, sizeof(int));
   if (nbytes <= 0) {
     return;

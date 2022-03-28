@@ -5,8 +5,6 @@
 #include "../Quorridor/View/DisplayBoard.hpp"
 #include "../DataBase/Database.h"
 
-#include "../DataBase/D"
-
 #include <queue>
 #include <string>
 #include <vector>
@@ -34,6 +32,7 @@ typedef struct {
 
 class Server {
  private:
+  Database DB;
   int max_fd;
   int master_socket;
   vector<user_t*> users;
