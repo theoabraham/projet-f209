@@ -2,7 +2,7 @@
 
 //constructeurs destructeur
 Database::Database() {
-    sqlite3_open("test.db", &this->DB);
+    sqlite3_open("DataBase/Data.db", &this->DB);
     char *messageError;
 
     std::string sql1 = "CREATE TABLE IF NOT EXISTS UserData ("
@@ -228,11 +228,12 @@ void Database::resetTables(){
 // read
 bool Database::isUserinDB(const std::string& username) {
     sqlite3_stmt *stmt;
-    const std::string sqlRequest = "SELECT username FROM UserData WHERE Username = '" + username + "'";
+    const std::string sqlRequest = "SELECT Username FROM UserData WHERE Username = '" + username + "'";
 
     sqlite3_prepare_v2(this->DB, sqlRequest.c_str(), -1, &stmt, NULL);
     int ret_code;
     if ((ret_code = sqlite3_step(stmt)) == SQLITE_ROW) {
+        std::cout << "passé" << std::endl;
         if (username == std::string(reinterpret_cast<const char *>(sqlite3_column_text(stmt, 0)))) {
             return true;
         }
@@ -274,6 +275,8 @@ bool Database::isStringinVect(const std::string& inputStr, std::vector<std::stri
     return false;
 }
 
+/*
+
 int main() {
     // création de la DB
     Database DB;
@@ -301,3 +304,4 @@ int main() {
 
     return 0;
 }
+*/

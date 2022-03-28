@@ -3,8 +3,7 @@
 #include "../Quorridor/Controller/Game.hpp"
 #include "../Quorridor/Model/Board.hpp"
 #include "../Quorridor/View/DisplayBoard.hpp"
-
-#include "../DataBase/D"
+#include "../DataBase/Database.h"
 
 #include <queue>
 #include <string>
@@ -33,6 +32,7 @@ typedef struct {
 
 class Server {
  private:
+  Database DB;
   int max_fd;
   int master_socket;
   vector<user_t*> users;

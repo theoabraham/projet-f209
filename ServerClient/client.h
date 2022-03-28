@@ -1,8 +1,7 @@
 #include <queue>
 #include <string>
+#include <iostream>
 #include "WindowNC.hpp"
-
-#include "../DataBase/Database(old).h"
 
 
 using namespace std;

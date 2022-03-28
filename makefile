@@ -1,12 +1,12 @@
-FLAGS=-Wall -Werror -std=c++17 -g 
+FLAGS=-Wall -Werror -std=c++17 -g
 
 all: client server
 
 client: ServerClient/client.cpp ServerClient/socketlib.o ServerClient/client.h ServerClient/WindowNC.hpp
-	g++ $(DATABASE) -o client ServerClient/client.cpp ServerClient/socketlib.o ServerClient/socketlib.h ServerClient/client.h ServerClient/WindowNC.hpp ${FLAGS} -pthread -lncursesw
+	g++ -o client ServerClient/client.cpp ServerClient/socketlib.o ServerClient/socketlib.h ServerClient/client.h ServerClient/WindowNC.hpp ${FLAGS} -pthread -lncursesw
 
-server: ServerClient/server.cpp $(MODEL) $(GAMEMODES) $(VIEW) $(CONTROLLER) ServerClient/socketlib.o ServerClient/server.h
-	g++ $(MODEL) $(GAMEMODES) $(VIEW) $(CONTROLLER) -g -o server ServerClient/server.cpp ServerClient/socketlib.o ServerClient/socketlib.h ${FLAGS}
+server: ServerClient/server.cpp $(MODEL) $(GAMEMODES) $(VIEW) $(CONTROLLER) $(DATABASE) ServerClient/socketlib.o ServerClient/server.h
+	g++ $(MODEL) $(GAMEMODES) $(VIEW) $(CONTROLLER) $(DATABASE) -g -o server ServerClient/server.cpp ServerClient/socketlib.o ServerClient/socketlib.h ${FLAGS} -l sqlite3
 
 socketlib.o: socketlib.cpp socketlib.h
 	g++ -c socketlib.cpp ${FLAGS}
