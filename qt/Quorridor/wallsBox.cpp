@@ -11,17 +11,18 @@ WallsBox::WallsBox(QWidget *parent)
 
     QLabel *murH= new QLabel(this);
     murH->setPixmap(QPixmap(":/images/murH.jpg"));
-    murH->move(30, 10);
+    murH->move(30, 50);
     murH->show();
     murH->setAttribute(Qt::WA_DeleteOnClose);
 
 
     QLabel *murV = new QLabel(this);
     murV->setPixmap(QPixmap(":/images/murV.jpg"));
-    murV->move(10, 10);
+    murV->move(10, 25);
     murV->show();
     murV->setAttribute(Qt::WA_DeleteOnClose);
 }
+
 
 void WallsBox::mousePressEvent(QMouseEvent *event)
 {
@@ -58,3 +59,4 @@ void WallsBox::mousePressEvent(QMouseEvent *event)
         child->setPixmap(pixmap);
     }
 }
+
