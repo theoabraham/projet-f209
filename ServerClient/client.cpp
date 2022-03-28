@@ -12,34 +12,45 @@
 Client::Client() {
 }
 
-void Client::runMenu(string ip, int port){
-  /*
-  keypad(inputWindow, TRUE);
-  // std::vector<const char*> basicOptions = {"Option :", "(L)ogin and Play", "Choose (G)amemode"};
-  std::vector<const char*> gameModeOptions = {"(C)lassic", "(D)estruQtion", "(Q)QQuorridor"};
+void Client::runMenu(string pseudo, string mdp, string ip, int port){
+  keypad(view.inputWindow, TRUE);
+  //std::vector<const char*> basicOptions = {"Option :", "(P)lay", "Choose (G)amemode"};
+  //std::vector<const char*> gameModeOptions = {"(C)lassic", "(D)estruQtion", "(Q)QQuorridor"};
   while(true){
     char menuChoice;
-    this->displayMenu({"Option :", "(L)ogin and Play", "Chose (G)amemode"});
-    this->fetchInput(menuChoice);
-    if (menuChoice == 'L'){
-      this->loginRoutine();
-      DatabaseHandler dbh(pseudo);
-      this->connectRoutine(&dbh);
-      this->runGame(pseudo, ip, port);
-    } else if (menuChoice == 'G'){
-      this->displayMenu(gameModeOptions);
-      this->fetchInput(*gameMode);
+    view.displayMenu({"Option :", "(P)lay", "Chose (N)umber of players", "Chose (G)amemode"});
+    view.fetchInput(menuChoice);
+    if (menuChoice == 'P'){
+      this->runGame(pseudo, mdp, ip.c_str(), port);
+      message_t _;
+      _.message = "/Play";
+      ssend(this->socket, &_);
+    }
+    if (menuChoice == 'N') {
+      view.displayMenu({"(2) joueurs", "(4) joueurs", "Certains modes ne permettent que 4 joueurs"});
+      view.fetchInput(*numberPlayers);
+      this->gameMode[strlen(numberPlayers)]='\0';
+      while (strcmp(numberPlayers, "2\0") != 0 && strcmp(numberPlayers, "4\0") != 0) {
+        view.clearWindow(view.chatBoxWindow);
+        mvwprintw(view.chatWindow, 3, 0, "Wrong input, please enter 2 or 4.");
+        wrefresh(view.chatWindow);
+        view.fetchInput(*numberPlayers);
+        this->numberPlayers[strlen(numberPlayers)]='\0';
+      }
+    }
+    if (menuChoice == 'G'){
+      view.displayMenu({"(C)lassic", "(D)estruQtion", "(Q)QQuorridor"});
+      view.fetchInput(*gameMode);
       this->gameMode[strlen(gameMode)]='\0';
       while (strcmp(gameMode, "C\0") != 0 && strcmp(gameMode, "D\0") != 0 && strcmp(gameMode, "Q\0") != 0) {
-        mvwprintw(chatWindow, 3, 0, "Wrong input, please enter C, D or Q.");
-        wrefresh(chatWindow);
-        this->fetchInput(*gameMode);
+        view.clearWindow(view.chatBoxWindow);
+        mvwprintw(view.chatWindow, 3, 0, "Wrong input, please enter C, D or Q.");
+        wrefresh(view.chatWindow);
+        view.fetchInput(*gameMode);
         this->gameMode[strlen(gameMode)]='\0';
       }
     }
   }
-  */
-  std::cout<<"le menu tourne"<<std::endl;
 }
 
 void Client::runGame(string pseudo, string mdp, string ip, int port) {
@@ -64,7 +75,7 @@ void Client::manageInputs() {
   // Le client peut ecrire et envoyer ses messages
   char buffer[1024];
   while (true) {
-    mvwgetstr(view.inputWindow, 1, 1, buffer);
+    view.fetchInput(*buffer);
     buffer[strlen(buffer)] = '\0';
     message_t msg = {.timestamp = time(NULL), .message = string(buffer)};
     werase(view.inputWindow);
@@ -144,6 +155,6 @@ int main(int argc, char const *argv[]) {
   char mdp[16];
   cin.getline(mdp, 16);
   Client client = Client();
-  client.runGame(pseudo, mdp, ip.c_str(), port);
+  client.runMenu(pseudo, mdp, ip.c_str(), port);
   return 0;
 }

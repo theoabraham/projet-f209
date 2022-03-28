@@ -72,7 +72,7 @@ void Server::handleSocketReadActivity(fd_set* in_set, int& nactivities) {
         this->disconnectUser(i);
       } else {
         // message_buffer[nbytes] = '\0';
-        bool enoughPlayers = (this->registeredPlayers >= this->neededPlayers);
+        bool enoughPlayers = ((int)this->games[users[i]->activeGame]->players.size() - 1 >= this->games[users[i]->activeGame]->neededPlayers);
         //Si le message commence par un point ET provient du joueur actif ET que la partie est en cour :
         if((msg.message.substr(0,1) == (string)"/")){
           if (enoughPlayers){ //faudra changer avec game_t
@@ -130,20 +130,21 @@ void Server::handleSocketReadActivity(fd_set* in_set, int& nactivities) {
 
 void Server::handleMove(string command, int clientSocket){
   //gestion d'une commande (/Message) d'un utilisateur
-  if(clientSocket == this->users[activePlayer]->socket && this->game.checkInput(command, this->activePlayer)){
+  game_t *currentGame = this->games[users[clientSocket]->activeGame];
+  if(clientSocket == currentGame->players[currentGame->activePlayer]->socket && this->game.checkInput(command, currentGame->activePlayer)){
     message_t strBoard;
     strBoard.message = this->displayBoard->printBoard();
-    this->forward(&strBoard, games[users[activePlayer]->activeGame]->players);
+    this->forward(&strBoard, currentGame->players);
     //Si la partie est finie : on affiche un message annoncant le joueur gagnant
     if (this->board->isEnd()) {
       message_t endingMsg;
-      endingMsg.message = "[system] : " + users[activePlayer]->name + " remporte la victoire!";
-      this->forward(&endingMsg, games[users[activePlayer]->activeGame]->players);
+      endingMsg.message = "[system] : " + users[currentGame->activePlayer]->name + " remporte la victoire!";
+      this->forward(&endingMsg, currentGame->players);
     } else { //Sinon, on affiche un message qui annonce le début du tour du nouveau joueur actif.
-      this->activePlayer = (activePlayer + 1) % this->neededPlayers;
+      currentGame->activePlayer = (currentGame->activePlayer + 1) % currentGame->neededPlayers;
       message_t newTurnMsg;
-      newTurnMsg.message = "[system] : C'est a " + users[activePlayer]->name + " de jouer!";
-      this->forward(&newTurnMsg, games[users[activePlayer]->activeGame]->players);
+      newTurnMsg.message = "[system] : C'est a " + currentGame->players[currentGame->activePlayer]->name + " de jouer!";
+      this->forward(&newTurnMsg, currentGame->players);
     }
   }
 }
@@ -167,7 +168,6 @@ void Server::disconnectUser(unsigned user_num) {
       }
     }
   }
-  registeredPlayers--;
   //Si le nombre de joueurs restant est inssufisant pour jouer, la partie se met en pause dans
   //handleSocketReadActivity() mais les joueurs sont prévenus ici
   /*
@@ -197,12 +197,13 @@ void Server::handleNewConnection() {
     return;
   }
   password[nbytes2] = '\0';
-  const int ack = !(DB.isUserinDB(username));
+  const int ack = !(DB.isUserinDB(username) && DB.checkPassword(username, password));
   std::cout << ack << std::endl;
   nbytes = safe_write(socket, &ack, sizeof(int));
   if (nbytes <= 0) {
     return;
   }
+  DB.connect(username);
 
   //On créé un "profil" de user contenant pseudo, port et version
   user_t* new_user = new user_t;
@@ -217,15 +218,6 @@ void Server::handleNewConnection() {
   if (socket > this->max_fd) {
     this->max_fd = socket;
   }
-  //Si le nombre de joueur est suffisant, on lance/reprend la partie
-  registeredPlayers++;
-  /*
-  if (this->registeredPlayers == this->neededPlayers){
-    message_t startingMsg;
-    startingMsg.message = "[system] : C'est a " + users[this->activePlayer]->name + " de jouer! (/help pour les coups)";
-    this->forward(&startingMsg, );
-  }
-  */
 }
 
 int main(int argc, char const* argv[]) {
