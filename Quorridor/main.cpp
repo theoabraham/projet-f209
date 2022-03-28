@@ -1,0 +1,30 @@
+#include <iostream>
+#include "Model/Board.hpp"
+#include "Model/Gamemodes/DestruQtion.hpp"
+#include "Model/Gamemodes/QQQuoridor.hpp"
+#include "Model/Gamemodes/Minos.hpp"
+#include "View/DisplayBoard.hpp"
+#include "Controller/Game.hpp"
+
+
+/*
+Fichier de Testing des différents jeu Quorridor
+*/
+
+int main(){
+    int input;
+    bool res = false;
+    std::cout<<"Combien de joueurs êtes-vous? (2 ou 4)"<<std::endl;
+    while (not res){
+        std::cin>>input;
+        if (input==2 || input==4) res= true;  
+    }
+        
+    std::shared_ptr<Board> board = std::shared_ptr<Board>(new MinosBoard(input));
+    auto displayBoard = std::shared_ptr<DisplayBoard>(new DisplayBoard(board));
+    
+    MinosGame game(board, displayBoard);
+    game.start();
+
+    return 0;
+}
