@@ -27,6 +27,8 @@ typedef struct {
   shared_ptr<DisplayBoard> displayBoard;
   Game game;
   vector<user_t*> players;
+  int activePlayer = 0;
+  int neededPlayers = 2;
 
 } game_t;
 
@@ -40,9 +42,6 @@ class Server {
   shared_ptr<Board> board = shared_ptr<Board>(new DestruQtionBoard(2));
   shared_ptr<DisplayBoard> displayBoard = shared_ptr<DisplayBoard>(new DisplayBoard(board));  
   Game game = Game(board, displayBoard);
-  int activePlayer = 0;
-  int registeredPlayers = 0;
-  int neededPlayers = 2;
 
  private:
   void prepateFDSet(fd_set* read_set);

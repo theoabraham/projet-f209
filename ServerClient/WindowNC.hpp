@@ -40,13 +40,13 @@ class WindowNC {
         }
 
         void displayMenu(std::vector<const char*> options){
-            clearWindow(chatWindow);
+            clearWindow(chatBoxWindow);
             int y = 0;
             for(const char* option: options){
                 y++;
-                mvwprintw(chatWindow, y, 1, option);
+                mvwprintw(chatBoxWindow, y, 1, option);
             }
-            wrefresh(chatWindow);
+            wrefresh(chatBoxWindow);
         }
 
         void clearWindow(WINDOW * window) {

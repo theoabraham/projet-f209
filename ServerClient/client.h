@@ -11,6 +11,7 @@ class Client {
   int socket;
   int line_counter=0;
   char gameMode[8] = "C\0";
+  char numberPlayers[8] = "2\0";
   WindowNC view = WindowNC();
 
  private:
@@ -25,5 +26,5 @@ class Client {
  public:
   Client();
   void runGame(string pseudo, string mdp, string ip, int port = 8080);
-  void runMenu(string ip, int port);
+  void runMenu(string pseudo, string mdp, string ip, int port);
 };
