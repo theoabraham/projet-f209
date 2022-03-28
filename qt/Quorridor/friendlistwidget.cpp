@@ -6,12 +6,13 @@ FriendListWidget::FriendListWidget(QWidget *parent): QWidget(parent)
     setIntro();
     friendLayout->addWidget(intro);
     setFriends();
+    friendLayout->addStretch();
 }
 
 FriendListWidget::~FriendListWidget() {
     delete intro;
     delete friendLayout;
-    for (int i=0; i<friendsList.size();i++) {
+    for (unsigned long int i=0; i<friendsList.size();i++) {
         delete friendsList[i];
     }
 }

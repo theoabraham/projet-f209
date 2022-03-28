@@ -5,6 +5,7 @@
 #include "gamewindow.h"
 #include "friendlistwidget.h"
 #include "rankwidget.h"
+#include "lobbywidget.h"
 
 class MenuWindow : public QMainWindow
 {
@@ -14,9 +15,11 @@ private:
     //MenuWindow widgets
     QTabWidget *menuSelection;
     QWidget *play;
+    QWidget *lobby;
     FriendListWidget *friends;
     RankWidget *ranking;
-    //Play widgets
+
+    //NewGame widgets
     QVBoxLayout *playLayout;
     QLabel *playIntro;
     QGridLayout *options;
@@ -27,12 +30,19 @@ private:
     QPushButton *startButton;
     GameWindow *game;
 
+    //Join widgets
+    QVBoxLayout *joinLayout;
+    QLabel *lobbyIntro;
+    LobbyWidget *rowLobby;
+
 public:
     MenuWindow(QMainWindow *parent=0);
 
     ~MenuWindow();
 
     void setStart();
+
+    void setJoin();
 
 public slots:
     void startGame();

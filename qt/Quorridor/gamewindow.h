@@ -19,10 +19,12 @@ private:
     QWidget *game;
     FriendListWidget *friends;
     RankWidget *ranking;
-    BoardGUI *boardgui;
 
     QGridLayout *mainLayout;
     Chatroom *chatroom;
+    BoardGUI *boardgui;
+    QPushButton *leaveButton;
+    QMessageBox *confirmation;
 
 public:
     GameWindow(QWidget *parent=0);
@@ -30,6 +32,9 @@ public:
     ~GameWindow();
 
     void setGame();
+
+public slots:
+    void leaveAndSave();
 };
 
 

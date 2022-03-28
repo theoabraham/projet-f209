@@ -24,7 +24,7 @@ BoardGUI::~BoardGUI(){
 
 void BoardGUI::resetVar(){
     //Cases pions:
-    cell = new QLabel(this);
+    cell = new QLabel();
     cell->setStyleSheet("QLabel { background-color : brown; color : brown; }");
     cell->setFixedSize(QSize(50,50));
 
@@ -49,7 +49,6 @@ void BoardGUI::boardGame(){
 
     for(int i=0;i<17;i++){
         for(int j=0;j<17;j++){
-
             resetVar();
             if (j%2==1 && i%2==0) {
                 boardGUI->addWidget(wallCellV, i,j);

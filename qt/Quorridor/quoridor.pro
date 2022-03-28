@@ -17,6 +17,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     boardgui.cpp \
+    lobbywidget.cpp \
     main.cpp \ 
     rankwidget.cpp \
     friendlistwidget.cpp \
@@ -30,6 +31,7 @@ SOURCES += \
 
 HEADERS += \
     boardgui.h \
+    lobbywidget.h \
     rankwidget.h \
     friendlistwidget.h \
     gamewindow.h \ 
@@ -52,3 +54,9 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     images.qrc
+
+DISTFILES += \
+    images/murH.jpg \
+    images/murV.jpg \
+    images/pion_blanc.png \
+    images/pion_noir.png
