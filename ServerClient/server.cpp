@@ -74,44 +74,7 @@ void Server::handleSocketReadActivity(fd_set* in_set, int& nactivities) {
         // message_buffer[nbytes] = '\0';
         bool enoughPlayers = ((int)this->games[users[i]->activeGame]->players.size() - 1 >= this->games[users[i]->activeGame]->neededPlayers);
         //Si le message commence par un point ET provient du joueur actif ET que la partie est en cour :
-        if((msg.message.substr(0,1) == (string)"/")){
-          if (enoughPlayers){ //faudra changer avec game_t
-            std::string command = msg.message.substr(msg.message.length() - 4, 4);
-            //Si le coup demandé est valide, on le joue et on affiche le plateau
-            this->handleMove(command, socket);
-          }
-          if (msg.message.substr(1, 6) == "leave"){
-            this->disconnectUser(i);
-          }
-          if (msg.message.substr(1, 5) == "help"){
-            message_t helpMessage;
-            helpMessage.message = "[system] : " + this->game.inputFormat() + " (/leave pour quitter.)";
-            ssend(users[i]->socket, &helpMessage);
-          }
-          if (msg.message.substr(1, 5) == "play"){
-            game_t *newGame = new game_t{
-              board = shared_ptr<Board>(new DestruQtionBoard(2)),
-              displayBoard = shared_ptr<DisplayBoard>(new DisplayBoard(board)),
-              game = Game(board, displayBoard)
-            };
-            newGame->players.push_back(users[i]);
-            this->games.push_back(newGame);
-            users[i]->activeGame = this->games.size() - 1;
-            message_t strBoard;
-            strBoard.message = this->displayBoard->printBoard();
-            this->forward(&strBoard, games[users[i]->activeGame]->players);
-          }
-          if (msg.message.substr(1, 4) == "join"){
-            string toJoin = msg.message.substr(6, 2);
-            this->games[atoi(toJoin.c_str())]->players.push_back(users[i]);
-            users[i]->activeGame = atoi(toJoin.c_str());
-            message_t strBoard;
-            strBoard.message = this->displayBoard->printBoard();
-            this->forward(&strBoard, games[users[i]->activeGame]->players);
-          }
-        } else {
-          //Si de base ce n'était pas une commande (ou que ce n'était pas le tour du joueur expediteur)
-          //C'est un message, qui est renvoyé a tout le monde
+        
           char date_buffer[32];
           struct tm* local_time = localtime(&msg.timestamp);
           strftime(date_buffer, sizeof(date_buffer), "%H:%M:%S", local_time);
