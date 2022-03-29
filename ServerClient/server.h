@@ -39,9 +39,6 @@ class Server {
   int master_socket;
   vector<user_t*> users;
   vector<game_t*> games;
-  shared_ptr<Board> board = shared_ptr<Board>(new DestruQtionBoard(2));
-  shared_ptr<DisplayBoard> displayBoard = shared_ptr<DisplayBoard>(new DisplayBoard(board));  
-  Game game = Game(board, displayBoard);
 
  private:
   void prepateFDSet(fd_set* read_set);
