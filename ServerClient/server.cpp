@@ -72,9 +72,19 @@ void Server::handleSocketReadActivity(fd_set* in_set, int& nactivities) {
         this->disconnectUser(i);
       } else {
         // message_buffer[nbytes] = '\0';
-        bool enoughPlayers = ((int)this->games[users[i]->activeGame]->players.size() - 1 >= this->games[users[i]->activeGame]->neededPlayers);
-        //Si le message commence par un point ET provient du joueur actif ET que la partie est en cour :
-        
+        bool enoughPlayers;
+        if (users[i]->activeGame != -1){
+          enoughPlayers = ((int)this->games[users[i]->activeGame]->players.size() - 1 >= this->games[users[i]->activeGame]->neededPlayers);
+        } else {
+          enoughPlayers = false;
+        }
+        if((msg.message.substr(0,1) == (string)"/")){
+          if (enoughPlayers){
+            std::string command = msg.message.substr(msg.message.length() - 4, 4);
+            this->handleMove(command, socket);
+          }
+          this->handleCommand(i, msg);
+        } else {
           char date_buffer[32];
           struct tm* local_time = localtime(&msg.timestamp);
           strftime(date_buffer, sizeof(date_buffer), "%H:%M:%S", local_time);
@@ -90,51 +100,44 @@ void Server::handleSocketReadActivity(fd_set* in_set, int& nactivities) {
     i--;
   }
 }
-void handleCommand(string command, user_t user){
-  if((msg.message.substr(0,1) == (string)"/")){
-          if (enoughPlayers){ //faudra changer avec game_t
-            std::string command = msg.message.substr(msg.message.length() - 4, 4);
-            //Si le coup demandé est valide, on le joue et on affiche le plateau
-            this->handleMove(command, socket);
-          }
-          if (msg.message.substr(1, 6) == "leave"){
-            this->disconnectUser(i);
-          }
-          if (msg.message.substr(1, 5) == "help"){
-            message_t helpMessage;
-            helpMessage.message = "[system] : " + this->game.inputFormat() + " (/leave pour quitter.)";
-            ssend(users[i]->socket, &helpMessage);
-          }
-          if (msg.message.substr(1, 5) == "play"){
-            game_t *newGame = new game_t{
-              board = shared_ptr<Board>(new DestruQtionBoard(2)),
-              displayBoard = shared_ptr<DisplayBoard>(new DisplayBoard(board)),
-              game = Game(board, displayBoard)
-            };
-            newGame->players.push_back(users[i]);
-            this->games.push_back(newGame);
-            users[i]->activeGame = this->games.size() - 1;
-            message_t strBoard;
-            strBoard.message = this->displayBoard->printBoard();
-            this->forward(&strBoard, games[users[i]->activeGame]->players);
-          }
-          if (msg.message.substr(1, 4) == "join"){
-            string toJoin = msg.message.substr(6, 2);
-            this->games[atoi(toJoin.c_str())]->players.push_back(users[i]);
-            users[i]->activeGame = atoi(toJoin.c_str());
-            message_t strBoard;
-            strBoard.message = this->displayBoard->printBoard();
-            this->forward(&strBoard, games[users[i]->activeGame]->players);
-          }
-        } else {
-          //Si de base ce n'était pas une commande (ou que ce n'était pas le tour du joueur expediteur)
-          //C'est un message, qui est renvoyé a tout le monde
-        }
+
+void Server::handleCommand(int userIndex, message_t msg){
+  if (msg.message.substr(1, 6) == "leave"){
+    this->disconnectUser(userIndex);
+  }
+  if (msg.message.substr(1, 5) == "help"){
+    message_t helpMessage;
+    helpMessage.message = "[system] : " + this->game.inputFormat() + " (/leave pour quitter.)";
+    ssend(users[userIndex]->socket, &helpMessage);
+  }
+  if (msg.message.substr(1, 5) == "play"){
+    game_t *newGame = new game_t{
+      board = shared_ptr<Board>(new DestruQtionBoard(2)),
+      displayBoard = shared_ptr<DisplayBoard>(new DisplayBoard(board)),
+      game = Game(board, displayBoard)
+    };
+    newGame->players.push_back(users[userIndex]);
+    this->games.push_back(newGame);
+    users[userIndex]->activeGame = this->games.size() - 1;
+    message_t strBoard;
+    strBoard.message = this->displayBoard->printBoard();
+    this->forward(&strBoard, games[users[userIndex]->activeGame]->players);
+  }
+  if (msg.message.substr(1, 4) == "join"){
+    string toJoin = msg.message.substr(6, 2);
+    this->games[atoi(toJoin.c_str())]->players.push_back(users[userIndex]);
+    users[userIndex]->activeGame = atoi(toJoin.c_str());
+    message_t strBoard;
+    strBoard.message = this->displayBoard->printBoard();
+    this->forward(&strBoard, games[users[userIndex]->activeGame]->players);
+  }
+}
 
 void Server::handleMove(string command, int clientSocket){
   //gestion d'une commande (/Message) d'un utilisateur
   game_t *currentGame = this->games[users[clientSocket]->activeGame];
   if(clientSocket == currentGame->players[currentGame->activePlayer]->socket && this->game.checkInput(command, currentGame->activePlayer)){
+    //Si le coup demandé est valide, on le joue et on affiche le plateau
     message_t strBoard;
     strBoard.message = this->displayBoard->printBoard();
     this->forward(&strBoard, currentGame->players);
@@ -201,7 +204,6 @@ void Server::handleNewConnection() {
   }
   password[nbytes2] = '\0';
   const int ack = !(DB.isUserinDB(username) && DB.checkPassword(username, password));
-  std::cout << ack << std::endl;
   nbytes = safe_write(socket, &ack, sizeof(int));
   if (nbytes <= 0) {
     return;

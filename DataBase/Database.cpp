@@ -233,7 +233,6 @@ bool Database::isUserinDB(const std::string& username) {
     sqlite3_prepare_v2(this->DB, sqlRequest.c_str(), -1, &stmt, NULL);
     int ret_code;
     if ((ret_code = sqlite3_step(stmt)) == SQLITE_ROW) {
-        std::cout << "passé" << std::endl;
         if (username == std::string(reinterpret_cast<const char *>(sqlite3_column_text(stmt, 0)))) {
             return true;
         }
