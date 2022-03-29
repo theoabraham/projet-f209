@@ -78,6 +78,7 @@ void Server::handleSocketReadActivity(fd_set* in_set, int& nactivities) {
         } else {
           enoughPlayers = false;
         }
+        std::cout << enoughPlayers << std::endl;
         if((msg.message.substr(0,1) == (string)"/")){
           if (enoughPlayers){
             std::string command = msg.message.substr(msg.message.length() - 4, 4);
@@ -107,42 +108,56 @@ void Server::handleCommand(int userIndex, message_t msg){
   }
   if (msg.message.substr(1, 5) == "help"){
     message_t helpMessage;
-    helpMessage.message = "[system] : " + this->game.inputFormat() + " (/leave pour quitter.)";
+    helpMessage.message = "[system] : " + games[users[userIndex]->activeGame]->game.inputFormat() + " (/leave pour quitter.)";
     ssend(users[userIndex]->socket, &helpMessage);
   }
   if (msg.message.substr(1, 5) == "play"){
-    game_t *newGame = new game_t{
-      board = shared_ptr<Board>(new DestruQtionBoard(2)),
-      displayBoard = shared_ptr<DisplayBoard>(new DisplayBoard(board)),
-      game = Game(board, displayBoard)
-    };
-    newGame->players.push_back(users[userIndex]);
-    this->games.push_back(newGame);
-    users[userIndex]->activeGame = this->games.size() - 1;
-    message_t strBoard;
-    strBoard.message = this->displayBoard->printBoard();
-    this->forward(&strBoard, games[users[userIndex]->activeGame]->players);
+    if (users[userIndex]->activeGame == -1){
+      shared_ptr<Board> tmpboard = shared_ptr<Board>(new DestruQtionBoard(2));
+      shared_ptr<DisplayBoard> tmpdisplayBoard = shared_ptr<DisplayBoard>(new DisplayBoard(tmpboard));
+      Game tmpgame = Game(tmpboard, tmpdisplayBoard);
+      game_t *newGame = new game_t{
+        .board = tmpboard,
+        .displayBoard = tmpdisplayBoard,
+        .game = tmpgame
+      };
+      newGame->players.push_back(users[userIndex]);
+      this->games.push_back(newGame);
+      users[userIndex]->activeGame = this->games.size() - 1;
+      message_t strBoard;
+      strBoard.message = newGame->displayBoard->printBoard();
+      ssend(users[userIndex]->socket, &strBoard);
+      }
   }
   if (msg.message.substr(1, 4) == "join"){
-    string toJoin = msg.message.substr(6, 2);
-    this->games[atoi(toJoin.c_str())]->players.push_back(users[userIndex]);
-    users[userIndex]->activeGame = atoi(toJoin.c_str());
-    message_t strBoard;
-    strBoard.message = this->displayBoard->printBoard();
-    this->forward(&strBoard, games[users[userIndex]->activeGame]->players);
+    if (users[userIndex]->activeGame == -1) {
+      string toJoin = msg.message.substr(6, 2);
+      game_t *game = games[atoi(toJoin.c_str())];
+      game->players.push_back(users[userIndex]);
+      users[userIndex]->activeGame = atoi(toJoin.c_str());
+      message_t strBoard;
+      strBoard.message = game->displayBoard->printBoard();
+      ssend(users[userIndex]->socket, &strBoard);
+      if ((int)game->players.size() == game->neededPlayers){
+        message_t startGame;
+        startGame.message = "[system] : C'est a " + game->players[game->activePlayer]->name + " de jouer!";
+        std::cout << startGame.message << std::endl;
+        this->forward(&startGame, game->players);
+      }
+    }
   }
 }
 
 void Server::handleMove(string command, int clientSocket){
   //gestion d'une commande (/Message) d'un utilisateur
   game_t *currentGame = this->games[users[clientSocket]->activeGame];
-  if(clientSocket == currentGame->players[currentGame->activePlayer]->socket && this->game.checkInput(command, currentGame->activePlayer)){
+  if(clientSocket == currentGame->players[currentGame->activePlayer]->socket && currentGame->game.checkInput(command, currentGame->activePlayer)){
     //Si le coup demandé est valide, on le joue et on affiche le plateau
     message_t strBoard;
-    strBoard.message = this->displayBoard->printBoard();
+    strBoard.message = currentGame->displayBoard->printBoard();
     this->forward(&strBoard, currentGame->players);
     //Si la partie est finie : on affiche un message annoncant le joueur gagnant
-    if (this->board->isEnd()) {
+    if (currentGame->board->isEnd()) {
       message_t endingMsg;
       endingMsg.message = "[system] : " + users[currentGame->activePlayer]->name + " remporte la victoire!";
       this->forward(&endingMsg, currentGame->players);

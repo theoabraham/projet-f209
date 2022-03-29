@@ -7,21 +7,18 @@
 
 #include "socketlib.h"
 
-//using namespace std;
-
 Client::Client() {
 }
 
 void Client::runMenu(string pseudo, string mdp, string ip, int port){
   keypad(view.inputWindow, TRUE);
-  //std::vector<const char*> basicOptions = {"Option :", "(P)lay", "Choose (G)amemode"};
-  //std::vector<const char*> gameModeOptions = {"(C)lassic", "(D)estruQtion", "(Q)QQuorridor"};
-  while(true){
+  bool _ = true;
+  while(_){
     char menuChoice;
     view.displayMenu({"Option :", "(P)lay", "Chose (N)umber of players", "Chose (G)amemode"});
     view.fetchInput(menuChoice);
     if (menuChoice == 'P'){
-      this->runGame(pseudo, mdp, ip, port);
+      _ = false;
     }
     if (menuChoice == 'N') {
       view.displayMenu({"(2) joueurs", "(4) joueurs", "Certains modes ne permettent que 4 joueurs"});
@@ -48,6 +45,7 @@ void Client::runMenu(string pseudo, string mdp, string ip, int port){
       }
     }
   }
+  this->runGame(pseudo, mdp, ip, port);
 }
 
 void Client::runGame(string pseudo, string mdp, string ip, int port) {
@@ -148,7 +146,9 @@ int main(int argc, char const *argv[]) {
   }
 
   char pseudo[64];
+  std::cout << "Entrez un pseudo" << std::endl;
   cin.getline(pseudo, 64);
+  std::cout << "Entrez un mot de passe" << std::endl;
   char mdp[16];
   cin.getline(mdp, 16);
   Client client = Client();
