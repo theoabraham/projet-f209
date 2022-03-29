@@ -21,10 +21,7 @@ void Client::runMenu(string pseudo, string mdp, string ip, int port){
     view.displayMenu({"Option :", "(P)lay", "Chose (N)umber of players", "Chose (G)amemode"});
     view.fetchInput(menuChoice);
     if (menuChoice == 'P'){
-      this->runGame(pseudo, mdp, ip.c_str(), port);
-      message_t _;
-      _.message = "/Play";
-      ssend(this->socket, &_);
+      this->runGame(pseudo, mdp, ip, port);
     }
     if (menuChoice == 'N') {
       view.displayMenu({"(2) joueurs", "(4) joueurs", "Certains modes ne permettent que 4 joueurs"});

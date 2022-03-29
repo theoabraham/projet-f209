@@ -10,8 +10,8 @@ class Client {
  private:
   int socket;
   int line_counter=0;
-  char gameMode[8] = "C\0";
-  char numberPlayers[8] = "2\0";
+  char gameMode[8] = "C";
+  char numberPlayers[8] = "2";
   WindowNC view = WindowNC();
 
  private:

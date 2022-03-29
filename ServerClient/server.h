@@ -50,6 +50,7 @@ class Server {
   void disconnectUser(unsigned user_num);
   void forward(message_t* msg, vector<user_t*> receivers);
   void handleMove(string command, int clientSocket);
+  void handleCommand(int userIndex, message_t msg);
 
  public:
   Server();
