@@ -9,32 +9,52 @@ WallsBox::WallsBox(QWidget *parent)
     setMinimumSize(200, 200);
     setAcceptDrops(false);
 
-    QLabel *murH= new QLabel(this);
+    murH= new QLabel(this);
     murH->setPixmap(QPixmap(":/images/murH.jpg"));
     murH->move(30, 50);
     murH->show();
     murH->setAttribute(Qt::WA_DeleteOnClose);
 
-
-    QLabel *murV = new QLabel(this);
+    murV = new QLabel(this);
     murV->setPixmap(QPixmap(":/images/murV.jpg"));
-    murV->move(10, 25);
+    murV->move(5, 25);
     murV->show();
     murV->setAttribute(Qt::WA_DeleteOnClose);
 }
 
+WallsBox::~WallsBox(){
+    delete murH;
+    delete murV;
+}
+
+std::string WallsBox:: getTypeOfWall(){
+    return wallType;
+}
+
+void WallsBox::setTypeOfWall(QLabel *wall){
+    if (wall == murH){
+        wallType = "H";
+    }
+    else if (wall == murV){
+        wallType = "V";
+    }
+}
 
 void WallsBox::mousePressEvent(QMouseEvent *event)
 {
-    QLabel *child = static_cast<QLabel*>(childAt(event->position().toPoint()));
+    QLabel *child = static_cast<QLabel*>(childAt(event->pos()));
     if (!child)
         return;
 
-    QPixmap pixmap = child->pixmap(Qt::ReturnByValue);
+    setTypeOfWall(child);
+    std::cout<<getTypeOfWall()<<std::endl;
+
+    QPixmap pixmap = *child->pixmap();
 
     QByteArray itemData;
+
     QDataStream dataStream(&itemData, QIODevice::WriteOnly);
-    dataStream << pixmap << QPoint(event->position().toPoint() - child->pos());
+    dataStream << pixmap << QPoint(event->pos() - child->pos());
 
     QMimeData *mimeData = new QMimeData;
     mimeData->setData("application/x-dnditemdata", itemData);
@@ -42,7 +62,7 @@ void WallsBox::mousePressEvent(QMouseEvent *event)
     QDrag *drag = new QDrag(this);
     drag->setMimeData(mimeData);
     drag->setPixmap(pixmap);
-    drag->setHotSpot(event->position().toPoint() - child->pos());
+    drag->setHotSpot(event->pos() - child->pos());
 
     QPixmap tempPixmap = pixmap;
     QPainter painter;
@@ -59,4 +79,3 @@ void WallsBox::mousePressEvent(QMouseEvent *event)
         child->setPixmap(pixmap);
     }
 }
-

@@ -17,7 +17,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     boardgui.cpp \
-    main.cpp \ 
+    main.cpp \
     rankwidget.cpp \
     friendlistwidget.cpp \
     gamewindow.cpp \
@@ -26,7 +26,8 @@ SOURCES += \
     friend.cpp \
     login.cpp \
     wallCell.cpp \
-    wallsBox.cpp
+    wallsBox.cpp \
+    pawncell.cpp
 
 HEADERS += \
     boardgui.h \
@@ -38,7 +39,8 @@ HEADERS += \
     friend.h \
     login.h \
     wallCell.h \
-    wallsBox.h 
+    wallsBox.h \
+    pawncell.h
     
 
 TRANSLATIONS += \
