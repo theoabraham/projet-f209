@@ -2,26 +2,26 @@
 #define FRIEND_H
 
 #include <QtWidgets>
-#include "chatroom.h"
 
 class Friend : public QWidget
 {
     Q_OBJECT
+
 private:
     QHBoxLayout *actions;
     QLabel *nameLabel;
     QLabel *rankLabel;
-    QPushButton *messageButton;
-    QPushButton *unfriendButton;
-    Chatroom *privateChat;
+    QPushButton *button;
 
 public:
-    Friend(QString name, QString rank, QWidget *parent=0);
+    Friend(bool isFriend, QString name="name", QString rank="n", QWidget *parent=0);
+
+    ~Friend();
+
+    void setButton(bool isFriend);
 
 public slots:
-    void openChat();
-
-    void unfriendRequested();
+    void friendRequested();
 };
 
 #endif // FRIEND_H

@@ -32,6 +32,6 @@ void FriendListWidget::setFriends() {
 }
 
 void FriendListWidget::addFriend(QString name, QString rank) {
-    Friend *newFriend = new Friend(name, rank);
+    Friend *newFriend = new Friend(true, name, rank);
     friendsList.push_back(newFriend);
 }

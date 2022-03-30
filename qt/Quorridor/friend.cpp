@@ -1,25 +1,38 @@
 #include "friend.h"
 
-Friend::Friend(QString name, QString rank, QWidget *parent) : QWidget(parent)
+Friend::Friend(bool isFriend, QString name, QString rank, QWidget *parent) : QWidget(parent)
 {
     actions = new QHBoxLayout(this);
     nameLabel = new QLabel(name);
     actions->addWidget(nameLabel);
     rankLabel = new QLabel("Rank #"+rank);
     actions->addWidget(rankLabel);
-    messageButton = new QPushButton("Message");
-    connect(messageButton, SIGNAL(clicked()), this, SLOT(openChat()));
-    actions->addWidget(messageButton);
-    unfriendButton = new QPushButton("Unfriend");
-    connect(unfriendButton, SIGNAL(clicked()), this, SLOT(unfriendRequested()));
-    actions->addWidget(unfriendButton);
+    setButton(isFriend);
+    actions->addWidget(button);
 }
 
-void Friend::openChat() {
-    privateChat = new Chatroom(nameLabel->text());
-    privateChat->show();
+Friend::~Friend() {
+    delete actions;
+    delete nameLabel;
+    delete rankLabel;
+    delete button;
 }
 
-void Friend::unfriendRequested() {
-    unfriendButton->setText("Add friend");
+void Friend::setButton(bool isFriend) {
+    if (isFriend) {
+        button = new QPushButton("Unfriend");
+    }
+    else {
+        button = new QPushButton("Add friend");
+    }
+    connect(button, SIGNAL(clicked()), this, SLOT(friendRequested()));
+}
+
+void Friend::friendRequested() {
+    if (button->text() == "Add friend") {
+        button->setText("Unfriend");
+    }
+    else {
+        button->setText("Add friend");
+    }
 }

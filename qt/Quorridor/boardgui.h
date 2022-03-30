@@ -5,12 +5,15 @@
 #include <iostream>
 #include "wallsBox.h"
 #include "wallCell.h"
+#include "friend.h"
 
 class BoardGUI : public QWidget
 {
     QGridLayout *boardGUI;
-    QVBoxLayout *gameLayout;
+    QGridLayout *gameLayout;
     WallsBox *wallsPlacement;
+    QHBoxLayout *opponentSpace;
+    Friend *opponent;
 
     QLabel *cell;
     WallCell *wallCellH;

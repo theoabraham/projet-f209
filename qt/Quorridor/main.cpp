@@ -1,12 +1,12 @@
 #include <QtWidgets>
 
-#include "login.h"
+#include "menuwindow.h"
 
 int main(int argv, char *args[])
 {
     QApplication app(argv, args);
-    Start startWindow;
-    startWindow.show();
+    MenuWindow window;
+    window.show();
     return app.exec();
 }
 

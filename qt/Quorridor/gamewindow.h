@@ -14,12 +14,6 @@ class GameWindow : public QWidget
     Q_OBJECT
 
 private:
-    QHBoxLayout *centralLayout;
-    QTabWidget *gameViews;
-    QWidget *game;
-    FriendListWidget *friends;
-    RankWidget *ranking;
-
     QGridLayout *mainLayout;
     Chatroom *chatroom;
     BoardGUI *boardgui;
@@ -28,10 +22,6 @@ private:
 
 public:
     GameWindow(QWidget *parent=0);
-
-    ~GameWindow();
-
-    void setGame();
 
 public slots:
     void leaveAndSave();

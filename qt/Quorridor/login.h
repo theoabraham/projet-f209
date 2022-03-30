@@ -1,5 +1,4 @@
 #include <QtWidgets>
-#include "menuwindow.h"
 
 #ifndef LOGIN_H
 #define LOGIN_H
@@ -15,12 +14,11 @@ private:
     QLineEdit *lpseudoLine;
     QLineEdit *lpasswordLine;
     QPushButton *connection;
-    MenuWindow *menu;
 
 public:
     Login(QWidget *parent=0);
 
-    ~Login();
+    QPushButton* getConnection() {return connection;}
 
     void setIntro();
 
@@ -28,10 +26,7 @@ public:
 
     void setConnection();
 
-
-public slots:
-    void launchMenu(); //TODO bouger dans public
-    void checkPassword();
+    bool checkPassword();
 };
 
 #endif // LOGIN_H
@@ -46,6 +41,7 @@ class SignUp : public QWidget
 
 private:
     QVBoxLayout *signUpLayout;
+    QLabel *sIntro;
     QFormLayout *sEntry;
     QLineEdit *sPseudoLine;
     QLineEdit *sPasswordLine;
@@ -56,38 +52,14 @@ private:
 public:
     SignUp(QWidget *parent=0);
 
-    ~SignUp();
+    QPushButton* getCreate() {return create;}
 
-public slots:
-    void backToStart();
+    void setIntro();
+
+    void setEntry();
+
+    void setButton();
 };
 
 #endif // SIGNUP_H
-
-#ifndef START_H
-#define START_H
-
-class Start : public QWidget
-{
-    Q_OBJECT
-
-private:
-    QVBoxLayout *startLayout;
-    QLabel *welcome;
-    QLabel *instruction;
-    QPushButton *loginButton;
-    QPushButton *signUpButton;
-    Login *logWindow;
-    SignUp *suWindow;
-
-public:
-    Start(QWidget *parent=0);
-
-public slots:
-    void loginWindow();
-
-    void signUpWindow();
-};
-
-#endif //START_H
 

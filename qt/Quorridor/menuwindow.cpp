@@ -3,48 +3,21 @@
 
 MenuWindow::MenuWindow(QMainWindow *parent): QMainWindow(parent)
 {
-    setWindowTitle("Quoridor - Menu");
-    setMinimumSize(500,150);
+    setWindowTitle("Quoridor");
+    setMinimumSize(900,700);
 
     menuSelection = new QTabWidget();
-    menuSelection->setMinimumSize(sizeHint());
+    menuSelection->resize(sizeHint());
 
-    play = new QWidget();
-    setStart();
-    menuSelection->addTab(play, "New Game");
+    login = new Login();
+    connect(login->getConnection(), SIGNAL(clicked()), this, SLOT(launchMenu()));
+    menuSelection->addTab(login, "Login");
 
-    lobby = new QWidget();
-    setJoin();
-    menuSelection->addTab(lobby, "Join Lobby");
+    signUp = new SignUp();
+    connect(signUp->getCreate(), SIGNAL(clicked()), this, SLOT(createAccount()));
+    menuSelection->addTab(signUp, "Sign up");
 
-    friends = new FriendListWidget();
-    menuSelection->addTab(friends, "Friends");
-
-    ranking = new RankWidget();
-    menuSelection->addTab(ranking, "Ranking");
     setCentralWidget(menuSelection);
-}
-
-MenuWindow::~MenuWindow() {
-    delete menuSelection;
-    delete play;
-    delete lobby;
-    delete friends;
-    delete ranking;
-
-    delete playLayout;
-    delete playIntro;
-    delete options;
-    delete modeTitle;
-    delete modeChoice;
-    delete playersTitle;
-    delete playersChoice;
-    delete startButton;
-    delete game;
-
-    delete joinLayout;
-    delete lobbyIntro;
-    delete rowLobby;
 }
 
 void MenuWindow::setStart() {
@@ -62,6 +35,7 @@ void MenuWindow::setStart() {
     modeChoice->addItem("ClassiQ");
     modeChoice->addItem("DestruQtion");
     modeChoice->addItem("QQQuoridor");
+    modeChoice->addItem("Minos");
     options->addWidget(modeChoice, 0, 1);
     playersTitle = new QLabel("Number of players");
     options->addWidget(playersTitle, 1, 0);
@@ -85,8 +59,13 @@ void MenuWindow::setJoin() {
     lobbyIntro->setAlignment(Qt::AlignHCenter);
     joinLayout->addWidget(lobbyIntro);
 
-    rowLobby = new LobbyWidget();
-    joinLayout->addWidget(rowLobby);
+    row = new QHBoxLayout();
+    lobbyNb = new QLabel("Lobby #1");
+    row->addWidget(lobbyNb);
+    joinButton = new QPushButton("Join");
+    connect(joinButton, SIGNAL(clicked()), this, SLOT(joinGame()));
+    row->addWidget(joinButton);
+    joinLayout->addLayout(row);
     joinLayout->addStretch();
 }
 
@@ -94,6 +73,48 @@ void MenuWindow::startGame() {
     std::string mode = modeChoice->currentText().toStdString();
     std::string nbPlayers = playersChoice->currentText().toStdString();
     //TODO impliquer dans la construction de gamewindow
+    newGameLayout = new QHBoxLayout(currentPlay);
     game = new GameWindow();
-    game->show();
+    newGameLayout->addWidget(game);
+    menuSelection->setTabEnabled(1, true);
+    menuSelection->setTabEnabled(0, false);
+}
+
+void MenuWindow::joinGame() {
+    newGameLayout->removeWidget(game);
+    game = new GameWindow();
+    newGameLayout->addWidget(game);
+    menuSelection->setCurrentIndex(1);
+    menuSelection->setTabEnabled(1,true);
+    menuSelection->setTabEnabled(0, false);
+}
+
+void MenuWindow::launchMenu() {
+    if (login->checkPassword()) {
+        menuSelection->removeTab(1);
+        menuSelection->removeTab(0);
+
+        play = new QWidget();
+        setStart();
+        menuSelection->addTab(play, "New Game");
+
+        currentPlay = new QWidget();
+        menuSelection->addTab(currentPlay, "Current Game");
+        menuSelection->setTabEnabled(1, false);
+
+        lobby = new QWidget();
+        setJoin();
+        menuSelection->addTab(lobby, "Join Lobby");
+
+        friends = new FriendListWidget();
+        menuSelection->addTab(friends, "Friends");
+
+        ranking = new RankWidget();
+        menuSelection->addTab(ranking, "Ranking");
+    }
+}
+
+void MenuWindow::createAccount() {
+    //TODO créer un compte dans la DB
+    menuSelection->setCurrentIndex(0);
 }

@@ -1,14 +1,19 @@
 #include "boardgui.h"
 
 BoardGUI::BoardGUI(QWidget *parent): QWidget(parent){
-    setWindowTitle("Quoridor");
-    gameLayout = new QVBoxLayout(this);
+    gameLayout = new QGridLayout(this);
     boardGame();
-    gameLayout->addLayout(boardGUI);
+    gameLayout->addLayout(boardGUI,0,0,1,2);
 
     wallsPlacement = new WallsBox;
     wallsPlacement->setFixedSize(QSize(120,100));
-    gameLayout->addWidget(wallsPlacement);
+    gameLayout->addWidget(wallsPlacement,1,0);
+
+    opponentSpace = new QHBoxLayout();
+    opponentSpace->addStretch();
+    opponent = new Friend(false);
+    opponentSpace->addWidget(opponent);
+    gameLayout->addLayout(opponentSpace,1,1);
 }
 
 BoardGUI::~BoardGUI(){

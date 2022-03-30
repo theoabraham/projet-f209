@@ -17,7 +17,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     boardgui.cpp \
-    lobbywidget.cpp \
     main.cpp \ 
     rankwidget.cpp \
     friendlistwidget.cpp \
@@ -31,7 +30,6 @@ SOURCES += \
 
 HEADERS += \
     boardgui.h \
-    lobbywidget.h \
     rankwidget.h \
     friendlistwidget.h \
     gamewindow.h \ 
