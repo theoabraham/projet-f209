@@ -24,14 +24,15 @@ void Server::run(int port) {
 
   fd_set read_set;
   while (true) {
+    //on attend les entrées des clients en boucle, sans jamais s'interrompre
     this->prepateFDSet(&read_set);
     int nactivities = checked(select(this->max_fd + 1, &read_set, nullptr, nullptr, nullptr));
-    this->handleSocketReadActivity(&read_set, nactivities);
+    this->handleSocketReadActivity(&read_set, nactivities); //on gère les messages des clients
   }
 }
 
 void Server::forward(message_t* msg, vector<user_t*> receivers) {
-  //envoie le message contenu dans msg a tous les clients connectés
+  //envoie le message contenu dans msg a tous les clients contenus dans la liste des destinataires
   for (unsigned i = 0; i < receivers.size(); i++) {
     user_t* u = receivers[i];
     if (ssend(u->socket, msg) <= 0) {
@@ -59,7 +60,7 @@ void Server::handleSocketReadActivity(fd_set* in_set, int& nactivities) {
     nactivities--;
   }
   unsigned i = this->users.size() - 1;
-  while (nactivities > 0 and i >= 0) {
+  while (nactivities > 0 and i >= 0) { //pour chaque utilisateur, on analyse son message
     int socket = this->users[i]->socket;
     message_t msg;
     if (FD_ISSET(socket, in_set)) {
@@ -73,26 +74,29 @@ void Server::handleSocketReadActivity(fd_set* in_set, int& nactivities) {
       } else {
         // message_buffer[nbytes] = '\0';
         bool enoughPlayers;
-        if (users[i]->activeGame != -1){
+        if (users[i]->activeGame != -1){ //verification si le joueur est dans une partie 
+        //et si c'est le cas si la partie est en cours ou pourrais l'être (assez de joueurs)
           enoughPlayers = ((int)this->games[users[i]->activeGame]->players.size() - 1 >= this->games[users[i]->activeGame]->neededPlayers);
         } else {
           enoughPlayers = false;
-        }
-        if((msg.message.substr(0,1) == (string)"/")){
-          if (enoughPlayers){
+        } 
+        if((msg.message.substr(0,1) == (string)"/")){ //Si le message commence par "/" c'est une commande
+          if (enoughPlayers){ //si y'a assez de joueurs c'est possiblement un coup
             std::string command = msg.message.substr(msg.message.length() - 4, 4);
-            this->handleMove(command, socket);
+            this->handleMove(command, socket); //donc on vérifie si c'est un coup
           }
-          this->handleCommand(i, msg);
+          this->handleCommand(i, msg); //sinon c'est peut etre une commande, on sait pas
         } else {
+          //Si c'est ni une commande ni une déconnexion alors c'est un message régulier
+          //et il sera traité comme tel
           char date_buffer[32];
           struct tm* local_time = localtime(&msg.timestamp);
-          strftime(date_buffer, sizeof(date_buffer), "%H:%M:%S", local_time);
+          strftime(date_buffer, sizeof(date_buffer), "%H:%M:%S", local_time); //on génère le marqueur temporel du message
           msg.message = "[" + string(date_buffer) + "] " + this->users[i]->name + ": " + msg.message;
-          if (users[i]->activeGame != -1){
+          if (users[i]->activeGame != -1){ //si le joueur est en partie, il s'adresse aux autres joueurs
             this->forward(&msg, games[users[i]->activeGame]->players);
           } else {
-            this->forward(&msg, users);
+            this->forward(&msg, users); //sinon il s'adresse aux joueurs dans leur totalité
           }
         }
       }
@@ -102,50 +106,54 @@ void Server::handleSocketReadActivity(fd_set* in_set, int& nactivities) {
 }
 
 void Server::handleCommand(int userIndex, message_t msg){
+  //Cas dans lequel le message serait peut etre une commande
   if (msg.message.substr(1, 6) == "leave"){
+    //ca m'a l'air assez auto-explicatif
     this->disconnectUser(userIndex);
   }
   if (msg.message.substr(1, 5) == "help"){
+    //la encore c'est pas dur a comprendre
     message_t helpMessage;
     helpMessage.message = "[system] : " + games[users[userIndex]->activeGame]->game.inputFormat() + " (/leave pour quitter.)";
     ssend(users[userIndex]->socket, &helpMessage);
   }
   if (msg.message.substr(1, 5) == "play"){
+    //commande pour commencer une partie
     if (users[userIndex]->activeGame == -1){
       shared_ptr<Board> tmpboard = shared_ptr<Board>(new DestruQtionBoard(2));
       shared_ptr<DisplayBoard> tmpdisplayBoard = shared_ptr<DisplayBoard>(new DisplayBoard(tmpboard));
       Game tmpgame = Game(tmpboard, tmpdisplayBoard);
-      game_t *newGame = new game_t{
+      game_t *newGame = new game_t{ //création de la nouvelle partie
         .board = tmpboard,
         .displayBoard = tmpdisplayBoard,
         .game = tmpgame
       };
-      newGame->players.push_back(users[userIndex]);
-      this->games.push_back(newGame);
-      users[userIndex]->activeGame = this->games.size() - 1;
+      newGame->players.push_back(users[userIndex]); //on ajoute l'utilisateur a sa partie
+      this->games.push_back(newGame); //on ajoute la partie a l'index des parties du serveur
+      users[userIndex]->activeGame = this->games.size() - 1; //on ajoute la partie au profil de l'utilisateur
       message_t strBoard;
       strBoard.message = newGame->displayBoard->printBoard();
-      ssend(users[userIndex]->socket, &strBoard);
+      ssend(users[userIndex]->socket, &strBoard); //on envoi son plateau a l'utilisateur
       }
   }
   if (msg.message.substr(1, 4) == "join"){
-    if (users[userIndex]->activeGame == -1) {
-      string toJoin = msg.message.substr(6, 2);
-      game_t *game = games[atoi(toJoin.c_str())];
+    //rejoindre une partie encore en cours
+    if (users[userIndex]->activeGame == -1) { //si le joueur n'est pas deja dans une partie
+      string toJoin = msg.message.substr(6, 2); //index de la partie a rejoindre
+      game_t *game = games[atoi(toJoin.c_str())]; //la partie en question
       game->players.push_back(users[userIndex]);
       users[userIndex]->activeGame = atoi(toJoin.c_str());
       message_t strBoard;
       strBoard.message = game->displayBoard->printBoard();
-      ssend(users[userIndex]->socket, &strBoard);
-      std::cout << ((int)game->players.size() == game->neededPlayers) << std::endl;
-      if ((int)game->players.size() == game->neededPlayers){
+      ssend(users[userIndex]->socket, &strBoard); //on envoie le plateau au joueur qui rejoint la partie
+      if ((int)game->players.size() == game->neededPlayers){ //si le nombre de joueur requis est atteint
         message_t startGame;
-        startGame.message = "[system] : C'est a " + game->players[game->activePlayer]->name + " de jouer!";
+        startGame.message = "[system] : C'est a " + game->players[game->activePlayer]->name + " de jouer!"; //on previens les joueurs d'a qui c'est le tour
         std::cout << startGame.message << std::endl;
         this->forward(&startGame, game->players);
       }
     }
-  }
+  }//si la commande n'est pas implémentée, le message sera simplement ignoré
 }
 
 void Server::handleMove(string command, int clientSocket){
@@ -162,7 +170,7 @@ void Server::handleMove(string command, int clientSocket){
       endingMsg.message = "[system] : " + users[currentGame->activePlayer]->name + " remporte la victoire!";
       this->forward(&endingMsg, currentGame->players);
     } else { //Sinon, on affiche un message qui annonce le début du tour du nouveau joueur actif.
-      currentGame->activePlayer = (currentGame->activePlayer + 1) % currentGame->neededPlayers;
+      currentGame->activePlayer = (currentGame->activePlayer + 1) % currentGame->neededPlayers; //on passe au tour du prochain joueur
       message_t newTurnMsg;
       newTurnMsg.message = "[system] : C'est a " + currentGame->players[currentGame->activePlayer]->name + " de jouer!";
       this->forward(&newTurnMsg, currentGame->players);

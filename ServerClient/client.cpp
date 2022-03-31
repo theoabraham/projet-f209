@@ -19,48 +19,46 @@ void Client::runMenu(string pseudo, string mdp, string ip, int port){
   bool _ = true;
   while(_){
     char menuChoice;
-    view.displayMenu({"Option :", "(P)lay", "Chose (N)umber of players", "Chose (G)amemode"});
-    view.fetchInput(menuChoice);
-    if (menuChoice == 'P'){
+    view.displayMenu({"Option :", "(P)lay", "Chose (N)umber of players", "Chose (G)amemode"}); //options de base
+    view.fetchInput(menuChoice); //demande un choix a l'utilisateur
+    if (menuChoice == 'P'){ //les choix prennent la forme de lettres majuscules.
       _ = false;
     }
     if (menuChoice == 'N') {
-      view.displayMenu({"(2) joueurs", "(4) joueurs", "Certains modes ne permettent que 4 joueurs"});
+      view.displayMenu({"(2) joueurs", "(4) joueurs", "Certains modes ne permettent que 4 joueurs"}); //options de nombre de joueurs
       view.fetchInput(*numberPlayers);
-      this->gameMode[strlen(numberPlayers)]='\0';
-      while (strcmp(numberPlayers, "2\0") != 0 && strcmp(numberPlayers, "4\0") != 0) {
+      while (strcmp(numberPlayers, "2") != 0 && strcmp(numberPlayers, "4") != 0) { //tant que la réponse n'est pas correcte : 
         view.clearWindow(view.chatBoxWindow);
         mvwprintw(view.chatWindow, 3, 0, "Wrong input, please enter 2 or 4.");
         wrefresh(view.chatWindow);
         view.fetchInput(*numberPlayers);
-        this->numberPlayers[strlen(numberPlayers)]='\0';
       }
+      this->numberPlayers[strlen(numberPlayers)]='\0';
     }
     if (menuChoice == 'G'){
-      view.displayMenu({"(C)lassic", "(D)estruQtion", "(Q)QQuorridor"});
+      view.displayMenu({"(C)lassic", "(D)estruQtion", "(Q)QQuorridor"}); //options de mode de jeu
       view.fetchInput(*gameMode);
-      this->gameMode[strlen(gameMode)]='\0';
-      while (strcmp(gameMode, "C\0") != 0 && strcmp(gameMode, "D\0") != 0 && strcmp(gameMode, "Q\0") != 0) {
+      while (strcmp(gameMode, "C") != 0 && strcmp(gameMode, "D") != 0 && strcmp(gameMode, "Q") != 0) { //tant que la réponse n'est pas correcte : 
         view.clearWindow(view.chatBoxWindow);
         mvwprintw(view.chatWindow, 3, 0, "Wrong input, please enter C, D or Q.");
         wrefresh(view.chatWindow);
         view.fetchInput(*gameMode);
-        this->gameMode[strlen(gameMode)]='\0';
       }
+      this->gameMode[strlen(gameMode)]='\0';
     }
   }
-  this->runGame(pseudo, mdp, ip, port);
+  this->runGame(pseudo, mdp, ip, port); //normalement, lance le jeu, mais la ca bug si on le lance d'ici...
 }
 
 void Client::runGame(string pseudo, string mdp, string ip, int port) {
   //Le client se connecte au serveur, et créé un thread pour gérer la reception de messages.
   werase(view.chatWindow);
   wrefresh(view.chatWindow);
-  this->socket = this->handshake(ip, port, pseudo, mdp);
+  this->socket = this->handshake(ip, port, pseudo, mdp); //connection au serveur
   pthread_t tid;
-  pthread_create(&tid, nullptr, Client::manageInputs, this);
-  this->manageSocketTraffic();
-  close(this->socket);
+  pthread_create(&tid, nullptr, Client::manageInputs, this); //gestion des inputs
+  this->manageSocketTraffic(); //gestion des messages entrants
+  close(this->socket); //eccessible seulement quand le client se ferme
 }
 
 void *Client::manageInputs(void *instance) {
@@ -74,12 +72,10 @@ void Client::manageInputs() {
   // Le client peut ecrire et envoyer ses messages
   char buffer[1024];
   while (true) {
-    view.fetchInput(*buffer);
+    view.fetchInput(*buffer); //renvoi le message de l'utilisateur dans le buffer
     buffer[strlen(buffer)] = '\0';
     message_t msg = {.timestamp = time(NULL), .message = string(buffer)};
-    werase(view.inputWindow);
-    box(view.inputWindow, 0, 0);
-    wrefresh(view.inputWindow);
+    view.clearWindow(view.inputWindow); //redessiner la fenetre d'input quand le message est écrit
     if (ssend(this->socket, &msg) <0) {
       exit(0);
     }
@@ -98,11 +94,11 @@ void Client::manageSocketTraffic() {
     if (nbytes <= 0) {
       exit(0);
     }
-    if (msg.message.substr(0,1) == (string)"["){
+    if (msg.message.substr(0,1) == (string)"["){ //un message commencant par "[" est un message d'utilisateur
       mvwprintw(view.chatWindow, y+1, 1, msg.message.c_str());
       getyx(view.chatWindow, y, x);
       wrefresh(view.chatWindow);
-    } else {
+    } else { //sinon c'est un plateau, 100% sûr
       mvwprintw(view.boardWindow, 0, 0, msg.message.c_str());
       wrefresh(view.boardWindow);
     }
@@ -161,6 +157,6 @@ Ici style en argv 2, ip passe en argv 3, style Qt par défaut
   char mdp[16];
   cin.getline(mdp, 16);
   Client client = Client(); //ici Client() prend un parametre style.
-  client.runGame(pseudo, mdp, ip.c_str(), port);
+  client.runMenu(pseudo, mdp, ip.c_str(), port);
   return 0;
 }
