@@ -152,6 +152,6 @@ int main(int argc, char const *argv[]) {
   char mdp[16];
   cin.getline(mdp, 16);
   Client client = Client();
-  client.runMenu(pseudo, mdp, ip.c_str(), port);
+  client.runGame(pseudo, mdp, ip.c_str(), port);
   return 0;
 }
