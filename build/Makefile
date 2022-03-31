@@ -6,37 +6,6 @@
 # Command: /usr/lib/qt5/bin/qmake -o Makefile quoridor.pro
 #############################################################################
 
-FLAGS=-Wall -Werror -std=c++17 -g
-
-all: client server
-
-client: ../ServerClient/client.cpp ../ServerClient/socketlib.o ../ServerClient/client.h ../ServerClient/WindowNC.hpp
-	g++ -o client ../ServerClient/client.cpp ../ServerClient/socketlib.o ../ServerClient/socketlib.h ../ServerClient/client.h ../ServerClient/WindowNC.hpp ${FLAGS} -pthread -lncursesw
-
-server: ../ServerClient/server.cpp $(MODEL) $(GAMEMODES) $(VIEW) $(CONTROLLER) $(DATABASE) ../ServerClient/socketlib.o ../ServerClient/server.h
-	g++ $(MODEL) $(GAMEMODES) $(VIEW) $(CONTROLLER) $(DATABASE) -g -o server ../ServerClient/server.cpp ../ServerClient/socketlib.o ../ServerClient/socketlib.h ${FLAGS} -l sqlite3
-
-socketlib.o: socketlib.cpp socketlib.h
-	g++ -c socketlib.cpp ${FLAGS}
-
-MODEL = ../Quorridor/Model/Board.cpp ../Quorridor/Model/Board.hpp ../Quorridor/Model/MotherCell.hpp ../Quorridor/Model/MotherCell.cpp ../Quorridor/Model/Piece.hpp ../Quorridor/Model/Player.hpp ../Quorridor/Model/Position.hpp ../Quorridor/Model/Position.cpp
-
-GAMEMODES = ../Quorridor/Model/Gamemodes/DestruQtion.cpp ../Quorridor/Model/Gamemodes/DestruQtion.hpp ../Quorridor/Model/Gamemodes/QQQuoridor.cpp ../Quorridor/Model/Gamemodes/QQQuoridor.hpp
-
-VIEW = ../Quorridor/View/DisplayBoard.cpp ../Quorridor/View/DisplayBoard.hpp
-
-CONTROLLER = ../Quorridor/Controller/Game.cpp ../Quorridor/Controller/Game.hpp
-
-DATABASE = ../DataBase/Database.cpp ../DataBase/Database.h
-
-#clean:
-#	rm -f client server *.o
-
-#clear: clean
-
-
-
-
 MAKEFILE      = Makefile
 
 EQ            = =
@@ -47,7 +16,7 @@ CC            = gcc
 CXX           = g++
 DEFINES       = -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB
 CFLAGS        = -pipe -O2 -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
-CXXFLAGS      = -pipe -O2 -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
+CXXFLAGS      = -pipe -lncursesw -pthread -O2 -std=gnu++11 -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
 INCPATH       = -I. -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++
 QMAKE         = /usr/lib/qt5/bin/qmake
 DEL_FILE      = rm -f
@@ -71,11 +40,12 @@ DISTNAME      = quoridor1.0.0
 DISTDIR = /home/sophie/Documents/Projet\ infof209/projet_fork/projet-f209/build/.tmp/quoridor1.0.0
 LINK          = g++
 LFLAGS        = -Wl,-O1
-LIBS          = $(SUBLIBS) /usr/lib/x86_64-linux-gnu/libQt5Widgets.so /usr/lib/x86_64-linux-gnu/libQt5Gui.so /usr/lib/x86_64-linux-gnu/libQt5Core.so -lGL -lpthread   
+LIBS          = $(SUBLIBS) /usr/lib/x86_64-linux-gnu/libQt5Widgets.so /usr/lib/x86_64-linux-gnu/libQt5Gui.so /usr/lib/x86_64-linux-gnu/libQt5Core.so -lGL -lpthread -lncursesw  
 AR            = ar cqs
 RANLIB        = 
 SED           = sed
 STRIP         = strip
+
 ####### Output directory
 
 OBJECTS_DIR   = ./
@@ -93,7 +63,9 @@ SOURCES       = ../Quorridor/View/Interface/boardgui.cpp \
 		../Quorridor/View/Interface/login.cpp \
 		../Quorridor/View/Interface/wallCell.cpp \
 		../Quorridor/View/Interface/wallsBox.cpp \
-		../Quorridor/View/Interface/pawncell.cpp qrc_images.cpp \
+		../Quorridor/View/Interface/pawncell.cpp \
+		../ServerClient/client.cpp \
+		../ServerClient/socketlib.cpp qrc_images.cpp \
 		moc_boardgui.cpp \
 		moc_gamewindow.cpp \
 		moc_menuwindow.cpp \
@@ -112,6 +84,8 @@ OBJECTS       = boardgui.o \
 		wallCell.o \
 		wallsBox.o \
 		pawncell.o \
+		client.o \
+		socketlib.o \
 		qrc_images.o \
 		moc_boardgui.o \
 		moc_gamewindow.o \
@@ -212,7 +186,10 @@ DIST          = ../Quorridor/View/Interface/images/murH.jpg \
 		../Quorridor/View/Interface/login.h \
 		../Quorridor/View/Interface/wallCell.h \
 		../Quorridor/View/Interface/wallsBox.h \
-		../Quorridor/View/Interface/pawncell.h ../Quorridor/View/Interface/boardgui.cpp \
+		../Quorridor/View/Interface/pawncell.h \
+		../ServerClient/WindowNC.hpp \
+		../ServerClient/client.h \
+		../ServerClient/socketlib.h ../Quorridor/View/Interface/boardgui.cpp \
 		../Quorridor/View/Interface/main.cpp \
 		../Quorridor/View/Interface/rankwidget.cpp \
 		../Quorridor/View/Interface/friendlistwidget.cpp \
@@ -223,7 +200,9 @@ DIST          = ../Quorridor/View/Interface/images/murH.jpg \
 		../Quorridor/View/Interface/login.cpp \
 		../Quorridor/View/Interface/wallCell.cpp \
 		../Quorridor/View/Interface/wallsBox.cpp \
-		../Quorridor/View/Interface/pawncell.cpp
+		../Quorridor/View/Interface/pawncell.cpp \
+		../ServerClient/client.cpp \
+		../ServerClient/socketlib.cpp
 QMAKE_TARGET  = quoridor
 DESTDIR       = 
 TARGET        = quoridor
@@ -410,8 +389,8 @@ distdir: FORCE
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents ../Quorridor/View/Interface/images.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../Quorridor/View/Interface/boardgui.h ../Quorridor/View/Interface/rankwidget.h ../Quorridor/View/Interface/friendlistwidget.h ../Quorridor/View/Interface/gamewindow.h \ ../Quorridor/View/Interface/menuwindow.h ../Quorridor/View/Interface/chatroom.h ../Quorridor/View/Interface/friend.h ../Quorridor/View/Interface/login.h ../Quorridor/View/Interface/wallCell.h ../Quorridor/View/Interface/wallsBox.h ../Quorridor/View/Interface/pawncell.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../Quorridor/View/Interface/boardgui.cpp ../Quorridor/View/Interface/main.cpp ../Quorridor/View/Interface/rankwidget.cpp ../Quorridor/View/Interface/friendlistwidget.cpp ../Quorridor/View/Interface/gamewindow.cpp ../Quorridor/View/Interface/menuwindow.cpp ../Quorridor/View/Interface/chatroom.cpp ../Quorridor/View/Interface/friend.cpp ../Quorridor/View/Interface/login.cpp ../Quorridor/View/Interface/wallCell.cpp ../Quorridor/View/Interface/wallsBox.cpp ../Quorridor/View/Interface/pawncell.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../Quorridor/View/Interface/boardgui.h ../Quorridor/View/Interface/rankwidget.h ../Quorridor/View/Interface/friendlistwidget.h ../Quorridor/View/Interface/gamewindow.h \ ../Quorridor/View/Interface/menuwindow.h ../Quorridor/View/Interface/chatroom.h ../Quorridor/View/Interface/friend.h ../Quorridor/View/Interface/login.h ../Quorridor/View/Interface/wallCell.h ../Quorridor/View/Interface/wallsBox.h ../Quorridor/View/Interface/pawncell.h ../ServerClient/WindowNC.hpp ../ServerClient/client.h ../ServerClient/socketlib.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../Quorridor/View/Interface/boardgui.cpp ../Quorridor/View/Interface/main.cpp ../Quorridor/View/Interface/rankwidget.cpp ../Quorridor/View/Interface/friendlistwidget.cpp ../Quorridor/View/Interface/gamewindow.cpp ../Quorridor/View/Interface/menuwindow.cpp ../Quorridor/View/Interface/chatroom.cpp ../Quorridor/View/Interface/friend.cpp ../Quorridor/View/Interface/login.cpp ../Quorridor/View/Interface/wallCell.cpp ../Quorridor/View/Interface/wallsBox.cpp ../Quorridor/View/Interface/pawncell.cpp ../ServerClient/client.cpp ../ServerClient/socketlib.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -449,7 +428,7 @@ compiler_moc_predefs_make_all: moc_predefs.h
 compiler_moc_predefs_clean:
 	-$(DEL_FILE) moc_predefs.h
 moc_predefs.h: /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
-	g++ -pipe -O2 -Wall -Wextra -dM -E -o moc_predefs.h /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
+	g++ -pipe -lncursesw -pthread -O2 -std=gnu++11 -Wall -Wextra -dM -E -o moc_predefs.h /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 
 compiler_moc_header_make_all: moc_boardgui.cpp moc_gamewindow.cpp moc_menuwindow.cpp moc_chatroom.cpp moc_friend.cpp moc_login.cpp
 compiler_moc_header_clean:
@@ -591,6 +570,25 @@ wallsBox.o: ../Quorridor/View/Interface/wallsBox.cpp ../Quorridor/View/Interface
 
 pawncell.o: ../Quorridor/View/Interface/pawncell.cpp ../Quorridor/View/Interface/pawncell.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pawncell.o ../Quorridor/View/Interface/pawncell.cpp
+
+client.o: ../ServerClient/client.cpp ../ServerClient/client.h \
+		../ServerClient/WindowNC.hpp \
+		../Quorridor/View/Interface/menuwindow.h \
+		../Quorridor/View/Interface/gamewindow.h \
+		../Quorridor/View/Interface/friendlistwidget.h \
+		../Quorridor/View/Interface/friend.h \
+		../Quorridor/View/Interface/rankwidget.h \
+		../Quorridor/View/Interface/chatroom.h \
+		../Quorridor/View/Interface/wallsBox.h \
+		../Quorridor/View/Interface/wallCell.h \
+		../Quorridor/View/Interface/boardgui.h \
+		../Quorridor/View/Interface/pawncell.h \
+		../Quorridor/View/Interface/login.h \
+		../ServerClient/socketlib.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o client.o ../ServerClient/client.cpp
+
+socketlib.o: ../ServerClient/socketlib.cpp ../ServerClient/socketlib.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o socketlib.o ../ServerClient/socketlib.cpp
 
 qrc_images.o: qrc_images.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qrc_images.o qrc_images.cpp
