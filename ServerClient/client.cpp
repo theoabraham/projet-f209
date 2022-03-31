@@ -8,6 +8,10 @@
 #include "socketlib.h"
 
 Client::Client() {
+
+//constructeur, prend le style d'affichage en paramètre,
+//a besoin d'un if(){}
+
 }
 
 void Client::runMenu(string pseudo, string mdp, string ip, int port){
@@ -132,7 +136,7 @@ int Client::handshake(string ip, int port, string pseudo, string mdp) {
 
 int main(int argc, char const *argv[]) {
   if (argc < 2) {
-    fprintf(stderr, "Utilisation: ./client <port> [<ip>]\n");
+    fprintf(stderr, "Utilisation: ./client <port> [<style d'interface>] [<ip>]\n");
     exit(0);
   }
   const int port = atoi(argv[1]);
@@ -140,6 +144,11 @@ int main(int argc, char const *argv[]) {
     fprintf(stderr, "Le port doit être supérieur à 1023.\n");
     exit(0);
   }
+
+/*
+Ici style en argv 2, ip passe en argv 3, style Qt par défaut
+*/
+
   std::string ip;
   if (argc > 2) {
     ip = argv[2];
@@ -151,7 +160,7 @@ int main(int argc, char const *argv[]) {
   std::cout << "Entrez un mot de passe" << std::endl;
   char mdp[16];
   cin.getline(mdp, 16);
-  Client client = Client();
-  client.runMenu(pseudo, mdp, ip.c_str(), port);
+  Client client = Client(); //ici Client() prend un parametre style.
+  client.runGame(pseudo, mdp, ip.c_str(), port);
   return 0;
 }

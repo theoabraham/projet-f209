@@ -78,7 +78,6 @@ void Server::handleSocketReadActivity(fd_set* in_set, int& nactivities) {
         } else {
           enoughPlayers = false;
         }
-        std::cout << enoughPlayers << std::endl;
         if((msg.message.substr(0,1) == (string)"/")){
           if (enoughPlayers){
             std::string command = msg.message.substr(msg.message.length() - 4, 4);
@@ -138,6 +137,7 @@ void Server::handleCommand(int userIndex, message_t msg){
       message_t strBoard;
       strBoard.message = game->displayBoard->printBoard();
       ssend(users[userIndex]->socket, &strBoard);
+      std::cout << ((int)game->players.size() == game->neededPlayers) << std::endl;
       if ((int)game->players.size() == game->neededPlayers){
         message_t startGame;
         startGame.message = "[system] : C'est a " + game->players[game->activePlayer]->name + " de jouer!";
