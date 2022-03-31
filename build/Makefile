@@ -609,6 +609,9 @@ client.o: ../ServerClient/client.cpp ../ServerClient/client.h \
 		../ServerClient/socketlib.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o client.o ../ServerClient/client.cpp
 
+
+#socketlib.o: socketlib.cpp socketlib.h
+#	g++ -c socketlib.cpp ${FLAGS}
 socketlib.o: ../ServerClient/socketlib.cpp ../ServerClient/socketlib.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o socketlib.o ../ServerClient/socketlib.cpp
 
