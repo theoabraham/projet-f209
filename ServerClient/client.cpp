@@ -108,7 +108,7 @@ void Client::manageSocketTraffic() {
 
 int Client::handshake(string ip, int port, string pseudo, string mdp) {
   int socket = checked(create_socket());
-  if (connect_socket(socket, "127.0.0.1", port) < 0) {
+  if (connect_socket(socket, ip.c_str(), port) < 0) {
     exit(1);
   }
   // Send username
@@ -146,7 +146,6 @@ int main(int argc, char const *argv[]) {
 
 //Ici style en argv 2, ip passe en argv 3, style Qt par défaut
 
-
   std::string ip;
   if (argc > 2) {
     ip = argv[2];
@@ -159,6 +158,7 @@ int main(int argc, char const *argv[]) {
   char mdp[16];
   cin.getline(mdp, 16);
   Client client = Client(); //ici Client() prend un parametre style.
-  client.runMenu(pseudo, mdp, ip.c_str(), port);
+  client.runGame(pseudo, mdp, ip.c_str(), port);
+
   return 0;
 }
