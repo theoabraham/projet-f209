@@ -1,8 +1,11 @@
+#include "../Quorridor/View/Interface/menuwindow.h"
 #include <ncurses.h>
 #include <locale.h>
 #include <vector>
 
-class WindowNC {
+
+class WindowNC 
+{
     public:
         WINDOW * boardWindow;
         WINDOW * boardBoxWindow;

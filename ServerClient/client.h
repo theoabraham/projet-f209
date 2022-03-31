@@ -9,11 +9,12 @@ using namespace std;
 
 class Client {
  private:
+
   int socket;
   int line_counter=0;
   char gameMode[8] = "C\0";
   char numberPlayers[8] = "2\0";
-  WindowNC view = WindowNC();
+  WindowNC view; 
 
  private:
   int handshake(string ip, int port, string pseudo, string mdp);

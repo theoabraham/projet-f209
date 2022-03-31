@@ -8,10 +8,6 @@
 
 
 Client::Client() {
-
-//constructeur, prend le style d'affichage en paramètre,
-//a besoin d'un if(){}
-
 }
 
 
@@ -132,9 +128,9 @@ int Client::handshake(string ip, int port, string pseudo, string mdp) {
 }
 
 
-int main(int argc, char const *argv[]) {
-  if (argc < 2) {
-    fprintf(stderr, "Utilisation: ./client <port> [<style d'interface>] [<ip>]\n");
+int main(int argc, char *argv[]) {
+  if (argc < 4) {
+    fprintf(stderr, "Utilisation: ./quoridor <port> [<ip>] [<style d'interface> (I or T)] \n");
     exit(0);
   }
   const int port = atoi(argv[1]);
@@ -143,22 +139,30 @@ int main(int argc, char const *argv[]) {
     exit(0);
   }
 
-
-//Ici style en argv 2, ip passe en argv 3, style Qt par défaut
-
   std::string ip;
-  if (argc > 2) {
-    ip = argv[2];
+  ip = argv[2];
+
+  std::string view; 
+  view = argv[3]; 
+  if (view=="T"){
+    char pseudo[64];
+    std::cout << "Entrez un pseudo: " << std::endl;
+    cin.getline(pseudo, 64);
+    std::cout << "Entrez un mot de passe: " << std::endl;
+    char mdp[16];
+    cin.getline(mdp, 16);
+    Client client = Client(); //ici Client() prend un parametre style.
+    client.runGame(pseudo, mdp, ip.c_str(), port);
+    return 0;
+  }
+  else if (view=="I"){
+    QApplication app(argc,argv);
+    MenuWindow window;
+    window.show();
+    return app.exec();
+  }    
+  else{
+    fprintf(stderr, "Utilisation: ./quoridor <port> [<ip>] [<style d'interface> (I(nterface) or T(erminal))] \n ");
   }
 
-  char pseudo[64];
-  std::cout << "Entrez un pseudo" << std::endl;
-  cin.getline(pseudo, 64);
-  std::cout << "Entrez un mot de passe" << std::endl;
-  char mdp[16];
-  cin.getline(mdp, 16);
-  Client client = Client(); //ici Client() prend un parametre style.
-  client.runGame(pseudo, mdp, ip.c_str(), port);
-
-  return 0;
 }
