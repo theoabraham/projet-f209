@@ -1,8 +1,9 @@
 #include <queue>
 #include <string>
 #include <iostream>
-#include "WindowNC.hpp"
 
+#include "../Quorridor/View/Interface/menuwindow.h"
+#include "WindowNC.hpp"
 
 using namespace std;
 

@@ -39,6 +39,7 @@ class WindowNC {
             wrefresh(inputWindow);
         }
 
+
         void displayMenu(std::vector<const char*> options){
             clearWindow(chatBoxWindow);
             int y = 0;

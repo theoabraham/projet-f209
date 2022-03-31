@@ -1,5 +1,4 @@
 #include "client.h"
-
 #include <pthread.h>
 #include <stdio.h>
 #include <string.h>
@@ -7,12 +6,14 @@
 
 #include "socketlib.h"
 
+
 Client::Client() {
 
 //constructeur, prend le style d'affichage en paramètre,
 //a besoin d'un if(){}
 
 }
+
 
 void Client::runMenu(string pseudo, string mdp, string ip, int port){
   keypad(view.inputWindow, TRUE);
@@ -130,6 +131,7 @@ int Client::handshake(string ip, int port, string pseudo, string mdp) {
   return socket;
 }
 
+
 int main(int argc, char const *argv[]) {
   if (argc < 2) {
     fprintf(stderr, "Utilisation: ./client <port> [<style d'interface>] [<ip>]\n");
@@ -141,9 +143,9 @@ int main(int argc, char const *argv[]) {
     exit(0);
   }
 
-/*
-Ici style en argv 2, ip passe en argv 3, style Qt par défaut
-*/
+
+//Ici style en argv 2, ip passe en argv 3, style Qt par défaut
+
 
   std::string ip;
   if (argc > 2) {
