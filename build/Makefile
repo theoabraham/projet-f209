@@ -6,6 +6,28 @@
 # Command: /usr/lib/qt5/bin/qmake -o Makefile quoridor.pro
 #############################################################################
 
+
+FLAGS=-Wall -Werror -std=c++17 -g
+
+all:server
+
+server: ../ServerClient/server.cpp $(MODEL) $(GAMEMODES) $(VIEW) $(CONTROLLER) $(DATABASE) ../ServerClient/socketlib.o ../ServerClient/server.h
+	g++ $(MODEL) $(GAMEMODES) $(VIEW) $(CONTROLLER) $(DATABASE) -g -o server ../ServerClient/server.cpp ../ServerClient/socketlib.o ../ServerClient/socketlib.h ${FLAGS} -l sqlite3
+
+#socketlib.o: socketlib.cpp socketlib.h
+#	g++ -c socketlib.cpp ${FLAGS}
+
+MODEL = ../Quorridor/Model/Board.cpp ../Quorridor/Model/Board.hpp ../Quorridor/Model/MotherCell.hpp ../Quorridor/Model/MotherCell.cpp ../Quorridor/Model/Piece.hpp ../Quorridor/Model/Player.hpp ../Quorridor/Model/Position.hpp ../Quorridor/Model/Position.cpp
+
+GAMEMODES = ../Quorridor/Model/Gamemodes/DestruQtion.cpp ../Quorridor/Model/Gamemodes/DestruQtion.hpp ../Quorridor/Model/Gamemodes/QQQuoridor.cpp ../Quorridor/Model/Gamemodes/QQQuoridor.hpp
+
+VIEW = ../Quorridor/View/DisplayBoard.cpp ../Quorridor/View/DisplayBoard.hpp
+
+CONTROLLER = ../Quorridor/Controller/Game.cpp ../Quorridor/Controller/Game.hpp
+
+DATABASE = ../DataBase/Database.cpp ../DataBase/Database.h
+
+
 MAKEFILE      = Makefile
 
 EQ            = =
