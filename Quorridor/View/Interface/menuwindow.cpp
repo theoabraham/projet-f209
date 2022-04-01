@@ -70,7 +70,7 @@ void MenuWindow::setJoin() {
 }
 
 std::string MenuWindow::sendEvent(){
-
+    return "r"; 
 }
 
 void MenuWindow::startGame() {

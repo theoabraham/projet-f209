@@ -5,8 +5,6 @@
 # Template: app
 # Command: /usr/lib/qt5/bin/qmake -o Makefile quoridor.pro
 #############################################################################
-
-
 FLAGS=-Wall -Werror -std=c++17 -g
 
 all:server
@@ -26,7 +24,6 @@ VIEW = ../Quorridor/View/DisplayBoard.cpp ../Quorridor/View/DisplayBoard.hpp
 CONTROLLER = ../Quorridor/Controller/Game.cpp ../Quorridor/Controller/Game.hpp
 
 DATABASE = ../DataBase/Database.cpp ../DataBase/Database.h
-
 
 MAKEFILE      = Makefile
 
@@ -62,7 +59,7 @@ DISTNAME      = quoridor1.0.0
 DISTDIR = /home/sophie/Documents/Projet\ infof209/projet_fork/projet-f209/build/.tmp/quoridor1.0.0
 LINK          = g++
 LFLAGS        = -Wl,-O1
-LIBS          = $(SUBLIBS) /usr/lib/x86_64-linux-gnu/libQt5Widgets.so /usr/lib/x86_64-linux-gnu/libQt5Gui.so /usr/lib/x86_64-linux-gnu/libQt5Core.so -lGL -lpthread -lncursesw  
+LIBS          = $(SUBLIBS) /usr/lib/x86_64-linux-gnu/libQt5Widgets.so /usr/lib/x86_64-linux-gnu/libQt5Gui.so /usr/lib/x86_64-linux-gnu/libQt5Core.so -lGL -lpthread  -lncursesw 
 AR            = ar cqs
 RANLIB        = 
 SED           = sed
@@ -594,7 +591,6 @@ pawncell.o: ../Quorridor/View/Interface/pawncell.cpp ../Quorridor/View/Interface
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pawncell.o ../Quorridor/View/Interface/pawncell.cpp
 
 client.o: ../ServerClient/client.cpp ../ServerClient/client.h \
-		../ServerClient/WindowNC.hpp \
 		../Quorridor/View/Interface/menuwindow.h \
 		../Quorridor/View/Interface/gamewindow.h \
 		../Quorridor/View/Interface/friendlistwidget.h \
@@ -606,12 +602,10 @@ client.o: ../ServerClient/client.cpp ../ServerClient/client.h \
 		../Quorridor/View/Interface/boardgui.h \
 		../Quorridor/View/Interface/pawncell.h \
 		../Quorridor/View/Interface/login.h \
+		../ServerClient/WindowNC.hpp \
 		../ServerClient/socketlib.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o client.o ../ServerClient/client.cpp
 
-
-#socketlib.o: socketlib.cpp socketlib.h
-#	g++ -c socketlib.cpp ${FLAGS}
 socketlib.o: ../ServerClient/socketlib.cpp ../ServerClient/socketlib.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o socketlib.o ../ServerClient/socketlib.cpp
 

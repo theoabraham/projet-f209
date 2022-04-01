@@ -51,6 +51,8 @@ void PawnCell::dropEvent(QDropEvent *event)
         } else {
             event->acceptProposedAction();
         }
+
+        std::cout<<pos.x<<" "<<pos.y<<std::endl; 
     } else {
         event->ignore();
     }

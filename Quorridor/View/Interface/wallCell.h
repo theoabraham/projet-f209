@@ -11,9 +11,15 @@ class QDragEnterEvent;
 class QDropEvent;
 QT_END_NAMESPACE
 
+struct Pos{
+    int x,y; 
+};
+    
 class WallCell : public QWidget
 {
+
     WallsBox *wall;
+    Pos pos; 
 
     bool acceptDrop;
     bool receivedItem = false;
@@ -32,6 +38,9 @@ public:
     void setVectMurV(std::vector< WallCell *> vect) {vectMurV = vect;}
 
     std::vector< WallCell *> getvectH(){return vectMurH;}
+
+    void setPos(Pos position) {pos = position; }
+    Pos getPos() {return pos;} 
 
 protected:
     void dragEnterEvent(QDragEnterEvent *event) override;

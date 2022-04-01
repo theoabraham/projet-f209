@@ -10,15 +10,13 @@ BoardGUI::BoardGUI(QWidget *parent): QWidget(parent){
 
 
     gameLayout->addLayout(boardGUI,0,0,1,2);
-
-
     gameLayout->addWidget(wallsPlacement,1,0);
 
     opponentSpace = new QHBoxLayout();
     opponentSpace->addStretch();
     opponent = new Friend(false);
-    //opponentSpace->addWidget(opponent);
-    //gameLayout->addLayout(opponentSpace,1,1);
+    opponentSpace->addWidget(opponent);
+    gameLayout->addLayout(opponentSpace,1,1);
 }
 
 BoardGUI::~BoardGUI(){
@@ -68,23 +66,28 @@ void BoardGUI::boardGame(){
     for(int i=0;i<17;i++){
         std::vector<WallCell *> line;
         for(int j=0;j<17;j++){
-
+            Pos pos{i,j}; 
+            
             resetVar();
             if (j%2==1 && i%2==0) {
                 boardGUI->addWidget(wallCellV, i,j);
                 line.push_back(wallCellV);
+                wallCellV->setPos(pos); 
             }
             else if (i%2==1 && j%2==0){
                 boardGUI->addWidget(wallCellH,i,j);
                 line.push_back(wallCellH);
+                wallCellH->setPos(pos); 
             }
             else if (i%2==1 && j%2==1) {
                 boardGUI->addWidget(wallCell, i,j);
                 line.push_back(wallCell);
+                wallCell->setPos(pos); 
             }
             else {
                 boardGUI->addWidget(cell,i,j);
                 line.push_back(nullptr);
+                cell->setPos(pos); 
             }
             if ((i==0) && (j==8)){
                 QPixmap path(":/images/pion_blanc.png");

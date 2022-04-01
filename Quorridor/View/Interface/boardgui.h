@@ -43,6 +43,9 @@ private:
     WallCell *wallCell;
 
     std::vector<std::vector< WallCell *> > boardGUIMatrix;
+
+    std::string move; 
+    bool isValid(); 
 };
 
 
