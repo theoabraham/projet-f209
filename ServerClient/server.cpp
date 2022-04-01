@@ -151,8 +151,12 @@ void Server::handleCommand(int userIndex, message_t msg){
   }
   if (msg.message.substr(1, 4) == "add") {
       string toAdd = msg.message.substr(5, ((int)msg.message.size() - 1));
-      DB.askFriend(username);
-
+      DB.askFriend(msg.message.substr(4, msg.message.size()));
+  }
+  if (msg.message.substr(1, 7) == "remove") {
+      // le user perdant son amis à besoin d'etre connecté à la DB --> DB.connect(username)
+      string toAdd = msg.message.substr(5, ((int)msg.message.size() - 1));
+      DB.deleteFriendship(msg.message.substr(7, msg.message.size()));
   }
   //si la commande n'est pas implémentée, le message sera simplement ignoré
 }
