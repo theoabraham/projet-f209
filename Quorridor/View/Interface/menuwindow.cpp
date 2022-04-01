@@ -69,6 +69,10 @@ void MenuWindow::setJoin() {
     joinLayout->addStretch();
 }
 
+std::string MenuWindow::sendEvent(){
+
+}
+
 void MenuWindow::startGame() {
     std::string mode = modeChoice->currentText().toStdString();
     std::string nbPlayers = playersChoice->currentText().toStdString();

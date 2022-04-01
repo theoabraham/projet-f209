@@ -1,6 +1,8 @@
 #ifndef MENUWINDOW_H
 #define MENUWINDOW_H
 
+#include <iostream> 
+
 #include <QtWidgets>
 #include "gamewindow.h"
 #include "friendlistwidget.h"
@@ -43,12 +45,16 @@ private:
     QLabel *lobbyNb;
     QPushButton *joinButton;
 
+    std::string message; 
+
 public:
     MenuWindow(QMainWindow *parent=0);
 
     void setStart();
 
     void setJoin();
+
+    std::string sendEvent(); 
 
 public slots:
     void startGame();
