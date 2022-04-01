@@ -6,9 +6,6 @@
 
 #include "socketlib.h"
 
-Client::Client() {}
-
-
 void *Client::manageInputs(void *instance) {
   //Version void* de manage input pour pouvoir creer le thread
   Client *c = (Client *)instance;

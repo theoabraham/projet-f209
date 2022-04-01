@@ -24,8 +24,8 @@ private:
   virtual void manageSocketTraffic() = 0;
 
  public:
-  Client() {}
-  virtual ~Client() {}
+  Client(){}
+  virtual ~Client(){}
 };
 
 class ClientNC : public Client
