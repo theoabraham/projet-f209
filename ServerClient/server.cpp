@@ -203,6 +203,7 @@ void Server::disconnectUser(unsigned user_num) {
   }
   //Si le nombre de joueurs restant est inssufisant pour jouer, la partie se met en pause dans
   //handleSocketReadActivity() mais les joueurs sont prévenus ici
+  
   /*
   if (this->registeredPlayers < this->neededPlayers){
     message_t waitNewPlayerMsg;
@@ -218,6 +219,7 @@ void Server::handleNewConnection() {
   char username[64];
   char password[16];
 
+  std::cout<<"Nouvelle connection"<<std::endl; 
   //On accepte la connection et on récupère le pseudo (envoyé depuis le client)
   int socket = accept_socket(this->master_socket, &remote_host);
   int nbytes = safe_read(socket, username, 64);

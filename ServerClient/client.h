@@ -1,30 +1,57 @@
 #include <queue>
 #include <string>
 #include <iostream>
-#include "WindowNC.hpp"
 
+#include "../Quorridor/View/Interface/menuwindow.h"
+#include "WindowNC.hpp"
 
 using namespace std;
 
 class Client {
- private:
-  int socket;
-  int line_counter=0;
+ protected:
+  int socket; 
   char gameMode[8] = "C\0";
   char numberPlayers[8] = "2\0";
-  WindowNC view = WindowNC();
+  int line_counter=0;
+private:
+  
+  Window *view; 
 
- private:
+ protected:
   int handshake(string ip, int port, string pseudo, string mdp);
   static void* manageInputs(void* instance);
-  void manageInputs();
-  void manageSocketTraffic();
-  void fetchInput(char &buffer);
-  void displayMenu(std::vector<const char*> options);
-  void clearWindow(WINDOW * window);
+  virtual void manageInputs() = 0;
+  virtual void manageSocketTraffic() = 0;
 
  public:
-  Client();
-  void runGame(string pseudo, string mdp, string ip, int port = 8080);
-  void runMenu(string pseudo, string mdp, string ip, int port);
+  Client() {}
+  virtual ~Client() {}
 };
+
+class ClientNC : public Client
+{
+  WindowNC *view; 
+  protected: 
+      void manageInputs() override;
+      void manageSocketTraffic() override;
+
+  public:
+    ClientNC() {view= new WindowNC();}
+    virtual ~ClientNC() {delete view; }
+
+    void runGame(string pseudo, string mdp, string ip, int port = 8080);
+    void runMenu(string pseudo, string mdp, string ip, int port);
+}; 
+
+class ClientGUI : public Client
+{
+  WindowGUI *view; 
+  protected: 
+    void manageInputs() override {}
+    void manageSocketTraffic() override {}
+  public: 
+    ClientGUI() {view = new WindowGUI();}
+    virtual ~ClientGUI() {delete view; }
+
+    void getMenu(){ view->getMenuWindow();}
+}; 
