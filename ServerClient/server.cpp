@@ -226,35 +226,56 @@ void Server::disconnectUser(unsigned user_num) {
 void Server::handleNewConnection() {
   //Gestion d'une nouvelle connection
   struct sockaddr remote_host;
+  char total[128];
   char username[64];
   char password[64];
 
+
   std::cout<<"Nouvelle connection"<<std::endl; 
   //On accepte la connection et on récupère le pseudo (envoyé depuis le client)
-  std::cout << "Avant acceptSocket" << std::endl;
   int socket = accept_socket(this->master_socket, &remote_host);
-  std::cout << "Avant saferead username" << std::endl;
-  int nbytes = safe_read(socket, username, 64);
-    std::cout << "Après saferead username" << std::endl;
+  int nbytes = safe_read(socket, total, 128);
   if (nbytes <= 0) {
     return;
   }
-  username[nbytes] = '\0';
-  std::cout << "Avant saferead psw" << std::endl;
-  int nbytes2 = safe_read(socket, password, 64);
+  unsigned int pseudosize = total[0] - '0';
+  std::cout << pseudosize << std::endl;
+
+  for (unsigned int i=1;i<pseudosize+1;i++){
+      username[i-1] = total[i];
+  }
+  username[pseudosize] = '\0';
+  std::cout << username << std::endl;
+  unsigned int pswsize = total[pseudosize+1] - '0';
+  std::cout << pswsize << std::endl;
+
+  for (unsigned int i=pseudosize+2; i < pseudosize+pswsize+2; i++){
+      password[i-pseudosize-2] = total[i];
+  }
+
+  password[pswsize] = '\0';
+  std::cout << password << std::endl;
+  //username = (to_string(total).substr(1, pseudosize)).c_str();
+  /* std::cout << username << " <- ici1 " << std::endl;
+  int nbytes2 = safe_read(socket, password, 16);
+  std::cout << password << " <- ici2 " << std::endl;
   if (nbytes2 <= 0) {
     return;
-  }
-  std::cout << "Après saferead psw" << std::endl;
-  password[nbytes2] = '\0';
-  const int ack = !(DB.isUserinDB(username) && DB.checkPassword(username, password));
+  }*/
+
+  //std::cout << "Après saferead psw" << std::endl;
+  //password[nbytes2] = '\0';
+  bool checkusr = DB.isUserinDB(username);
+  bool checkpsw = DB.checkPassword(username, password);
+  const int ack = !( checkusr && checkpsw);
+  cout << checkusr << " " << checkpsw << " " << ack << std::endl;
   nbytes = safe_write(socket, &ack, sizeof(int));
   if (nbytes <= 0) {
     return;
   }
 
-  DB.connect(username);
-  UI = DB.getUserInfo(); //met à jour les informations
+  //DB.connect(username);
+  //UI = DB.getUserInfo(); //met à jour les informations
 
   //On créé un "profil" de user contenant pseudo, port et version
   user_t* new_user = new user_t;
