@@ -73,17 +73,11 @@ void Server::handleSocketReadActivity(fd_set* in_set, int& nactivities) {
         this->disconnectUser(i);
       } else {
         // message_buffer[nbytes] = '\0';
-        bool enoughPlayers;
-        if (users[i]->activeGame != -1){ //verification si le joueur est dans une partie 
-        //et si c'est le cas si la partie est en cours ou pourrais l'être (assez de joueurs)
-          enoughPlayers = ((int)this->games[users[i]->activeGame]->players.size() - 1 >= this->games[users[i]->activeGame]->neededPlayers);
-        } else {
-          enoughPlayers = false;
-        } 
         if((msg.message.substr(0,1) == (string)"/")){ //Si le message commence par "/" c'est une commande
-          if (enoughPlayers){ //si y'a assez de joueurs c'est possiblement un coup
+          if (users[i]->activeGame != -1 && (int)games[users[i]->activeGame]->players.size() >= games[users[i]->activeGame]->neededPlayers){
             std::string command = msg.message.substr(msg.message.length() - 4, 4);
-            this->handleMove(command, socket); //donc on vérifie si c'est un coup
+            std::cout<<command<<std::endl;
+            this->handleMove(command, i); //donc on vérifie si c'est un coup
           }
           this->handleCommand(i, msg); //sinon c'est peut etre une commande, on sait pas
         } else {
@@ -107,7 +101,7 @@ void Server::handleSocketReadActivity(fd_set* in_set, int& nactivities) {
 
 void Server::handleCommand(int userIndex, message_t msg){
   //Cas dans lequel le message serait peut etre une commande
-  if (msg.message.substr(1, 6) == "leave"){
+  if (msg.message.substr(1, 6) == "quit"){
     //ca m'a l'air assez auto-explicatif
     this->disconnectUser(userIndex);
   }
@@ -131,6 +125,7 @@ void Server::handleCommand(int userIndex, message_t msg){
       newGame->players.push_back(users[userIndex]); //on ajoute l'utilisateur a sa partie
       this->games.push_back(newGame); //on ajoute la partie a l'index des parties du serveur
       users[userIndex]->activeGame = this->games.size() - 1; //on ajoute la partie au profil de l'utilisateur
+      std::cout << users[userIndex]->activeGame << std::endl;
       message_t strBoard;
       strBoard.message = newGame->displayBoard->printBoard();
       ssend(users[userIndex]->socket, &strBoard); //on envoi son plateau a l'utilisateur
@@ -153,27 +148,46 @@ void Server::handleCommand(int userIndex, message_t msg){
         this->forward(&startGame, game->players);
       }
     }
-  }//si la commande n'est pas implémentée, le message sera simplement ignoré
+  }
+  if (msg.message.substr(1, 4) == "add") {
+      string toAdd = msg.message.substr(5, ((int)msg.message.size() - 1));
+      DB.askFriend(msg.message.substr(4, msg.message.size()));
+  }
+  if (msg.message.substr(1, 7) == "remove") {
+      // le user perdant son amis à besoin d'etre connecté à la DB --> DB.connect(username)
+      string toAdd = msg.message.substr(5, ((int)msg.message.size() - 1));
+      DB.deleteFriendship(msg.message.substr(7, msg.message.size()));
+  }
+  //si la commande n'est pas implémentée, le message sera simplement ignoré
 }
 
-void Server::handleMove(string command, int clientSocket){
+void Server::handleMove(string command, int userIndex){
   //gestion d'une commande (/Message) d'un utilisateur
-  game_t *currentGame = this->games[users[clientSocket]->activeGame];
-  if(clientSocket == currentGame->players[currentGame->activePlayer]->socket && currentGame->game.checkInput(command, currentGame->activePlayer)){
-    //Si le coup demandé est valide, on le joue et on affiche le plateau
+  std::cout<<(int)this->users.size()<<std::endl;
+  std::cout<<(int)this->games.size()<<std::endl;
+  std::cout<<userIndex<<std::endl;
+  std::cout<<this->users[userIndex]->activeGame<<std::endl;
+  game_t *currentGame = this->games[this->users[userIndex]->activeGame];
+  std::cout<<"test2"<<std::endl;
+  if(currentGame->game.checkInput(command, currentGame->activePlayer)){
+    std::cout<<"test3"<<std::endl;
+    //Si le coup demandé est valide, on le joue et on affiche le nouveau plateau
     message_t strBoard;
     strBoard.message = currentGame->displayBoard->printBoard();
     this->forward(&strBoard, currentGame->players);
+    std::cout<<"test4"<<std::endl;
     //Si la partie est finie : on affiche un message annoncant le joueur gagnant
     if (currentGame->board->isEnd()) {
       message_t endingMsg;
       endingMsg.message = "[system] : " + users[currentGame->activePlayer]->name + " remporte la victoire!";
       this->forward(&endingMsg, currentGame->players);
+      std::cout<<"test5"<<std::endl;
     } else { //Sinon, on affiche un message qui annonce le début du tour du nouveau joueur actif.
       currentGame->activePlayer = (currentGame->activePlayer + 1) % currentGame->neededPlayers; //on passe au tour du prochain joueur
       message_t newTurnMsg;
       newTurnMsg.message = "[system] : C'est a " + currentGame->players[currentGame->activePlayer]->name + " de jouer!";
       this->forward(&newTurnMsg, currentGame->players);
+      std::cout<<"test6"<<std::endl;
     }
   }
 }
@@ -212,28 +226,56 @@ void Server::disconnectUser(unsigned user_num) {
 void Server::handleNewConnection() {
   //Gestion d'une nouvelle connection
   struct sockaddr remote_host;
+  char total[128];
   char username[64];
-  char password[16];
+  char password[64];
+
 
   std::cout<<"Nouvelle connection"<<std::endl; 
   //On accepte la connection et on récupère le pseudo (envoyé depuis le client)
   int socket = accept_socket(this->master_socket, &remote_host);
-  int nbytes = safe_read(socket, username, 64);
+  int nbytes = safe_read(socket, total, 128);
   if (nbytes <= 0) {
     return;
   }
-  username[nbytes] = '\0';
+  unsigned int pseudosize = total[0] - '0';
+  std::cout << pseudosize << std::endl;
+
+  for (unsigned int i=1;i<pseudosize+1;i++){
+      username[i-1] = total[i];
+  }
+  username[pseudosize] = '\0';
+  std::cout << username << std::endl;
+  unsigned int pswsize = total[pseudosize+1] - '0';
+  std::cout << pswsize << std::endl;
+
+  for (unsigned int i=pseudosize+2; i < pseudosize+pswsize+2; i++){
+      password[i-pseudosize-2] = total[i];
+  }
+
+  password[pswsize] = '\0';
+  std::cout << password << std::endl;
+  //username = (to_string(total).substr(1, pseudosize)).c_str();
+  /* std::cout << username << " <- ici1 " << std::endl;
   int nbytes2 = safe_read(socket, password, 16);
+  std::cout << password << " <- ici2 " << std::endl;
   if (nbytes2 <= 0) {
     return;
-  }
-  password[nbytes2] = '\0';
-  const int ack = !(DB.isUserinDB(username) && DB.checkPassword(username, password));
+  }*/
+
+  //std::cout << "Après saferead psw" << std::endl;
+  //password[nbytes2] = '\0';
+  bool checkusr = DB.isUserinDB(username);
+  bool checkpsw = DB.checkPassword(username, password);
+  const int ack = !( checkusr && checkpsw);
+  cout << checkusr << " " << checkpsw << " " << ack << std::endl;
   nbytes = safe_write(socket, &ack, sizeof(int));
   if (nbytes <= 0) {
     return;
   }
-  DB.connect(username);
+
+  //DB.connect(username);
+  //UI = DB.getUserInfo(); //met à jour les informations
 
   //On créé un "profil" de user contenant pseudo, port et version
   user_t* new_user = new user_t;

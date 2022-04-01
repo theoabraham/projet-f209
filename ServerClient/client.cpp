@@ -6,13 +6,13 @@
 
 #include "socketlib.h"
 
-
 void *Client::manageInputs(void *instance) {
   //Version void* de manage input pour pouvoir creer le thread
   Client *c = (Client *)instance;
   c->manageInputs();
   return nullptr;
 }
+
 
 void ClientNC::manageInputs() {
   // Le client peut ecrire et envoyer ses messages
@@ -29,6 +29,7 @@ void ClientNC::manageInputs() {
   close(this->socket);
   exit(0);
 }
+
 
 void ClientNC::manageSocketTraffic() {
   //Reception des messages via le serveur
@@ -51,14 +52,17 @@ void ClientNC::manageSocketTraffic() {
   }
 }
 
+
 int Client::handshake(string ip, int port, string pseudo, string mdp) {
   int socket = checked(create_socket());
   unsigned int pseudosize= pseudo.size();
   unsigned int mdpsize = mdp.size();
   string final = to_string(pseudosize) + pseudo + to_string(mdpsize) + mdp;
+
   if (connect_socket(socket, ip.c_str(), port) < 0) {
     exit(1);
   }
+  
   // Send username
   if (safe_write(socket, final.c_str(), final.length()) <= 0){
       exit(1);
@@ -69,6 +73,7 @@ int Client::handshake(string ip, int port, string pseudo, string mdp) {
   if (safe_write(socket, mdp.c_str(), mdp.length()) <= 0) {
     exit(1);
   }
+
   // Receive acknowledgement
   int ack;
   if (safe_read(socket, &ack, sizeof(int)) <= 0) {
@@ -119,6 +124,7 @@ void ClientNC::runMenu(string pseudo, string mdp, string ip, int port){
   }
   this->runGame(pseudo, mdp, ip, port); //normalement, lance le jeu, mais la ca bug si on le lance d'ici...
 }
+
 
 void ClientNC::runGame(string pseudo, string mdp, string ip, int port) {
   //Le client se connecte au serveur, et créé un thread pour gérer la reception de messages.
@@ -193,6 +199,7 @@ int main(int argc, char *argv[]) {
 
   std::string ip;
   ip = argv[2];
+
 
   std::string view; 
   view = argv[3]; 

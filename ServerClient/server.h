@@ -35,6 +35,7 @@ typedef struct {
 class Server {
  private:
   Database DB;
+  UserInfo UI;
   int max_fd;
   int master_socket;
   vector<user_t*> users;
