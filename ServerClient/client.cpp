@@ -62,19 +62,18 @@ int Client::handshake(string ip, int port, string pseudo, string mdp) {
   if (connect_socket(socket, ip.c_str(), port) < 0) {
     exit(1);
   }
+  
   // Send username
   if (safe_write(socket, final.c_str(), final.length()) <= 0){
       exit(1);
   }
+
   /*
-  if (safe_write(socket, pseudo.c_str(), pseudo.length()) <= 0) {
-    exit(1);
-  }
   // Send password
   if (safe_write(socket, mdp.c_str(), mdp.length()) <= 0) {
     exit(1);
   }
-   */
+
   // Receive acknowledgement
   int ack;
   if (safe_read(socket, &ack, sizeof(int)) <= 0) {
@@ -84,6 +83,8 @@ int Client::handshake(string ip, int port, string pseudo, string mdp) {
     std::cout<<"Connection rejected by server\n";
     exit(1);
   }
+  */
+
   return socket;
 }
 
@@ -137,6 +138,54 @@ void ClientNC::runGame(string pseudo, string mdp, string ip, int port) {
 }
 
 
+void ClientGUI::manageSocketTraffic(){
+  while (true) {
+    message_t msg;
+    size_t nbytes = receive(this->socket, &msg);
+    if (nbytes <= 0) {
+      exit(0);
+    }
+    if (msg.message.substr(0,1) == (string)"["){ //un message commencant par "[" est un message d'utilisateur
+      //Envoie le message dans le chatroom
+    }
+    else{
+      //envoie le plateau transformer en matrice a boardGUI
+    }
+    std::cout<<msg.message<<std::endl; 
+  }
+}
+
+/*
+void build_mat_from_str(const std::string& str){
+
+
+    unsigned int i=0;unsigned int j=0;
+    for (unsigned char c:str) {
+        int int_c = (int) c;
+        if (49 <= int_c && int_c <= 57){// ord('0')=48 et ord('9')=59 -> on cherche juste les entier entre 1 et 9
+            j+= (int_c-48);             // par exemple '3' --> ord('3')=51 --> 51-48 = 3
+            std::cout << "Positionné à la case:" << i << ',' << j << std::endl;
+        }else if (c=='/'){
+            i+=1;                       //saute une ligne
+            j=0;                        //repart à la colone 0
+            std::cout << "Départ à la case:" << i << ',' << j << std::endl;
+        }else if(c=='P'){
+            // appelle le constructeur piece{char} -> implique avoir un constructeur qui prend un char en paramètre
+            std::cout << "Construction de la piece "<< c << " en:" << i << ',' << j << std::endl;
+            j+=1;                       //passe a la case suivante une fois la piece ajoutée
+        }else if (c=='V'){
+            //mur vertical
+            ???
+        }else{
+            // mur horizontale 'H', appelle le constructeur de mur vertical
+            std::cout << "Construction du mur horizontal "<< H << " en:" << i << ',' << j << std::endl;
+            j+= LONGUEUR DU MUR; // je suppose 2
+        }
+    }
+}
+*/ 
+
+
 int main(int argc, char *argv[]) {
   if (argc < 4) {
     fprintf(stderr, "Utilisation: ./quoridor <port> [<ip>] [<style d'interface> (I or T)] \n");
@@ -168,8 +217,8 @@ int main(int argc, char *argv[]) {
   else if (view=="I"){
     QApplication app(argc,argv);
     
-    ClientGUI client = ClientGUI();
-    client.getMenu(); 
+    ClientGUI * client = new ClientGUI();
+    client->getMenu(); 
     //MenuWindow window;
     //window.show();
     return app.exec();

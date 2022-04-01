@@ -1,5 +1,5 @@
-#ifndef WINDOW_H
-#define WINDOW_H
+#ifndef GAMEWINDOW_H
+#define GAMEWINDOW_H
 
 #include <QtWidgets>
 #include "friendlistwidget.h"
@@ -14,6 +14,8 @@ class GameWindow : public QWidget
     Q_OBJECT
 
 private:
+    //ClientGUI *client; 
+
     QGridLayout *mainLayout;
     Chatroom *chatroom;
     BoardGUI *boardgui;
