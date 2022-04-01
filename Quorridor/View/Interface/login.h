@@ -1,7 +1,7 @@
+#include <QtWidgets>
+
 #ifndef LOGIN_H
 #define LOGIN_H
-
-#include <QtWidgets>
 
 class Login : public QWidget
 {
@@ -19,13 +19,13 @@ public:
     Login(QWidget *parent=0);
 
     QPushButton* getConnection() {return connection;}
-
+    //Crée les éléments de l'introduction
     void setIntro();
-
+    //crée le formulaire pour entrer le pseudo et le mot de passe
     void setEntry();
-
+    //crée le bouton pour se connecter
     void setConnection();
-
+    // vérifie que le mot de passe est correct
     bool checkPassword();
 };
 
@@ -53,11 +53,11 @@ public:
     SignUp(QWidget *parent=0);
 
     QPushButton* getCreate() {return create;}
-
+    //Crée les éléments de l'introduction
     void setIntro();
-
+    //crée le formulaire pour entrer le pseudo et le mot de passe et sa confirmation
     void setEntry();
-
+    //crée le bouton pour créer un compte
     void setButton();
 };
 

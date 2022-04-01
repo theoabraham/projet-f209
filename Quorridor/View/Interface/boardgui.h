@@ -20,14 +20,23 @@ class BoardGUI : public QWidget
 
      
 public:
-    BoardGUI(QWidget *parent=0);
+    BoardGUI(ClientGUI *client,QWidget *parent=0);
 
     ~BoardGUI();
 
+    /**
+        * @brief Réinitialise les variables 
+    */ 
     void resetVar();
 
+    /**
+        * @brief Crée le plateau qui va s'afficher 
+    */     
     void boardGame();
 
+    /**
+        * @brief Lie les cases mur à leur voisins pour qu'ils puissent se reconnaitre par la suite  
+    */ 
     void bindWalls();
 
 private:

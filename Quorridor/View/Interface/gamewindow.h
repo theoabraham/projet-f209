@@ -1,5 +1,5 @@
-#ifndef GAMEWINDOW_H
-#define GAMEWINDOW_H
+#ifndef WINDOW_H
+#define WINDOW_H
 
 #include <QtWidgets>
 #include "friendlistwidget.h"
@@ -9,24 +9,26 @@
 #include "wallCell.h"
 #include "boardgui.h"
 
+class ClientGUI;
+
 class GameWindow : public QWidget
 {
     Q_OBJECT
 
 private:
-    //ClientGUI *client; 
+    ClientGUI *client;
 
     QGridLayout *mainLayout;
     Chatroom *chatroom;
     BoardGUI *boardgui;
     QPushButton *leaveButton;
-    QMessageBox *confirmation;
 
 public:
-    GameWindow(QWidget *parent=0);
+    GameWindow(ClientGUI *client, QWidget *parent=0);
 
-public slots:
-    void leaveAndSave();
+    ~GameWindow();
+
+    QPushButton* getLeaveButton() {return leaveButton;}
 };
 
 

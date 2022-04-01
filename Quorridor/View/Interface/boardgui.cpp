@@ -1,6 +1,6 @@
 #include "boardgui.h"
 
-BoardGUI::BoardGUI(QWidget *parent): QWidget(parent){   
+BoardGUI::BoardGUI(ClientGUI *client, QWidget *parent): QWidget(parent), client(client){   
     gameLayout = new QGridLayout(this);
 
     wallsPlacement = new WallsBox;
