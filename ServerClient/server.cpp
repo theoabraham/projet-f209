@@ -148,7 +148,13 @@ void Server::handleCommand(int userIndex, message_t msg){
         this->forward(&startGame, game->players);
       }
     }
-  }//si la commande n'est pas implémentée, le message sera simplement ignoré
+  }
+  if (msg.message.substr(1, 4) == "add") {
+      string toAdd = msg.message.substr(5, ((int)msg.message.size() - 1));
+      DB.askFriend(username);
+
+  }
+  //si la commande n'est pas implémentée, le message sera simplement ignoré
 }
 
 void Server::handleMove(string command, int userIndex){
@@ -217,27 +223,34 @@ void Server::handleNewConnection() {
   //Gestion d'une nouvelle connection
   struct sockaddr remote_host;
   char username[64];
-  char password[16];
+  char password[64];
 
   std::cout<<"Nouvelle connection"<<std::endl; 
   //On accepte la connection et on récupère le pseudo (envoyé depuis le client)
+  std::cout << "Avant acceptSocket" << std::endl;
   int socket = accept_socket(this->master_socket, &remote_host);
+  std::cout << "Avant saferead username" << std::endl;
   int nbytes = safe_read(socket, username, 64);
+    std::cout << "Après saferead username" << std::endl;
   if (nbytes <= 0) {
     return;
   }
   username[nbytes] = '\0';
-  int nbytes2 = safe_read(socket, password, 16);
+  std::cout << "Avant saferead psw" << std::endl;
+  int nbytes2 = safe_read(socket, password, 64);
   if (nbytes2 <= 0) {
     return;
   }
+  std::cout << "Après saferead psw" << std::endl;
   password[nbytes2] = '\0';
   const int ack = !(DB.isUserinDB(username) && DB.checkPassword(username, password));
   nbytes = safe_write(socket, &ack, sizeof(int));
   if (nbytes <= 0) {
     return;
   }
+
   DB.connect(username);
+  UI = DB.getUserInfo(); //met à jour les informations
 
   //On créé un "profil" de user contenant pseudo, port et version
   user_t* new_user = new user_t;

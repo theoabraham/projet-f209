@@ -1,6 +1,9 @@
 #include "Database.h"
 
 //constructeurs destructeur
+/**
+ * @brief Constructeur de Database, ouvre le fichier Data.db et y écrit plusieur tables si non existantes
+ */
 Database::Database() {
     sqlite3_open("DataBase/Data.db", &this->DB);
     char *messageError;
@@ -34,12 +37,20 @@ Database::Database() {
                        "FOREIGN KEY (Username) REFERENCES UserData(Username))";
     sqlite3_exec(this->DB, sql4.c_str(), NULL, 0, &messageError);
 }
-
+/**
+ * @brief Destucteur de Database, ferme le fichier Data.db
+ */
 Database::~Database() {
     sqlite3_close(this->DB);
 }
 
 //initialise
+
+/**
+ * @brief initialise la struct userinfo
+ * @param username : nom de la personne à connecter
+ * @return true / false en fonction de la connection
+ */
 bool Database::connect(const std::string& username) {
     if (!isUserinDB(username))return false;
     setUserFriendsList(username);
@@ -50,6 +61,10 @@ bool Database::connect(const std::string& username) {
 }
 
 //getter setter
+/**
+ * @brief Met à jour la liste d'amis dans la struct UserInfo
+ * @param username : nom de l'utilisateur connecté
+ */
 void Database::setUserFriendsList(const std::string& username) {
     // récupere
     std::string FriendsString;
@@ -63,6 +78,10 @@ void Database::setUserFriendsList(const std::string& username) {
     stringToVect(FriendsString,userInfo.FriendsList);
 }
 
+/**
+ * @brief Met à jour la liste d'amis à ajouter dans la struct UserInfo
+ * @param username : nom de l'utilisateur connecté
+ */
 void Database::setUserFriendsToAddList(const std::string& username) {
     // récupere
     std::string FriendsToAddString;
@@ -114,12 +133,18 @@ std::string Database::getPassword(const std::string& username) {
     return password;
 }
 
+/**
+ * @brief écrit dans la base de données la liste d'amis associé à un utilisateur connecté au préalable
+ */
 void Database::writeFriendsList() {
     std::string friendString = VectTostring(userInfo.FriendsList);
     const std::string sqlRequest = "UPDATE FriendshipEntry SET FriendString = '" + friendString +"' WHERE Username = '" + userInfo.username + "'";
     sqlite3_exec(this->DB, sqlRequest.c_str(), NULL, 0, NULL);
 }
 
+/**
+ * @brief écrit dans la base de données la liste d'amis à ajouter associé à un utilisateur connecté au préalable
+ */
 void Database::writeFriendsToAddList() {
     std::string friendsToAddString = VectTostring(userInfo.FriendsToAddList);
     const std::string sqlRequest = "UPDATE ToAddFriends SET FriendToAddString = '" + friendsToAddString +"' WHERE Username = '" + userInfo.username + "'";
@@ -162,13 +187,39 @@ bool Database::createNewAccount(const std::string& username, const std::string& 
  * @return true si opération effectuée, false sinon
  */
 bool Database::askFriend(const std::string& username){
+    /*
     // ! user2 demande user 1 en ami
     if (doesFriendshipExists(username) or userInfo.username==username) return false;
     userInfo.FriendsToAddList.push_back(username);
     writeFriendsToAddList();
     return true;
+     */
+    if (doesFriendshipExists(username)){
+        return false;
+    }
+
+    std::string friendToAddString;
+    sqlite3_stmt* stmt;
+    const std::string sqlRequest = "SELECT FriendToAddString FROM ToAddFriends WHERE (Username = '" + username + "')";
+    sqlite3_prepare_v2(this->DB, sqlRequest.c_str(), -1, &stmt, NULL);
+    int ret_code;
+
+    if ((ret_code = sqlite3_step(stmt)) == SQLITE_ROW){
+        friendToAddString =  std::string(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 0)));
+    }
+
+    friendToAddString += " " + userInfo.username;
+    const std::string sqlRequest2 =
+            "INSERT INTO ToAddFriends(FriendToAddString) VALUES ('" + friendToAddString + "')";
+    sqlite3_exec(this->DB, sqlRequest2.c_str(), NULL, 0, NULL);
+    return true;
 }
 
+/**
+ * @brief Transfert un amis du stade d'amis à ajouter à amis
+ * @param username de l'amis à transferer
+ * @return
+ */
 bool Database::transferFriend(const std::string& username) {
     if (!isStringinVect(username,userInfo.FriendsToAddList)) return false;
     userInfo.FriendsList.push_back(username);
@@ -180,6 +231,11 @@ bool Database::transferFriend(const std::string& username) {
 
 
 // modify
+
+/**
+ * @brief supprime un amis
+ * @param username de l'amis à supprimer
+ */
 void Database::deleteFriendship(const std::string& username) {
     std::remove(userInfo.FriendsList.begin(),userInfo.FriendsList.end(),username);
     writeFriendsList();
@@ -226,6 +282,12 @@ void Database::resetTables(){
     sqlite3_exec(this->DB, sqlRequest4.c_str(), NULL, 0, &messageError);
 }
 // read
+
+/**
+ * @brief retourne si un utilisateur est dans la base de donnée ou non
+ * @param username de l'utilisateur à vérifier
+ * @return
+ */
 bool Database::isUserinDB(const std::string& username) {
     sqlite3_stmt *stmt;
     const std::string sqlRequest = "SELECT Username FROM UserData WHERE Username = '" + username + "'";
@@ -240,10 +302,21 @@ bool Database::isUserinDB(const std::string& username) {
     return false;
 }
 
+/**
+ * @brief Vérifie si une amitié existe entre un user et un user connecté au préalable
+ * @param username username de l'amis à vérifier
+ * @return
+ */
 bool Database::doesFriendshipExists(const std::string& username) {
     return isStringinVect(username,userInfo.FriendsList);
 }
 
+/**
+ * @brief vérifie que le mot de passe correspond à celui d'un amis rentré
+ * @param username : utilisateur associer au mdp
+ * @param password : mdp associé à l'utilisateur
+ * @return
+ */
 bool Database::checkPassword(const std::string& username, const std::string& password) {
     std::string hashedDBPassword = getPassword(username);
     std::hash<std::string> h;
