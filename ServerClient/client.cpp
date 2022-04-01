@@ -16,13 +16,24 @@ Client::Client() {
 
 void Client::runMenu(string pseudo, string mdp, string ip, int port){
   keypad(view.inputWindow, TRUE);
-  bool _ = true;
-  while(_){
+  while(true){
     char menuChoice;
     view.displayMenu({"Option :", "(P)lay", "Chose (N)umber of players", "Chose (G)amemode"}); //options de base
     view.fetchInput(menuChoice); //demande un choix a l'utilisateur
     if (menuChoice == 'P'){ //les choix prennent la forme de lettres majuscules.
-      _ = false;
+      this->runGame(pseudo, mdp, ip, port); //normalement, lance le jeu, mais la ca bug si on le lance d'ici...
+      message_t playMessage;
+      playMessage.message = "/play\0";
+      ssend(this->socket, &playMessage);
+    }
+    if (menuChoice == 'P'){ //les choix prennent la forme de lettres majuscules.
+    char Id[8];
+      view.displayMenu({"Identifiant de la partie?"});
+      view.fetchInput(*Id);
+      this->runGame(pseudo, mdp, ip, port); //normalement, lance le jeu, mais la ca bug si on le lance d'ici...
+      message_t playMessage;
+      playMessage.message = "/join " + string(Id) + "\0";
+      ssend(this->socket, &playMessage);
     }
     if (menuChoice == 'N') {
       view.displayMenu({"(2) joueurs", "(4) joueurs", "Certains modes ne permettent que 4 joueurs"}); //options de nombre de joueurs
@@ -47,7 +58,6 @@ void Client::runMenu(string pseudo, string mdp, string ip, int port){
       this->gameMode[strlen(gameMode)]='\0';
     }
   }
-  this->runGame(pseudo, mdp, ip, port); //normalement, lance le jeu, mais la ca bug si on le lance d'ici...
 }
 
 void Client::runGame(string pseudo, string mdp, string ip, int port) {
@@ -157,6 +167,6 @@ Ici style en argv 2, ip passe en argv 3, style Qt par défaut
   char mdp[16];
   cin.getline(mdp, 16);
   Client client = Client(); //ici Client() prend un parametre style.
-  client.runMenu(pseudo, mdp, ip.c_str(), port);
+  client.runGame(pseudo, mdp, ip.c_str(), port);
   return 0;
 }
