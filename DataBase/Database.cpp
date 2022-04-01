@@ -2,7 +2,7 @@
 
 //constructeurs destructeur
 Database::Database() {
-    sqlite3_open("DataBase/Data.db", &this->DB);
+    sqlite3_open("../DataBase/Data.db", &this->DB);
     char *messageError;
 
     std::string sql1 = "CREATE TABLE IF NOT EXISTS UserData ("

@@ -1,13 +1,12 @@
 #include "boardgui.h"
 
-BoardGUI::BoardGUI(QWidget *parent): QWidget(parent){
+BoardGUI::BoardGUI(QWidget *parent): QWidget(parent){   
     gameLayout = new QGridLayout(this);
 
     wallsPlacement = new WallsBox;
     wallsPlacement->setFixedSize(QSize(120,100));
 
     boardGame();
-
 
     gameLayout->addLayout(boardGUI,0,0,1,2);
     gameLayout->addWidget(wallsPlacement,1,0);
@@ -41,7 +40,7 @@ BoardGUI::~BoardGUI(){
 
 void BoardGUI::resetVar(){
     //Cases pions:
-    cell = new PawnCell();
+    cell = new PawnCell(wallsPlacement);
     cell->setFixedSize(QSize(50,50));
 
     //Cases murs horizontales:

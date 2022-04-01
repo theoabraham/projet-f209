@@ -14,6 +14,8 @@ class MenuWindow : public QMainWindow
     Q_OBJECT
 
 private:
+    //ClientGUI *client; 
+
     //MenuWindow widgets
     QTabWidget *menuSelection;
     Login *login;
@@ -45,7 +47,8 @@ private:
     QLabel *lobbyNb;
     QPushButton *joinButton;
 
-    std::string message; 
+    std::string message;
+ 
 
 public:
     MenuWindow(QMainWindow *parent=0);
