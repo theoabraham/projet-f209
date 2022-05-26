@@ -80,8 +80,8 @@ public:
     void fetchInput(char &buffer) override {}; 
     
     MenuWindow *getWindow() {return window; }
-    void getMenuWindow() {
-        window = new MenuWindow(); 
+    void getMenuWindow(ClientGUI *client) {
+        window = new MenuWindow(client); 
         window->show();
         return; 
    }

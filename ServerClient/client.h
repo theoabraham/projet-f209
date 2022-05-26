@@ -57,7 +57,7 @@ class ClientGUI : public Client
     ClientGUI() {view = new WindowGUI();}
     virtual ~ClientGUI() {delete view; }
 
-    void getMenu(){ view->getMenuWindow();}
+    void getMenu(){ view->getMenuWindow(this);}
 }; 
 
 #endif
