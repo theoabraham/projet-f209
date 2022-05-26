@@ -16,14 +16,15 @@ public:
     Chatroom(QWidget *parent=0);
 
     ~Chatroom();
-
+    //crée l'introduction
     void setEntry();
-
+    //crée l'affichage des messages
     void setDisplay();
-
+    //récupère les messages de l'entrée
     QString getMessage();
 
 public slots:
+    //récupère les messages dans l'entré et les affiche
     void runChatroom();
 };
 

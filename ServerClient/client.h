@@ -1,3 +1,7 @@
+#ifndef CLIENT_H
+#define CLIENT_H
+
+
 #include <queue>
 #include <string>
 #include <iostream>
@@ -24,8 +28,8 @@ private:
   virtual void manageSocketTraffic() = 0;
 
  public:
-  Client() {}
-  virtual ~Client() {}
+  Client(){}
+  virtual ~Client(){}
 };
 
 class ClientNC : public Client
@@ -48,10 +52,13 @@ class ClientGUI : public Client
   WindowGUI *view; 
   protected: 
     void manageInputs() override {}
-    void manageSocketTraffic() override {}
+    void manageSocketTraffic() override ; 
   public: 
     ClientGUI() {view = new WindowGUI();}
     virtual ~ClientGUI() {delete view; }
 
-    void getMenu(){ view->getMenuWindow();}
+    void getMenu(){ view->getMenuWindow(this);}
 }; 
+
+#endif
+

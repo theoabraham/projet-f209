@@ -23,7 +23,7 @@ void Login::setEntry() {
     lpseudoLine = new QLineEdit();
     entry->addRow(new QLabel("Pseudo"), lpseudoLine);
     lpasswordLine = new QLineEdit();
-    lpasswordLine->setEchoMode(QLineEdit::Password);
+    lpasswordLine->setEchoMode(QLineEdit::Password);  //camoufle le mot de passe
     entry->addRow(new QLabel("Password"), lpasswordLine);
 }
 
@@ -34,7 +34,6 @@ void Login::setConnection() {
 bool Login::checkPassword() {
     std::string pseudo = lpseudoLine->text().toStdString();
     std::string password = lpasswordLine->text().toStdString();
-    //TODO connexion avec la base de données via le client
     return true;
 }
 
@@ -61,15 +60,15 @@ void SignUp::setIntro() {
 void SignUp::setEntry() {
     sEntry = new QFormLayout();
     sPseudoLine = new QLineEdit();
-    sEntry->addRow(new QLabel("Enter Pseudo"), sPseudoLine);
+    sEntry->addRow(new QLabel("Enter pseudo"), sPseudoLine);
     sPasswordLine = new QLineEdit();
     sPasswordLine->setEchoMode(QLineEdit::Password);
-    sEntry->addRow(new QLabel("Enter Password"), sPasswordLine);
+    sEntry->addRow(new QLabel("Enter password"), sPasswordLine);
     pswReq = new QLabel("Must be between 4 and 16 caracters\nCan't contain spaces");
     sEntry->addRow("", pswReq);
     confPasswordLine = new QLineEdit();
     confPasswordLine->setEchoMode(QLineEdit::Password);
-    sEntry->addRow(new QLabel("Confirm  Password"), confPasswordLine);
+    sEntry->addRow(new QLabel("Confirm  password"), confPasswordLine);
 }
 
 void SignUp::setButton() {

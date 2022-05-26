@@ -47,7 +47,6 @@ void WallsBox::mousePressEvent(QMouseEvent *event)
         return;
 
     setTypeOfWall(child);
-    std::cout<<getTypeOfWall()<<std::endl;
 
     QPixmap pixmap = *child->pixmap();
 

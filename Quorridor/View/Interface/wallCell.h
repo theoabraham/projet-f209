@@ -43,6 +43,7 @@ public:
     Pos getPos() {return pos;} 
 
 protected:
+
     void dragEnterEvent(QDragEnterEvent *event) override;
     void dropEvent(QDropEvent *event) override;
 };

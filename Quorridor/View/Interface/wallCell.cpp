@@ -2,7 +2,6 @@
 #include <iostream>
 #include "wallCell.h"
 
-
 WallCell::WallCell(bool acceptDrop, WallsBox *wall, QWidget *parent)
     : QWidget (parent),wall(wall), acceptDrop(acceptDrop)
 {
@@ -12,7 +11,9 @@ WallCell::WallCell(bool acceptDrop, WallsBox *wall, QWidget *parent)
 void WallCell::dragEnterEvent(QDragEnterEvent *event)
 {
     if (event->mimeData()->hasFormat("application/x-dnditemdata")) {
+        //Si la souris à est entrain de drag sur un item de type image 
         if (event->source() != this) {
+            //Si l'endroit d'où vient la souris viens d'un autre widget
             event->setDropAction(Qt::MoveAction);
             event->accept();
         }
@@ -25,12 +26,12 @@ void WallCell::dragEnterEvent(QDragEnterEvent *event)
 void WallCell::dropEvent(QDropEvent *event)
 {
     if ((event->mimeData()->hasFormat("application/x-dnditemdata")) && (not receivedItem)) {
+        //Si l'élément qui va être drop est de type image
         if (event->source() == wall){
             //Si l'item qui est drag viens de WallsBox
 
             event->acceptProposedAction();
 
-            std::cout<<"dropEvent"<<std::endl;
             if (wall->getTypeOfWall() == "H"){
                 setWallColor();
                 vectMurH[0]->setWallColor();
@@ -48,6 +49,3 @@ void WallCell::dropEvent(QDropEvent *event)
         event->ignore();
     }
 }
-
-
-

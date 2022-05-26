@@ -19,6 +19,7 @@ void Chatroom::setEntry() {
     entry = new QLineEdit();
     entry->setMinimumSize(QSize(200,30));
     entry->setStyleSheet("border: 1px solid black;");
+    //quand la touche enter est pressée, la fonction runChatroom est appelée
     connect(entry,SIGNAL(returnPressed()), this, SLOT(runChatroom()));
 }
 

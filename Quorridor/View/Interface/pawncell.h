@@ -16,16 +16,16 @@ class PawnCell: public QWidget
 {
     QLabel *pawn;
     Pos pos; 
+    WallsBox *wall; 
 
 public:
-    explicit PawnCell(QWidget *parent = nullptr);
+    explicit PawnCell(WallsBox *wall, QWidget *parent = nullptr);
     void setImage(QPixmap pix);
 
     void setPos(Pos position) {pos = position;} 
     Pos getPos() {return pos;}
 protected:
     void dragEnterEvent(QDragEnterEvent *event) override;
-    //void dragMoveEvent(QDragMoveEvent *event) override;
     void dropEvent(QDropEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
 };

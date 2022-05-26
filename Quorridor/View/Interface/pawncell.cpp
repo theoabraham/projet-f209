@@ -1,7 +1,7 @@
 #include "pawncell.h"
 
-PawnCell::PawnCell(QWidget *parent)
-    : QWidget(parent)
+PawnCell::PawnCell(WallsBox *wall, QWidget *parent)
+    : QWidget(parent), wall(wall)
 {
     setAcceptDrops(true);
     setStyleSheet("background-color: brown;");
@@ -35,27 +35,30 @@ void PawnCell::dropEvent(QDropEvent *event)
         QByteArray itemData = event->mimeData()->data("application/x-dnditemdata");
         QDataStream dataStream(&itemData, QIODevice::ReadOnly);
 
-        QPixmap pixmap;
-        QPoint offset;
-        dataStream >> pixmap >> offset;
+        if (event->source() != wall){
 
-        QLabel *newIcon = new QLabel(this);
-        newIcon->setPixmap(pixmap);
-        newIcon->move(0,0);
-        newIcon->show();
-        newIcon->setAttribute(Qt::WA_DeleteOnClose);
+                QPixmap pixmap;
+                QPoint offset;
+                dataStream >> pixmap >> offset;
 
-        if (event->source() != this) {
-            event->setDropAction(Qt::MoveAction);
-            event->accept();
-        } else {
-            event->acceptProposedAction();
+                QLabel *newIcon = new QLabel(this);
+                newIcon->setPixmap(pixmap);
+                newIcon->move(0,0);
+                newIcon->show();
+                newIcon->setAttribute(Qt::WA_DeleteOnClose);
+
+                if (event->source() != this) {
+                    event->setDropAction(Qt::MoveAction);
+                    event->accept();
+                } else {
+                    event->acceptProposedAction();
+                }            
+        }
+    } else {
+            event->ignore();
         }
 
-        std::cout<<pos.x<<" "<<pos.y<<std::endl; 
-    } else {
-        event->ignore();
-    }
+
 }
 
 void PawnCell::mousePressEvent(QMouseEvent *event)

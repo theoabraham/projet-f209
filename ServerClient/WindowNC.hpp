@@ -1,4 +1,6 @@
-#include "../Quorridor/View/Interface/menuwindow.h"
+#ifndef WINDOWNC_HPP
+#define WINDOWNC_HPP
+
 #include <ncurses.h>
 #include <locale.h>
 #include <vector>
@@ -77,9 +79,12 @@ public:
     virtual ~WindowGUI() {delete window; }
     void fetchInput(char &buffer) override {}; 
     
-    void getMenuWindow() {
-        window = new MenuWindow(); 
+    MenuWindow *getWindow() {return window; }
+    void getMenuWindow(ClientGUI *client) {
+        window = new MenuWindow(client); 
         window->show();
         return; 
    }
 };
+
+#endif
